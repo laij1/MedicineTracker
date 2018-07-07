@@ -3,14 +3,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_patients"
-
+            android:icon="@drawable/ic_menu"
             android:title="@string/patients" />
         <item
             android:id="@+id/nav_medicine"
-
+            android:icon="@drawable/ic_menu"
             android:title="@string/medicine" />
         <item
             android:id="@+id/nav_cart"
+            android:icon="@drawable/ic_menu"
             android:title="@string/cart" />
     </group>
 </menu>
