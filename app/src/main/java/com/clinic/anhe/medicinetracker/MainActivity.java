@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerlayout;
 
+    //https://github.com/andremion/Android-Animated-Icons
     private AnimatedVectorDrawable mMenuDrawable;
     private AnimatedVectorDrawable mBackDrawable;
     private AnimatedVectorDrawable mCurrentDrawable;
