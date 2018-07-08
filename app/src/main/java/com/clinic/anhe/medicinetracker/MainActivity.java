@@ -39,15 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
         mMenuDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_menu_animatable);
         mBackDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_back_animatable);
-        //set current to be menu icon
-        mCurrentDrawable = mMenuDrawable;
+        //set current to be backDrwable, initial state
+        mCurrentDrawable = mBackDrawable;
 
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mDrawerlayout.addDrawerListener(new DrawerListener() {
             @Override
             public void onDrawerSlide(View view, float v) {
-
             }
             @Override
             public void onDrawerOpened(View view) {
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                     getSupportActionBar().setHomeAsUpIndicator(mMenuDrawable);
                     mMenuDrawable.start();
                     mCurrentDrawable = mMenuDrawable;
-                    mMenuFlag = !mMenuFlag;
                 }
             }
 
@@ -65,13 +63,12 @@ public class MainActivity extends AppCompatActivity {
                    getSupportActionBar().setHomeAsUpIndicator(mBackDrawable);
                    mBackDrawable.start();
                    mCurrentDrawable = mBackDrawable;
-                   mMenuFlag = !mMenuFlag;
+
                 }
             }
 
             @Override
             public void onDrawerStateChanged(int i) {
-
             }
         });
 
@@ -106,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void menuClick() {
-        if (mMenuFlag) {
+
+        if (mCurrentDrawable == mMenuDrawable) {
             getSupportActionBar().setHomeAsUpIndicator(mBackDrawable);
             mCurrentDrawable = mBackDrawable;
             mDrawerlayout.closeDrawers();
@@ -119,6 +117,6 @@ public class MainActivity extends AppCompatActivity {
             mMenuDrawable.start();
 
         }
-           mMenuFlag = !mMenuFlag;
+
     }
 }
