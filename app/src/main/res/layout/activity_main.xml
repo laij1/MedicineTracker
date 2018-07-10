@@ -27,7 +27,22 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/navigation_menu"
-        app:headerLayout="@layout/nav_header"
-        />
+        app:headerLayout="@layout/nav_header">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/nav_header"
+                android:id="@+id/header"/>
+
+            <ExpandableListView
+                android:id="@+id/nav_expandable_list"
+                android:layout_below="@+id/header"
+                android:choiceMode = "singleChoice"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:groupIndicator="@android:color/transparent">
+            </ExpandableListView>
+        </RelativeLayout>
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

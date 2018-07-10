@@ -10,8 +10,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,8 +27,11 @@ public class MainActivity extends AppCompatActivity {
     private AnimatedVectorDrawable mMenuDrawable;
     private AnimatedVectorDrawable mBackDrawable;
     private AnimatedVectorDrawable mCurrentDrawable;
-    private boolean mMenuFlag;
-//    private boolean mMenuClicked = false;
+    NavigationDrawerAdapter mMenuAdapter;
+    ExpandableListView expandableList;
+    List<GroupMenuModel> listDataHeader;
+    HashMap<GroupMenuModel, List<String>> listDataChild;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
        // actionbar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_vector);
-
 
         mMenuDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_menu_animatable);
         mBackDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_back_animatable);
@@ -72,7 +80,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //for expandableListview
+        expandableList = (ExpandableListView) findViewById(R.id.nav_expandable_list);
+
+        prepareListData();
+        mMenuAdapter = new NavigationDrawerAdapter(this, listDataHeader, listDataChild, expandableList);
+
+        // setting list adapter
+        expandableList.setAdapter(mMenuAdapter);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        //TODO: is it necessary to check if naviagationView is not null
+//        if (navigationView != null) {
+//            setupDrawerContent(navigationView);
+//        }
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -95,14 +116,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                menuClick();
+                menuIconClick();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    private void menuClick() {
+    private void menuIconClick() {
 
         if (mCurrentDrawable == mMenuDrawable) {
             getSupportActionBar().setHomeAsUpIndicator(mBackDrawable);
@@ -117,6 +138,37 @@ public class MainActivity extends AppCompatActivity {
             mMenuDrawable.start();
 
         }
+
+    }
+
+    private void prepareListData() {
+        listDataHeader = new ArrayList<GroupMenuModel>();
+        listDataChild = new HashMap<GroupMenuModel, List<String>>();
+
+        GroupMenuModel patients = new GroupMenuModel();
+        patients.setIconName("Patients");
+        patients.setIconImg(R.drawable.ic_account);
+        // Adding data header
+        listDataHeader.add(patients);
+
+        GroupMenuModel medicine = new GroupMenuModel();
+        medicine.setIconName("Medicine");
+        medicine.setIconImg(R.drawable.ic_medicine);
+        listDataHeader.add(medicine);
+
+        GroupMenuModel cart = new GroupMenuModel();
+        cart.setIconName("Cart");
+        cart.setIconImg(R.drawable.ic_cart);
+        listDataHeader.add(cart);
+
+        // Adding child data
+        List<String> shifts = new ArrayList<String>();
+        shifts.add("Morning");
+        shifts.add("Afternoon");
+        shifts.add("Night");
+
+        listDataChild.put(listDataHeader.get(0), shifts);// Header, Child data
+
 
     }
 }
