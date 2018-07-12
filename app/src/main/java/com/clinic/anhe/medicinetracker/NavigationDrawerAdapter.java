@@ -22,11 +22,11 @@ public class NavigationDrawerAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<GroupMenuModel> mListDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<GroupMenuModel, List<String>> mListDataChild;
+    private HashMap<GroupMenuModel, List<GroupMenuModel>> mListDataChild;
     ExpandableListView expandList;
 
     public NavigationDrawerAdapter(Context context, List<GroupMenuModel> listDataHeader,
-                                   HashMap<GroupMenuModel, List<String>> listChildData,
+                                   HashMap<GroupMenuModel, List<GroupMenuModel>> listChildData,
                                    ExpandableListView expandList) {
         this.mContext = context;
         this.mListDataHeader = listDataHeader;
@@ -79,7 +79,7 @@ public class NavigationDrawerAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
-        GroupMenuModel headerTitle = (GroupMenuModel) getGroup(groupPosition);
+        GroupMenuModel groupMenu = (GroupMenuModel) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater groupMenuInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -88,8 +88,8 @@ public class NavigationDrawerAdapter extends BaseExpandableListAdapter {
         TextView groupMenuTitle= (TextView) convertView
                 .findViewById(R.id.group_menu_title);
         ImageView groupMenuIconImage = (ImageView) convertView.findViewById(R.id.group_menu_iconimage);
-        groupMenuTitle.setText(headerTitle.getIconName());
-        groupMenuIconImage.setImageResource(headerTitle.getIconImg());
+        groupMenuTitle.setText(groupMenu.getIconName());
+        groupMenuIconImage.setImageResource(groupMenu.getIconImg());
 
         //hide indicator for group menu item without child
 //        ImageView indicator = convertView.findViewById(R.id.list_item_arrow);
@@ -112,7 +112,7 @@ public class NavigationDrawerAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final GroupMenuModel subMenu = (GroupMenuModel) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater subMenuInflater = (LayoutInflater) this.mContext
@@ -120,10 +120,11 @@ public class NavigationDrawerAdapter extends BaseExpandableListAdapter {
             convertView = subMenuInflater.inflate(R.layout.nav_submenu, null);
         }
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.sub_menu);
-
-        txtListChild.setText(childText);
+        TextView subMenuTitle = (TextView) convertView
+                .findViewById(R.id.sub_menu_title);
+        subMenuTitle.setText(subMenu.getIconName());
+        ImageView subMenuIconImage = (ImageView) convertView.findViewById(R.id.sub_menu_iconimage);
+        subMenuIconImage.setImageResource(subMenu.getIconImg());
 
         return convertView;
     }

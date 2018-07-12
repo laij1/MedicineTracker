@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     NavigationDrawerAdapter mMenuAdapter;
     ExpandableListView expandableList;
     List<GroupMenuModel> listDataHeader;
-    HashMap<GroupMenuModel, List<String>> listDataChild;
+    HashMap<GroupMenuModel, List<GroupMenuModel>> listDataChild;
 
 
     @Override
@@ -143,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void prepareListData() {
         listDataHeader = new ArrayList<GroupMenuModel>();
-        listDataChild = new HashMap<GroupMenuModel, List<String>>();
+        //listDataChild = new HashMap<GroupMenuModel, List<String>>();
+        listDataChild = new HashMap<>();
 
         GroupMenuModel patients = new GroupMenuModel();
         patients.setIconName("Patients");
@@ -161,11 +162,21 @@ public class MainActivity extends AppCompatActivity {
         cart.setIconImg(R.drawable.ic_cart);
         listDataHeader.add(cart);
 
+        //Adding child data
+        List<GroupMenuModel> shifts = new ArrayList<>();
+        GroupMenuModel morning = new GroupMenuModel("Morning", R.drawable.ic_morning);
+        shifts.add(morning);
+
+        GroupMenuModel afternoon = new GroupMenuModel("Afternoon", R.drawable.ic_afternoon);
+        shifts.add(afternoon);
+
+        GroupMenuModel night = new GroupMenuModel("Night", R.drawable.ic_night);
+        shifts.add(night);
         // Adding child data
-        List<String> shifts = new ArrayList<String>();
-        shifts.add("Morning");
-        shifts.add("Afternoon");
-        shifts.add("Night");
+//        List<String> shifts = new ArrayList<String>();
+//        shifts.add("Morning");
+//        shifts.add("Afternoon");
+//        shifts.add("Night");
 
         listDataChild.put(listDataHeader.get(0), shifts);// Header, Child data
 

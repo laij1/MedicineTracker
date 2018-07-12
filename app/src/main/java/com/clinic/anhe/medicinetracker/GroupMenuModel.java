@@ -8,6 +8,14 @@ public class GroupMenuModel {
     private String iconName = "";
     private int iconImg = -1; // menu icon resource id'
 
+    public  GroupMenuModel() {
+
+    }
+
+    public GroupMenuModel(String iconName, int iconImg) {
+        this.iconName = iconName;
+        this.iconImg = iconImg;
+    }
     public String getIconName() {
         return iconName;
     }
