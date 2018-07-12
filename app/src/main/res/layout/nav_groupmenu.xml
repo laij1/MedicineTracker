@@ -14,6 +14,7 @@
             android:id="@+id/group_menu_iconimage"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:tint="@color/menuTextIconColor"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"/>
@@ -23,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textColor="#000000"
+            android:textColor="@color/menuTextIconColor"
             android:textSize="16dp"
             android:textStyle="bold"
             android:fontFamily="Roboto-Medium"/>

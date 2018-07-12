@@ -1,19 +1,24 @@
-package com.clinic.anhe.medicinetracker;
+package com.clinic.anhe.medicinetracker.utils;
 
+import android.app.Fragment;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+
+import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
+import com.clinic.anhe.medicinetracker.model.GroupMenuModel;
+import com.clinic.anhe.medicinetracker.adapters.NavigationDrawerAdapter;
+import com.clinic.anhe.medicinetracker.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,12 +43,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         ActionBar actionbar = getSupportActionBar();
         //TODO: figure out if we need to setDisplayHome
        // actionbar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_vector);
+        //TODO: discuss what name the app should be and change the title later
+        actionbar.setTitle("Anhe Cart");
 
         mMenuDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_menu_animatable);
         mBackDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_back_animatable);
@@ -88,6 +94,62 @@ public class MainActivity extends AppCompatActivity {
 
         // setting list adapter
         expandableList.setAdapter(mMenuAdapter);
+
+        //Listen for GroupMenu Click and SubMenu Click
+        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
+                //TODO:1. add @drawer:selector
+                //TODO:2. add android:background="@drawable/selector to list_submenu
+                //TODO:3. view.setSelected
+                //TODO:4.(optional??) expandableList.setChoiceMode(ExpandableListView.CHOICE_MODE_SINGLE);
+//                view.setSelected(true);
+
+                //TODO: add fragements here
+
+
+                //close drawerlayout
+                mDrawerlayout.closeDrawers();
+
+                return true;
+            }
+        });
+
+        expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int packedPosition, long l) {
+                //TODO: here we insert the fragments
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                switch(packedPosition) {
+                    case 0:
+                        PatientsFragment patientsFragment = new PatientsFragment();
+                        transaction.replace(R.id.main_fragment_container, patientsFragment).commit();
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
+
+                if(packedPosition != 0) {
+                    mDrawerlayout.closeDrawers();
+                }
+                return false;
+
+            }
+        });
+
+        expandableList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousItem = -1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousItem)
+                    expandableList.collapseGroup(previousItem);
+                previousItem = groupPosition;
+            }
+        });
+
+        //this part of code doesn't work when we use expandableListView here
         NavigationView navigationView = findViewById(R.id.nav_view);
         //TODO: is it necessary to check if naviagationView is not null
 //        if (navigationView != null) {
@@ -147,36 +209,31 @@ public class MainActivity extends AppCompatActivity {
         listDataChild = new HashMap<>();
 
         GroupMenuModel patients = new GroupMenuModel();
-        patients.setIconName("Patients");
+        patients.setIconName("病患");
         patients.setIconImg(R.drawable.ic_account);
         // Adding data header
         listDataHeader.add(patients);
 
         GroupMenuModel medicine = new GroupMenuModel();
-        medicine.setIconName("Medicine");
+        medicine.setIconName("藥品");
         medicine.setIconImg(R.drawable.ic_medicine);
         listDataHeader.add(medicine);
 
         GroupMenuModel cart = new GroupMenuModel();
-        cart.setIconName("Cart");
+        cart.setIconName("購物車");
         cart.setIconImg(R.drawable.ic_cart);
         listDataHeader.add(cart);
 
         //Adding child data
         List<GroupMenuModel> shifts = new ArrayList<>();
-        GroupMenuModel morning = new GroupMenuModel("Morning", R.drawable.ic_morning);
+        GroupMenuModel morning = new GroupMenuModel("早班", R.drawable.ic_morning);
         shifts.add(morning);
 
-        GroupMenuModel afternoon = new GroupMenuModel("Afternoon", R.drawable.ic_afternoon);
+        GroupMenuModel afternoon = new GroupMenuModel("中班", R.drawable.ic_afternoon);
         shifts.add(afternoon);
 
-        GroupMenuModel night = new GroupMenuModel("Night", R.drawable.ic_night);
+        GroupMenuModel night = new GroupMenuModel("晚班", R.drawable.ic_night);
         shifts.add(night);
-        // Adding child data
-//        List<String> shifts = new ArrayList<String>();
-//        shifts.add("Morning");
-//        shifts.add("Afternoon");
-//        shifts.add("Night");
 
         listDataChild.put(listDataHeader.get(0), shifts);// Header, Child data
 

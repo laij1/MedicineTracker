@@ -1,19 +1,17 @@
-package com.clinic.anhe.medicinetracker;
+package com.clinic.anhe.medicinetracker.adapters;
 
 import android.widget.BaseExpandableListAdapter;
 import android.content.Context;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.model.GroupMenuModel;
 
 import java.util.HashMap;
 import java.util.List;

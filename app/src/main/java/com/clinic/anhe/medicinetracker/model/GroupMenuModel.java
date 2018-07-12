@@ -1,4 +1,4 @@
-package com.clinic.anhe.medicinetracker;
+package com.clinic.anhe.medicinetracker.model;
 /*
 * This model is for navigation menu Group Menu.
 *

@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="70dp"
         android:orientation="horizontal">
 
         <!--set layout width and height to smaller icon-->
@@ -15,6 +15,7 @@
             android:id="@+id/sub_menu_iconimage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="@color/menuTextIconColor"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"/>
@@ -24,9 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textColor="#000000"
             android:textSize="16dp"
             android:textStyle="bold"
+            android:textColor="@color/menuTextIconColor"
             android:fontFamily="Roboto-Medium"/>
 
     </LinearLayout>
