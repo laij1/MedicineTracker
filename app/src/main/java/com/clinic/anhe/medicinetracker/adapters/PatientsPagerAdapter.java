@@ -9,20 +9,28 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.content.Context;
 import android.util.Log;
-import android.view.ViewGroup;
+import android.view.View;
+import android.view.LayoutInflater;
+import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.fragments.EvenDayFragment;
 import com.clinic.anhe.medicinetracker.fragments.OddDayFragment;
+import java.util.List;
+import java.util.ArrayList;
 
 public class PatientsPagerAdapter extends FragmentPagerAdapter {
 
     private int numberOfTabs;
     private Context mContext;
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
+    private final List<Integer> mFragmentIconList = new ArrayList<>();
 
     private int imageResId = R.drawable.ic_calender;
     private String[] tabTitles =
-            {"Mon Wed Fri", "Tue Thur Sat"};
+            {" Mon Wed Fri", " Tue Thur Sat"};
 
 
     public PatientsPagerAdapter(FragmentManager fm, int NumOfTabs, Context mContext) {
@@ -33,7 +41,6 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Log.d("we are in getPageTitle!", "good!");
 //        // Generate title based on item position
 //        Drawable image = mContext.getResources().getDrawable(imageResId);
 //        image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
@@ -45,8 +52,6 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
 
         return tabTitles[position];
     }
-
-
 
     @Override
     public Fragment getItem(int position) {
@@ -65,6 +70,32 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return numberOfTabs;
+    }
+
+    public int getImageResId() {
+        return imageResId;
+    }
+    public View getTabView(int position) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.custom_tab, null);
+        TextView tabTextView = view.findViewById(R.id.tabTextView);
+        tabTextView.setText(tabTitles[position]);
+        ImageView tabImageView = view.findViewById(R.id.tabImageView);
+        tabImageView.setImageResource(imageResId);
+        return view;
+    }
+    public View getSelectedTabView(int position) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.custom_tab, null);
+        TextView tabTextView = view.findViewById(R.id.tabTextView);
+        tabTextView.setText(tabTitles[position]);
+        ImageView tabImageView = view.findViewById(R.id.tabImageView);
+        tabImageView.setImageResource(imageResId);
+        return view;
+    }
+
+    public void addFragment(Fragment fragment, String title, int tabIcon) {
+        mFragmentList.add(fragment);
+        mFragmentTitleList.add(title);
+        mFragmentIconList.add(tabIcon);
     }
 }
 
