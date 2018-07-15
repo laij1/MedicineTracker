@@ -122,10 +122,11 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 switch(packedPosition) {
                     case 0:
-                        PatientsFragment patientsFragment = new PatientsFragment();
-                        transaction.replace(R.id.main_fragment_container, patientsFragment).commit();
+
                         break;
                     case 1:
+                        PatientsFragment patientsFragment = new PatientsFragment();
+                        transaction.replace(R.id.main_fragment_container, patientsFragment).commit();
                         break;
                     case 2:
                         break;
