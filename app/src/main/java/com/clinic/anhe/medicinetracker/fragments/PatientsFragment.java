@@ -45,11 +45,6 @@ public class PatientsFragment  extends Fragment {
         mPatientsViewPager.setAdapter(mPatientsPagerAdapter);
 
 
-        mPatientsPagerAdapter.addFragment(new EvenDayFragment(),
-                "  Mon Wed Fri", mPatientsPagerAdapter.getImageResId());
-        mPatientsPagerAdapter.addFragment(new OddDayFragment(),
-                "  Tue Thur Sat", mPatientsPagerAdapter.getImageResId());
-
         highLightCurrentTab(0);
 
 
