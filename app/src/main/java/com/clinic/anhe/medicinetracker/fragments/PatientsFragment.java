@@ -26,17 +26,15 @@ public class PatientsFragment  extends Fragment {
         mPatientsTabLayout = (TabLayout) view.findViewById(R.id.patients_tabLayout);
 
         //set up tab
-        TabLayout.Tab topSeller = mPatientsTabLayout.newTab();
-        mPatientsTabLayout.addTab(topSeller);
+        TabLayout.Tab OddDays = mPatientsTabLayout.newTab();
+        mPatientsTabLayout.addTab(OddDays);
 
-        TabLayout.Tab newArrival = mPatientsTabLayout.newTab();
-        mPatientsTabLayout.addTab(newArrival);
+        TabLayout.Tab EvenDays = mPatientsTabLayout.newTab();
+        mPatientsTabLayout.addTab(EvenDays);
 
         mContext = getContext();
 
-
         mPatientsTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
 
         mPatientsViewPager = (ViewPager) view.findViewById(R.id.patients_pager);
         mPatientsTabLayout.setupWithViewPager(mPatientsViewPager);
@@ -44,9 +42,7 @@ public class PatientsFragment  extends Fragment {
                 (getChildFragmentManager(), mPatientsTabLayout.getTabCount(), mContext);
         mPatientsViewPager.setAdapter(mPatientsPagerAdapter);
 
-
         highLightCurrentTab(0);
-
 
         mPatientsViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mPatientsTabLayout) {
             @Override

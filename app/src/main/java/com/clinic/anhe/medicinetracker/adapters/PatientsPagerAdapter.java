@@ -22,7 +22,7 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
 
 
     private int imageResId = R.drawable.ic_calender;
-    private String[] tabTitles =
+    private static final String[] tabTitles =
             {"一 三 五", " 二 四 六"};
 
 
@@ -39,7 +39,6 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.d("we are in getItem" ,"this is to set the pageviewer item");
         switch (position) {
             case 0:
                 OddDayFragment oddDayFragment = new OddDayFragment();

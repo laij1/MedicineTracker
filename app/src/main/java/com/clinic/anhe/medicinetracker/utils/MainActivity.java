@@ -103,10 +103,27 @@ public class MainActivity extends AppCompatActivity {
                 //TODO:2. add android:background="@drawable/selector to list_submenu
                 //TODO:3. view.setSelected
                 //TODO:4.(optional??) expandableList.setChoiceMode(ExpandableListView.CHOICE_MODE_SINGLE);
-//                view.setSelected(true);
+                //view.setSelected(true);
 
                 //TODO: add fragements here
-
+                //TODO: see if we can use only one patientFragement and update data when switch case
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                switch (childPosition) {
+                    case 0:
+                        PatientsFragment morningFragment = new PatientsFragment();
+                        transaction.replace(R.id.main_fragment_container, morningFragment).commit();
+                        break;
+                    case 1:
+                        PatientsFragment afternoonFragment = new PatientsFragment();
+                        transaction.replace(R.id.main_fragment_container, afternoonFragment).commit();
+                        break;
+                    case 2:
+                        PatientsFragment nightFragment = new PatientsFragment();
+                        transaction.replace(R.id.main_fragment_container, nightFragment).commit();
+                        break;
+                    default:
+                        break;
+                }
 
                 //close drawerlayout
                 mDrawerlayout.closeDrawers();
@@ -119,14 +136,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int packedPosition, long l) {
                 //TODO: here we insert the fragments
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 switch(packedPosition) {
                     case 0:
-
                         break;
                     case 1:
-                        PatientsFragment patientsFragment = new PatientsFragment();
-                        transaction.replace(R.id.main_fragment_container, patientsFragment).commit();
                         break;
                     case 2:
                         break;
