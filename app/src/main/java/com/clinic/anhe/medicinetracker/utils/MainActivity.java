@@ -164,28 +164,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //this part of code doesn't work when we use expandableListView here
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        //TODO: is it necessary to check if naviagationView is not null
-//        if (navigationView != null) {
-//            setupDrawerContent(navigationView);
-//        }
-
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        // set item as selected to persist highlight
-                        item.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerlayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
-                        return true;
-                    }
-                }
-        );
+//        NavigationView navigationView = findViewById(R.id.nav_view);
+//        //TODO: is it necessary to check if naviagationView is not null
+////        if (navigationView != null) {
+////            setupDrawerContent(navigationView);
+////        }
+//
+//        navigationView.setNavigationItemSelectedListener(
+//                new NavigationView.OnNavigationItemSelectedListener() {
+//                    @Override
+//                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                        // set item as selected to persist highlight
+//                        item.setChecked(true);
+//                        // close drawer when item is tapped
+//                        mDrawerlayout.closeDrawers();
+//
+//                        // Add code here to update the UI based on the item selected
+//                        // For example, swap UI fragments here
+//
+//                        return true;
+//                    }
+//                }
+//        );
     }
 
     @Override
