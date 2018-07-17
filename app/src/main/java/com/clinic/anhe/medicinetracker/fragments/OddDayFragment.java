@@ -33,7 +33,7 @@ public class OddDayFragment extends Fragment {
 
             preparePatientData();
             mRecyclerView = view.findViewById(R.id.odd_day_recyclerview);
-           // mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setHasFixedSize(true);
             mLayoutManager = new LinearLayoutManager(getContext());
             mAdapter = new PatientsRecyclerViewAdapter(patientList);
 
@@ -52,7 +52,11 @@ public class OddDayFragment extends Fragment {
             patientList.add(new PatientsCardViewModel("賴蓉瑩2", "12346"));
             patientList.add(new PatientsCardViewModel("賴蓉瑩3", "12347"));
             patientList.add(new PatientsCardViewModel("賴蓉瑩4", "12348"));
-
+            patientList.add(new PatientsCardViewModel("賴蓉瑩5", "1234"));
+            patientList.add(new PatientsCardViewModel("賴蓉瑩6", "12345"));
+            patientList.add(new PatientsCardViewModel("賴蓉瑩7", "12346"));
+            patientList.add(new PatientsCardViewModel("賴蓉瑩8", "12347"));
+            patientList.add(new PatientsCardViewModel("賴蓉瑩9", "12348"));
 
         }
     }

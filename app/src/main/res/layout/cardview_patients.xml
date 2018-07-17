@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardCornerRadius="4dp">
+    android:layout_height="60dp"
+    android:layout_margin="20dp"
+    android:elevation="30dp"
+    android:padding="20dp"
+    app:cardCornerRadius="6dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="67dp"
+        android:layout_margin="4dp">
 
         <TextView
             android:id="@+id/patients_name"
@@ -25,6 +28,6 @@
             android:layout_below="@+id/patients_name"
             android:text="Line two" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>

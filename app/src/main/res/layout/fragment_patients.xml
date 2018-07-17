@@ -7,17 +7,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.TabLayout
-        android:layout_weight="4"
         android:id="@+id/patients_tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="4"
         android:elevation="6dp"
+        android:fontFamily="Roboto-Medium"
         android:minHeight="?attr/actionBarSize"
-        app:tabMode="fixed"
         app:tabGravity="fill"
-        app:tabTextColor="@color/menuTextIconColor"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorPrimaryDark"
-        android:fontFamily="Roboto-Medium">
+        app:tabTextColor="@color/menuTextIconColor"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
     </android.support.design.widget.TabLayout>
 
@@ -27,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/patients_tabLayout"
-        app:layout_constraintTop_toBottomOf="@+id/patients_tabLayout">
+        app:layout_constraintTop_toBottomOf="@+id/patients_tabLayout"
+        tools:layout_editor_absoluteX="0dp">
 
     </android.support.v4.view.ViewPager>
 
