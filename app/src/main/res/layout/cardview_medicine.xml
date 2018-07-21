@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="80dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="15dp"
@@ -16,10 +16,19 @@
         android:layout_height="67dp"
         android:layout_margin="10dp">
 
+        <ImageView
+            android:id="@+id/medicine_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="2dp" />
+
         <TextView
             android:id="@+id/medicine_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="67dp"
             android:text="Line one"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -28,8 +37,11 @@
             android:id="@+id/medicine_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/medicine_name"
+            android:layout_alignStart="@+id/medicine_name"
+            android:layout_centerVertical="true"
             android:text="Line two" />
+
+
 
     </RelativeLayout>
 

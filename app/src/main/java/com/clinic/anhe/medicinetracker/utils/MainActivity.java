@@ -146,13 +146,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int packedPosition, long l) {
                 //TODO: here we insert the fragments
-
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 switch(packedPosition) {
                     case 0:
                         break;
                     case 1:
-//                        MedicineFragment medicineFragment = new MedicineFragment();
-//                        transaction.replace(R.id.main_fragment_container, medicineFragment).commit();
+                        MedicineFragment medicineFragment = new MedicineFragment();
+                        transaction.replace(R.id.main_fragment_container, medicineFragment).commit();
                         break;
                     case 2:
                         break;
