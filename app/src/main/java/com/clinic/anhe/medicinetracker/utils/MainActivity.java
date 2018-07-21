@@ -1,20 +1,24 @@
 package com.clinic.anhe.medicinetracker.utils;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
+import com.clinic.anhe.medicinetracker.fragments.MedicineFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
 import com.clinic.anhe.medicinetracker.model.GroupMenuModel;
 import com.clinic.anhe.medicinetracker.adapters.NavigationDrawerAdapter;
@@ -95,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         // setting list adapter
         expandableList.setAdapter(mMenuAdapter);
 
+
         //Listen for GroupMenu Click and SubMenu Click
         expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -103,22 +108,27 @@ public class MainActivity extends AppCompatActivity {
                 //TODO:2. add android:background="@drawable/selector to list_submenu
                 //TODO:3. view.setSelected
                 //TODO:4.(optional??) expandableList.setChoiceMode(ExpandableListView.CHOICE_MODE_SINGLE);
-                //view.setSelected(true);
+               // view.setSelected(true);
+
+                //TODO: should we hightlight the clicked item?
+//                TextView textView = view.findViewById(R.id.sub_menu_title);
+//                textView.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
 
                 //TODO: add fragements here
                 //TODO: see if we can use only one patientFragement and update data when switch case
+                //fragment transaction has to be in the click method and start everytime you have a tranaction
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 switch (childPosition) {
                     case 0:
-                        PatientsFragment morningFragment = new PatientsFragment();
+                        PatientsFragment morningFragment = new PatientsFragment(Shift.morning);
                         transaction.replace(R.id.main_fragment_container, morningFragment).commit();
                         break;
                     case 1:
-                        PatientsFragment afternoonFragment = new PatientsFragment();
+                        PatientsFragment afternoonFragment = new PatientsFragment(Shift.afternoon);
                         transaction.replace(R.id.main_fragment_container, afternoonFragment).commit();
                         break;
                     case 2:
-                        PatientsFragment nightFragment = new PatientsFragment();
+                        PatientsFragment nightFragment = new PatientsFragment(Shift.night);
                         transaction.replace(R.id.main_fragment_container, nightFragment).commit();
                         break;
                     default:
@@ -136,10 +146,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int packedPosition, long l) {
                 //TODO: here we insert the fragments
+
                 switch(packedPosition) {
                     case 0:
                         break;
                     case 1:
+//                        MedicineFragment medicineFragment = new MedicineFragment();
+//                        transaction.replace(R.id.main_fragment_container, medicineFragment).commit();
                         break;
                     case 2:
                         break;

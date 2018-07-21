@@ -9,7 +9,7 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/patients_tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_weight="4"
         android:elevation="6dp"
         android:fontFamily="Roboto-Medium"
@@ -17,9 +17,7 @@
         app:tabGravity="fill"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorPrimaryDark"
-        app:tabTextColor="@color/menuTextIconColor"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        app:tabTextColor="@color/menuTextIconColor">
 
     </android.support.design.widget.TabLayout>
 
@@ -29,8 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/patients_tabLayout"
-        app:layout_constraintTop_toBottomOf="@+id/patients_tabLayout"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintTop_toBottomOf="@+id/patients_tabLayout">
 
     </android.support.v4.view.ViewPager>
 

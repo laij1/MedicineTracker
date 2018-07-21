@@ -1,5 +1,7 @@
 package com.clinic.anhe.medicinetracker.adapters;
 
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.widget.BaseExpandableListAdapter;
 import android.content.Context;
 import android.util.Log;
@@ -121,6 +123,7 @@ public class NavigationDrawerAdapter extends BaseExpandableListAdapter {
         TextView subMenuTitle = (TextView) convertView
                 .findViewById(R.id.sub_menu_title);
         subMenuTitle.setText(subMenu.getIconName());
+        subMenuTitle.setTextColor(ContextCompat.getColor(mContext, R.color.menuTextIconColor));
         ImageView subMenuIconImage = (ImageView) convertView.findViewById(R.id.sub_menu_iconimage);
         subMenuIconImage.setImageResource(subMenu.getIconImg());
 

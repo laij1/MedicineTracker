@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
+import com.clinic.anhe.medicinetracker.utils.MainActivity;
+import com.clinic.anhe.medicinetracker.utils.Shift;
 
 public class PatientsFragment  extends Fragment {
 
@@ -18,6 +20,11 @@ public class PatientsFragment  extends Fragment {
     private TabLayout mPatientsTabLayout;
     private PatientsPagerAdapter mPatientsPagerAdapter;
     private Context mContext;
+    private Shift shift;
+
+    public PatientsFragment(Shift shift) {
+        this.shift = shift;
+    }
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +46,7 @@ public class PatientsFragment  extends Fragment {
         mPatientsViewPager = (ViewPager) view.findViewById(R.id.patients_pager);
         mPatientsTabLayout.setupWithViewPager(mPatientsViewPager);
         mPatientsPagerAdapter = new PatientsPagerAdapter
-                (getChildFragmentManager(), mPatientsTabLayout.getTabCount(), mContext);
+                (getChildFragmentManager(), mPatientsTabLayout.getTabCount(), mContext, shift);
         mPatientsViewPager.setAdapter(mPatientsPagerAdapter);
 
         highLightCurrentTab(0);
