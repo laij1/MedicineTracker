@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.MedicineRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.utils.CounterFab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,8 @@ public class MedicineFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private MedicineRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private CounterFab mCounterFab;
+    private ImageView mBottomImageView;
 
     @Nullable
     @Override
@@ -34,7 +39,9 @@ public class MedicineFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.medicine_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new MedicineRecyclerViewAdapter(medicineList);
+        mCounterFab = view.findViewById(R.id.medicine_fab);
+        mBottomImageView = view.findViewById(R.id.medicine_add_button);
+        mAdapter = new MedicineRecyclerViewAdapter(medicineList, mCounterFab);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

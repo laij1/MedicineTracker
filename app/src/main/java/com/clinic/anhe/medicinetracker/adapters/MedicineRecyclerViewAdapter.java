@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.utils.CounterFab;
 
 import java.util.List;
 
@@ -23,10 +24,12 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 
     private List<MedicineCardViewModel> medicineList;
     private static Context mContext;
+    private static CounterFab counterFab;
 
 
-    public MedicineRecyclerViewAdapter(List<MedicineCardViewModel> medicineList) {
+    public MedicineRecyclerViewAdapter(List<MedicineCardViewModel> medicineList, CounterFab counterFab) {
         this.medicineList = medicineList;
+        this.counterFab = counterFab;
     }
 
     @NonNull
@@ -83,6 +86,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                     }else {
                         imageButton.setImageDrawable(mAddDrawable);
                         mAddDrawable.start();
+                        counterFab.increase();
                     }
                     addButtonClicked = true;
                 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,9 +11,25 @@
         android:id="@+id/medicine_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:padding="4dp"
-        android:background="@color/recyclerViewBackground"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/recyclerViewBackground"
+        android:padding="10dp"
+        android:scrollbars="vertical" />
+
+    <com.clinic.anhe.medicinetracker.utils.CounterFab
+        android:id="@+id/medicine_fab"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"
+        android:backgroundTint="@color/colorAccent"
+        android:tint="@android:color/white"
+        app:elevation="4dp"
+        app:fabSize="normal"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/ic_cart" />
 
 
 </RelativeLayout>
