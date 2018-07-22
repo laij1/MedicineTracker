@@ -25,7 +25,7 @@
         android:pivotY="50">
         <path
             android:name="remove"
-            android:pathData="@string/remove_vector_path"
+            android:pathData="M60 25,L75 45,M25 75,L60 25"
             android:strokeColor="@android:color/white"
             android:strokeLineCap="round"
             android:strokeWidth="7"/>
