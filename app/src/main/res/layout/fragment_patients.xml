@@ -17,7 +17,8 @@
         app:tabGravity="fill"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorPrimaryDark"
-        app:tabTextColor="@color/menuTextIconColor">
+        app:tabTextColor="@color/menuTextIconColor"
+        android:background="@android:color/white">
 
     </android.support.design.widget.TabLayout>
 

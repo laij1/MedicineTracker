@@ -151,8 +151,9 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         break;
                     case 1:
-                        MedicineFragment medicineFragment = new MedicineFragment();
-                        transaction.replace(R.id.main_fragment_container, medicineFragment).commit();
+                        MedicineFragment medicineFragment = MedicineFragment.getInstance();
+                        transaction.replace(R.id.main_fragment_container, medicineFragment)
+                                .addToBackStack("medicine").commit();
                         break;
                     case 2:
                         break;

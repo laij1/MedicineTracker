@@ -3,8 +3,11 @@ package com.clinic.anhe.medicinetracker.adapters;
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +18,27 @@ import android.widget.ToggleButton;
 import android.widget.CompoundButton;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
+import com.clinic.anhe.medicinetracker.utils.Shift;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRecyclerViewAdapter.MedicineViewHolder> {
 
-    private List<MedicineCardViewModel> medicineList;
+    private static List<MedicineCardViewModel> medicineList;
+    private static List<MedicineCardViewModel> cartList;
     private static Context mContext;
     private static CounterFab counterFab;
+
 
 
     public MedicineRecyclerViewAdapter(List<MedicineCardViewModel> medicineList, CounterFab counterFab) {
         this.medicineList = medicineList;
         this.counterFab = counterFab;
+        cartList = new ArrayList<>();
     }
 
     @NonNull
@@ -55,6 +64,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     public int getItemCount() {
         return medicineList.size();
     }
+
 
     public static class MedicineViewHolder extends RecyclerView.ViewHolder {
         ImageView imageIcon;
@@ -86,12 +96,15 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                     }else {
                         imageButton.setImageDrawable(mAddDrawable);
                         mAddDrawable.start();
+                        //add to cartList
+                        int position = getAdapterPosition();
+                        cartList.add(medicineList.get(position));
+                        Log.d("cartList added" + position, ""+ position);
                         counterFab.increase();
                     }
                     addButtonClicked = true;
                 }
             });
-
 
         }
     }
