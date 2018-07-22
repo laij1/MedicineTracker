@@ -142,18 +142,18 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
     private void prepareMedicineData(){
         medicineList = new ArrayList<>();
 
-        medicineList.add(new MedicineCardViewModel("HDF", "", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("NESP", "20ug", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("NESP", "40ug", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("EPO", "2000", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("Carnitine", "原廠", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("Carnitine", "台廠", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("Provi", "ta", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("循利寧", "", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("Nephrosteril", "", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("IDPN", "", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("Methionin-B", "", R.drawable.ic_cart));
-        medicineList.add(new MedicineCardViewModel("Anol", "", R.drawable.ic_cart));
+        medicineList.add(new MedicineCardViewModel("HDF", "", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("NESP", "20ug", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("NESP", "40ug", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("EPO", "2000", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("Carnitine", "原廠", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("Carnitine", "台廠", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("Provi", "ta", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("循利寧", "", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("Nephrosteril", "", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("IDPN", "", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("Methionin-B", "", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("Anol", "", R.drawable.ic_pills));
 
 
 
