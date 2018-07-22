@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/recyclerViewBackground">
+
+    <RadioGroup
+        android:id="@+id/shift_radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/morning_radiobutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_morning"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/afternoon_radiobutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_afternoon"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/night_radiobutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_night"
+            android:button="@null" />
+
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/shift_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/shift_radiogroup"
+       >
+
+    </FrameLayout>
+
+</RelativeLayout>

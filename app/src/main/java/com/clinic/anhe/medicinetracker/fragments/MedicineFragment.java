@@ -122,8 +122,8 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
-                PatientsFragment morningFragment = new PatientsFragment(Shift.morning);
-                transaction.replace(R.id.medicine_layout, morningFragment)
+                ShiftRadioButtonFragment shiftRadioButtonFragment = new ShiftRadioButtonFragment();
+                transaction.replace(R.id.medicine_layout, shiftRadioButtonFragment)
                         .addToBackStack("medicine")
                         .commit();
                 mCounterFab.setVisibility(View.GONE);
