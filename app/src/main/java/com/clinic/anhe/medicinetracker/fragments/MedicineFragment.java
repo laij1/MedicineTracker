@@ -116,20 +116,7 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        //when back button is pressed
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP || keyCode == KeyEvent.KEYCODE_BACK){
-                    // handle back button's click listener
-                    Log.d("back button is pressed ", "CHLOE!!!");
-                    mCounterFab.setVisibility(View.VISIBLE);
-                    return true;
-                }
-                return false;
-            }
-        });
 
         mCounterFab.setOnClickListener(new View.OnClickListener() {
             @Override
