@@ -1,6 +1,7 @@
 package com.clinic.anhe.medicinetracker.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -84,25 +85,29 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             imageButton = itemView.findViewById(R.id.medicine_add_button);
 
             mAddDrawable = (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_add_animatable);
-
+            mCheckDrawable =(AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_check_animatable);
             //setOnClickListener
             imageButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    //once the medicine item is add, you cannot remove it till next fragment
                     if(addButtonClicked) {
-                        //do nothing
+                        imageButton.setImageDrawable(mCheckDrawable);
+                        mCheckDrawable.start();
+                        int position = getAdapterPosition();
+                        cartList.remove(medicineList.get(position));
+                        Log.d("cartList removed: " + position, ""+ position);
+                        counterFab.decrease();
                     }else {
                         imageButton.setImageDrawable(mAddDrawable);
                         mAddDrawable.start();
                         //add to cartList
                         int position = getAdapterPosition();
                         cartList.add(medicineList.get(position));
-                        Log.d("cartList added" + position, ""+ position);
+                        Log.d("cartList added: ", ""+ position);
                         counterFab.increase();
                     }
-                    addButtonClicked = true;
+                    addButtonClicked = !addButtonClicked;
                 }
             });
 

@@ -120,7 +120,4 @@ public class PatientsFragment  extends Fragment implements ArgumentVariables{
     }
 
 
-    public void setShift(Shift s) {
-        this.shift = s;
-    }
 }

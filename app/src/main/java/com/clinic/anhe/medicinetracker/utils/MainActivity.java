@@ -31,8 +31,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerlayout;
-
-    //https://github.com/andremion/Android-Animated-Icons
     private AnimatedVectorDrawable mMenuDrawable;
     private AnimatedVectorDrawable mBackDrawable;
     private AnimatedVectorDrawable mCurrentDrawable;
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_vector);
         //TODO: discuss what name the app should be and change the title later
-        actionbar.setTitle("Anhe Cart");
+        actionbar.setTitle("自費計價單");
 
         mMenuDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_menu_animatable);
         mBackDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_back_animatable);
@@ -121,18 +119,18 @@ public class MainActivity extends AppCompatActivity {
                 switch (childPosition) {
                     case 0:
                         PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
-                        //morningFragment.setShift(Shift.morning);
-                        transaction.replace(R.id.main_fragment_container, morningFragment).commit();
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                .replace(R.id.main_fragment_container, morningFragment).commit();
                         break;
                     case 1:
                         PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
-                        //afternoonFragment.setShift(Shift.afternoon);
-                        transaction.replace(R.id.main_fragment_container, afternoonFragment).commit();
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                .replace(R.id.main_fragment_container, afternoonFragment).commit();
                         break;
                     case 2:
                         PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
-                       // nightFragment.setShift(Shift.night);
-                        transaction.replace(R.id.main_fragment_container, nightFragment).commit();
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                .replace(R.id.main_fragment_container, nightFragment).commit();
                         break;
                     default:
                         break;
@@ -155,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         MedicineFragment medicineFragment = MedicineFragment.newInstance();
-                        transaction.replace(R.id.main_fragment_container, medicineFragment)
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                .replace(R.id.main_fragment_container, medicineFragment)
                                 .addToBackStack("medicine").commit();
                         break;
                     case 2:

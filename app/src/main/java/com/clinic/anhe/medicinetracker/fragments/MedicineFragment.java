@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.view.KeyEvent;
+import android.widget.RadioGroup;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.MedicineRecyclerViewAdapter;
@@ -36,6 +37,7 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
     private RecyclerView.LayoutManager mLayoutManager;
     private CounterFab mCounterFab;
     private ImageView mBottomImageView;
+    private RadioGroup mRadioGroup;
 
 
     public static MedicineFragment newInstance() {
@@ -86,6 +88,7 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
         mLayoutManager = new GridLayoutManager(getContext(), 2);
         mCounterFab = view.findViewById(R.id.medicine_fab);
         mBottomImageView = view.findViewById(R.id.medicine_add_button);
+        mRadioGroup = view.findViewById(R.id.payment_radiogroup);
         mAdapter = new MedicineRecyclerViewAdapter(medicineList, mCounterFab);
 
 

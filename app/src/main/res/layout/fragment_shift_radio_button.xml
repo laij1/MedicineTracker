@@ -9,30 +9,43 @@
     <RadioGroup
         android:id="@+id/shift_radiogroup"
         android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:layout_alignParentStart="true"
+        android:layout_height="46dp"
         android:layout_alignParentTop="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <RadioButton
             android:id="@+id/morning_radiobutton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/ic_morning"
-            android:button="@null" />
+            android:backgroundTint="@color/menuTextIconColor"
+            android:layout_marginRight="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:button="@null"
+            />
 
         <RadioButton
             android:id="@+id/afternoon_radiobutton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/ic_afternoon"
+            android:backgroundTint="@color/menuTextIconColor"
+            android:layout_marginRight="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:button="@null" />
 
         <RadioButton
             android:id="@+id/night_radiobutton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/ic_night"
+            android:backgroundTint="@color/menuTextIconColor"
+            android:layout_marginRight="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:button="@null" />
 
     </RadioGroup>
