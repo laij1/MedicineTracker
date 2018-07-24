@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,7 +82,8 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
         prepareMedicineData();
         mRecyclerView = view.findViewById(R.id.medicine_recyclerview);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getContext());
+       // mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new GridLayoutManager(getContext(), 2);
         mCounterFab = view.findViewById(R.id.medicine_fab);
         mBottomImageView = view.findViewById(R.id.medicine_add_button);
         mAdapter = new MedicineRecyclerViewAdapter(medicineList, mCounterFab);
