@@ -35,19 +35,12 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
     private RecyclerView.LayoutManager mLayoutManager;
     private CounterFab mCounterFab;
     private ImageView mBottomImageView;
-    private static MedicineFragment medicineFragment;
 
-    public static MedicineFragment getInstance(){
-        if(medicineFragment == null) {
-            Log.d("Instance is first time crated!!!", "CHLOE!!");
-            return new MedicineFragment();
-        }
-        Log.d("Instance is already crated!!!", "CHLOE!!");
-        return medicineFragment;
+
+    public static MedicineFragment newInstance() {
+        MedicineFragment fragment = new MedicineFragment();
+        return fragment;
     }
-
-
-
 
 //    @Override
 //    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
@@ -60,21 +53,7 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 //        //restore will be called!
 //
 //    }
-//
-//    @Override
-//    public void onSaveInstanceState(@NonNull Bundle outState) {
-//        //super.onSaveInstanceState(outState);
-//        FragmentManager manager = getFragmentManager();
-//        manager.putFragment(outState, "MedicineFragment", medicineFragment);
-//
-//        Log.d("on save instance is called", "CHLOE!!");
-//    }
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setRetainInstance(true);
-//    }
+
 //
 //    @Override
 //    public void onDestroyView() {
@@ -83,12 +62,7 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 //        //this will be called
 //        Log.d("the view has been destoried!", "CHLOE!!!");
 //    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        Log.d("the fragment has been destoried!", "CHLOE!!!");
-//    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -121,16 +95,19 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
         mCounterFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
-                ShiftRadioButtonFragment shiftRadioButtonFragment = new ShiftRadioButtonFragment();
+                //cannot use getSupportFragmentManger(), it is for calling from activity, use getChildFragmentManager
+                //https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
+               // FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
+               FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                ShiftRadioButtonFragment shiftRadioButtonFragment = ShiftRadioButtonFragment.newInstance();
                 transaction.replace(R.id.medicine_layout, shiftRadioButtonFragment)
                         .addToBackStack("medicine")
                         .commit();
-                mCounterFab.setVisibility(View.GONE);
             }
 
 
         });
+
 
         return view;
     }
@@ -148,7 +125,7 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
         medicineList.add(new MedicineCardViewModel("EPO", "2000", R.drawable.ic_pills));
         medicineList.add(new MedicineCardViewModel("Carnitine", "原廠", R.drawable.ic_pills));
         medicineList.add(new MedicineCardViewModel("Carnitine", "台廠", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("Provi", "ta", R.drawable.ic_pills));
+        medicineList.add(new MedicineCardViewModel("Provita", " ", R.drawable.ic_pills));
         medicineList.add(new MedicineCardViewModel("循利寧", "", R.drawable.ic_pills));
         medicineList.add(new MedicineCardViewModel("Nephrosteril", "", R.drawable.ic_pills));
         medicineList.add(new MedicineCardViewModel("IDPN", "", R.drawable.ic_pills));
@@ -164,8 +141,8 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_UP) {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                ((FragmentActivity)getContext()).getSupportFragmentManager().popBackStack();
-                mCounterFab.setVisibility(View.VISIBLE);
+                //use getChildFragmentManager instead of getSupportedFragmentManager
+                getChildFragmentManager().popBackStack();
                 return true;
             }
         }

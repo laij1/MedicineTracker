@@ -46,10 +46,10 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                OddDayFragment oddDayFragment = new OddDayFragment(shift);
+                OddDayFragment oddDayFragment = OddDayFragment.newInstance(shift);
                 return oddDayFragment;
             case 1:
-                EvenDayFragment evenDayFragment = new EvenDayFragment(shift);
+                EvenDayFragment evenDayFragment = EvenDayFragment.newInstance(shift);
                 return evenDayFragment;
             default:
                 return null;

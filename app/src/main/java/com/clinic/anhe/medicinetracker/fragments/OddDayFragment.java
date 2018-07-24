@@ -1,9 +1,11 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,30 +13,49 @@ import android.view.ViewGroup;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.PatientsRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class OddDayFragment extends Fragment {
+public class OddDayFragment extends Fragment implements ArgumentVariables {
         //patients cardview
         private List<PatientsCardViewModel> patientList;
         private RecyclerView mRecyclerView;
         private PatientsRecyclerViewAdapter mAdapter;
         private RecyclerView.LayoutManager mLayoutManager;
+
         private Shift shift;
 
-
-        public OddDayFragment(Shift shift) {
-            this.shift = shift;
+        public static OddDayFragment newInstance(Shift shift) {
+            OddDayFragment fragment = new OddDayFragment();
+            Bundle args = new Bundle();
+            args.putString(ARG_PATIENT_SHIFT, shift.toString());
+            fragment.setArguments(args);
+            return fragment;
         }
 
-        @Override
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ARG_PATIENT_SHIFT, shift.toString());
+    }
+
+    @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
             View view  = inflater.inflate(R.layout.fragment_odd_day, container, false);
+
+            if(savedInstanceState != null) {
+                shift = shift.fromString(savedInstanceState.getString(ARG_PATIENT_SHIFT));
+            }
+
+            if(shift == null) {
+                shift = shift.fromString(getArguments().getString(ARG_PATIENT_SHIFT));
+            }
 
             prepareOddDayPatientData();
             mRecyclerView = view.findViewById(R.id.odd_day_recyclerview);
@@ -45,6 +66,7 @@ public class OddDayFragment extends Fragment {
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mAdapter);
 
+            setRetainInstance(true);
             return view;
 
         }

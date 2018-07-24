@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/recyclerViewBackground">
+    android:background="@color/recyclerViewBackground"
+    android:elevation="3dp">
 
     <RadioGroup
         android:id="@+id/shift_radiogroup"
@@ -41,6 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/shift_radiogroup"
+        android:elevation="3dp"
        >
 
     </FrameLayout>

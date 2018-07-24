@@ -2,6 +2,7 @@ package com.clinic.anhe.medicinetracker.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.MainActivity;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
-public class PatientsFragment  extends Fragment {
+public class PatientsFragment  extends Fragment implements ArgumentVariables{
 
     private ViewPager mPatientsViewPager;
     private TabLayout mPatientsTabLayout;
@@ -22,14 +24,31 @@ public class PatientsFragment  extends Fragment {
     private Context mContext;
     private Shift shift;
 
-    public PatientsFragment(Shift shift) {
-        this.shift = shift;
+    public static PatientsFragment newInstance(Shift shift) {
+        PatientsFragment fragment = new PatientsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PATIENT_SHIFT, shift.toString());
+        fragment.setArguments(args);
+        return fragment;
     }
 
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ARG_PATIENT_SHIFT, shift.toString());
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_patients, container, false);
 
+        if(savedInstanceState != null) {
+          shift = shift.fromString(savedInstanceState.getString(ARG_PATIENT_SHIFT));
+        }
+
+        if(shift == null) {
+            shift = shift.fromString(getArguments().getString(ARG_PATIENT_SHIFT));
+        }
         mPatientsTabLayout = (TabLayout) view.findViewById(R.id.patients_tabLayout);
 
         //set up tab
@@ -82,7 +101,7 @@ public class PatientsFragment  extends Fragment {
             }
         });
 
-
+        setRetainInstance(true);
         return view;
     }
 
@@ -98,5 +117,10 @@ public class PatientsFragment  extends Fragment {
         assert tab != null;
         tab.setCustomView(null);
         tab.setCustomView(mPatientsPagerAdapter.getSelectedTabView(position));
+    }
+
+
+    public void setShift(Shift s) {
+        this.shift = s;
     }
 }

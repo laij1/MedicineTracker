@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:backgroundTint="@color/colorAccent"
         android:tint="@android:color/white"
-        app:elevation="4dp"
+        app:elevation="2dp"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_cart" />

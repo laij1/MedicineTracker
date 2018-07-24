@@ -120,15 +120,18 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 switch (childPosition) {
                     case 0:
-                        PatientsFragment morningFragment = new PatientsFragment(Shift.morning);
+                        PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
+                        //morningFragment.setShift(Shift.morning);
                         transaction.replace(R.id.main_fragment_container, morningFragment).commit();
                         break;
                     case 1:
-                        PatientsFragment afternoonFragment = new PatientsFragment(Shift.afternoon);
+                        PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
+                        //afternoonFragment.setShift(Shift.afternoon);
                         transaction.replace(R.id.main_fragment_container, afternoonFragment).commit();
                         break;
                     case 2:
-                        PatientsFragment nightFragment = new PatientsFragment(Shift.night);
+                        PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
+                       // nightFragment.setShift(Shift.night);
                         transaction.replace(R.id.main_fragment_container, nightFragment).commit();
                         break;
                     default:
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         break;
                     case 1:
-                        MedicineFragment medicineFragment = MedicineFragment.getInstance();
+                        MedicineFragment medicineFragment = MedicineFragment.newInstance();
                         transaction.replace(R.id.main_fragment_container, medicineFragment)
                                 .addToBackStack("medicine").commit();
                         break;
@@ -200,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                }
 //        );
+
     }
 
     @Override

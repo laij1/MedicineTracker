@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.PatientsRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.MainActivity;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EvenDayFragment extends Fragment {
+public class EvenDayFragment extends Fragment implements ArgumentVariables {
 
     //patients cardview
     private List<PatientsCardViewModel> patientList;
@@ -26,16 +27,34 @@ public class EvenDayFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private Shift shift;
 
-    public EvenDayFragment(Shift shift) {
-        this.shift = shift;
+
+    public static EvenDayFragment newInstance(Shift shift) {
+        EvenDayFragment fragment = new EvenDayFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PATIENT_SHIFT, shift.toString());
+        fragment.setArguments(args);
+        return fragment;
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ARG_PATIENT_SHIFT, shift.toString());
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_even_day, container, false);
+
+        if(savedInstanceState != null) {
+            shift = shift.fromString(savedInstanceState.getString(ARG_PATIENT_SHIFT));
+        }
+
+        if(shift == null) {
+            shift = shift.fromString(getArguments().getString(ARG_PATIENT_SHIFT));
+        }
+
         prepareEvenDayPatientData();
         mRecyclerView = view.findViewById(R.id.even_day_recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -45,6 +64,7 @@ public class EvenDayFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        setRetainInstance(true);
         return view;
 
     }
