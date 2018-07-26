@@ -1,6 +1,7 @@
 package com.clinic.anhe.medicinetracker.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.annotation.NonNull;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton;
@@ -33,6 +36,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     private static List<MedicineCardViewModel> cartList;
     private static Context mContext;
     private static CounterFab counterFab;
+
 
 
 
@@ -72,6 +76,8 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         TextView medicineName;
         TextView medicineId;
         ImageButton imageButton;
+        RadioGroup paymentRadioGroup;
+        RadioButton checkedRadioButton;
 
         AnimatedVectorDrawable mAddDrawable;
         AnimatedVectorDrawable mCheckDrawable;
@@ -83,9 +89,17 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             medicineName = itemView.findViewById(R.id.medicine_name);
             medicineId = itemView.findViewById(R.id.medicine_id);
             imageButton = itemView.findViewById(R.id.medicine_add_button);
+            paymentRadioGroup = itemView.findViewById(R.id.payment_radiogroup);
 
             mAddDrawable = (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_add_animatable);
             mCheckDrawable =(AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_check_animatable);
+
+            //set default of payment to cash
+            checkedRadioButton = itemView.findViewById(R.id.cash_radiobutton);
+            checkedRadioButton.setSelected(true);
+            checkedRadioButton.setBackgroundTintList(
+                    ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorPrimaryDark)));
+
             //setOnClickListener
             imageButton.setOnClickListener(new View.OnClickListener() {
 
@@ -98,18 +112,73 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                         cartList.remove(medicineList.get(position));
                         Log.d("cartList removed: " + position, ""+ position);
                         counterFab.decrease();
+
+                        //when remove from cart, you can change payment radio button
+                        for(int i = 0; i < paymentRadioGroup.getChildCount(); i++) {
+                            RadioButton radioButton = (RadioButton) paymentRadioGroup.getChildAt(i);
+                            radioButton.setEnabled(true);
+                        }
                     }else {
                         imageButton.setImageDrawable(mAddDrawable);
                         mAddDrawable.start();
                         //add to cartList
                         int position = getAdapterPosition();
-                        cartList.add(medicineList.get(position));
+                        MedicineCardViewModel item = medicineList.get(position);
+                        cartList.add(item);
                         Log.d("cartList added: ", ""+ position);
+                        Log.d("" + item.getMedicinName(), "cash payment: "+ item.IsCashPayment());
                         counterFab.increase();
+
+                        //when added to cart, you can not change payment radio button
+                        for(int i = 0; i < paymentRadioGroup.getChildCount(); i++) {
+                            RadioButton radioButton = (RadioButton) paymentRadioGroup.getChildAt(i);
+                            radioButton.setEnabled(false);
+                        }
+
                     }
                     addButtonClicked = !addButtonClicked;
                 }
             });
+
+
+            paymentRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    selectItem(group, checkedId);
+                }
+            });
+        }
+
+
+        public void selectItem(RadioGroup group, int checkedId) {
+            changeItemBackgroundTint();
+            switch (checkedId){
+                case R.id.cash_radiobutton:
+                   checkedRadioButton = itemView.findViewById(R.id.cash_radiobutton);
+                   checkedRadioButton.setBackgroundTintList(
+                           ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorPrimaryDark)));
+                   int position = getAdapterPosition();
+                   medicineList.get(position).setCashPayment(true);
+                   break;
+                case R.id.credit_radiobutton:
+                    checkedRadioButton = itemView.findViewById(R.id.credit_radiobutton);
+                    checkedRadioButton.setBackgroundTintList(
+                            ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorPrimaryDark)));
+                    position = getAdapterPosition();
+                    medicineList.get(position).setCashPayment(false);
+                    break;
+            }
+        }
+
+        private void changeItemBackgroundTint() {
+            int count = paymentRadioGroup.getChildCount();
+            for(int i = 0; i < count; i++) {
+                View v = paymentRadioGroup.getChildAt(i);
+                if (v instanceof RadioButton) {
+                    ((RadioButton)v).setBackgroundTintList(
+                            ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.menuTextIconColor)));
+                }
+            }
 
         }
     }
