@@ -58,8 +58,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="-40dp"
             android:layout_marginStart="16dp"
-            android:background="@drawable/addbutton_round"
-            android:src="@drawable/ic_add_vector" />
+            android:backgroundTint="@android:color/white"
+            android:tint="#87CEEB"
+            android:src="@drawable/ic_add" />
 
 
         <RadioGroup

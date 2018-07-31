@@ -79,8 +79,8 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         RadioGroup paymentRadioGroup;
         RadioButton checkedRadioButton;
 
-        AnimatedVectorDrawable mAddDrawable;
-        AnimatedVectorDrawable mCheckDrawable;
+//        AnimatedVectorDrawable mAddDrawable;
+//        AnimatedVectorDrawable mCheckDrawable;
         boolean addButtonClicked = false;
 
         public MedicineViewHolder(View itemView) {
@@ -90,9 +90,9 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             medicineId = itemView.findViewById(R.id.medicine_id);
             imageButton = itemView.findViewById(R.id.medicine_add_button);
             paymentRadioGroup = itemView.findViewById(R.id.payment_radiogroup);
-
-            mAddDrawable = (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_add_animatable);
-            mCheckDrawable =(AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_check_animatable);
+//
+//            mAddDrawable = (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_add_animatable);
+//            mCheckDrawable =(AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_check_animatable);
 
             //set default of payment to cash
             checkedRadioButton = itemView.findViewById(R.id.cash_radiobutton);
@@ -106,8 +106,9 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                 @Override
                 public void onClick(View v) {
                     if(addButtonClicked) {
-                        imageButton.setImageDrawable(mCheckDrawable);
-                        mCheckDrawable.start();
+//                        imageButton.setImageDrawable(mCheckDrawable);
+//                        mCheckDrawable.start();
+                        imageButton.setImageResource(R.drawable.ic_add);
                         int position = getAdapterPosition();
                         cartList.remove(medicineList.get(position));
                         Log.d("cartList removed: " + position, ""+ position);
@@ -119,8 +120,9 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                             radioButton.setEnabled(true);
                         }
                     }else {
-                        imageButton.setImageDrawable(mAddDrawable);
-                        mAddDrawable.start();
+//                        imageButton.setImageDrawable(mAddDrawable);
+//                        mAddDrawable.start();
+                        imageButton.setImageResource(R.drawable.ic_check);
                         //add to cartList
                         int position = getAdapterPosition();
                         MedicineCardViewModel item = medicineList.get(position);

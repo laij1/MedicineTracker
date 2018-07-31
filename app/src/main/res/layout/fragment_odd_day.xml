@@ -9,9 +9,11 @@
         android:id="@+id/odd_day_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/recyclerViewBackground"
         android:padding="4dp"
-        android:background="@color/recyclerViewBackground"/>
+        android:scrollbars="vertical" />
 
 
 
