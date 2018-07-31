@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -12,29 +13,39 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.Shift;
+
+import java.util.ArrayList;
 
 public class ShiftRadioButtonFragment extends Fragment {
 
     private RadioGroup mRadioGroup;
     private RadioButton mCheckedRadioButton;
     private View view;
+    private FloatingActionButton mFloatingActionButton;
 
     public static ShiftRadioButtonFragment newInstance(){
         ShiftRadioButtonFragment fragment = new ShiftRadioButtonFragment();
         return fragment;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        ArrayList<String> cartList = getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST);
+
         view = inflater.inflate(R.layout.fragment_shift_radio_button, container, false);
         mRadioGroup = view.findViewById(R.id.shift_radiogroup);
+        mFloatingActionButton = view.findViewById(R.id.patients_fab);
 
         //set default view for shift_fragment_container
         selectItem(mRadioGroup, R.id.morning_radiobutton);
@@ -68,21 +79,27 @@ public class ShiftRadioButtonFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
-                transaction.replace(R.id.shift_fragment_container,morningFragment).commit();
+                transaction.replace(R.id.shift_fragment_container,morningFragment)
+                           .addToBackStack("patient")
+                           .commit();
                 break;
             case R.id.afternoon_radiobutton:
                 mCheckedRadioButton = view.findViewById(R.id.afternoon_radiobutton);
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
-                transaction.replace(R.id.shift_fragment_container,afternoonFragment).commit();
+                transaction.replace(R.id.shift_fragment_container,afternoonFragment)
+                           .addToBackStack("patient")
+                           .commit();
                 break;
             case R.id.night_radiobutton:
                 mCheckedRadioButton = view.findViewById(R.id.night_radiobutton);
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
-                transaction.replace(R.id.shift_fragment_container,nightFragment).commit();
+                transaction.replace(R.id.shift_fragment_container,nightFragment)
+                           .addToBackStack("patient")
+                           .commit();
                 break;
         }
     }

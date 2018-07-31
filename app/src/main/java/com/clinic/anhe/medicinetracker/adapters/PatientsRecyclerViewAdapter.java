@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
@@ -14,6 +16,8 @@ import java.util.List;
 public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRecyclerViewAdapter.PatientsViewHolder> {
 
     private List<PatientsCardViewModel> patientList;
+    private int lastCheckedPosition = -1;
+
     //constructor
     public PatientsRecyclerViewAdapter(List<PatientsCardViewModel> patientList){
         this.patientList = patientList;
@@ -33,6 +37,9 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         PatientsCardViewModel current =  patientList.get(position);
         holder.patientName.setText(current.getPatientName());
         holder.patientId.setText(current.getPatientId());
+        holder.imageButton.setChecked(position == lastCheckedPosition);
+
+
     }
 
     @Override
@@ -40,14 +47,24 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         return patientList.size();
     }
 
-    public static class PatientsViewHolder extends RecyclerView.ViewHolder {
+    public class PatientsViewHolder extends RecyclerView.ViewHolder {
         public TextView patientName;
         public TextView patientId;
+        public RadioButton imageButton;
 
         public PatientsViewHolder(View itemView) {
             super(itemView);
             patientName = itemView.findViewById(R.id.patients_name);
             patientId = itemView.findViewById(R.id.patients_id);
+            imageButton = itemView.findViewById(R.id.patients_addbutton);
+
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    lastCheckedPosition = getAdapterPosition();
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
 
