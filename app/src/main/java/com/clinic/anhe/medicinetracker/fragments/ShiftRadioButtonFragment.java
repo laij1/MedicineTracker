@@ -1,5 +1,7 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +20,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
+import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.Shift;
@@ -30,6 +34,7 @@ public class ShiftRadioButtonFragment extends Fragment {
     private RadioButton mCheckedRadioButton;
     private View view;
     private FloatingActionButton mFloatingActionButton;
+    private SelectedPatientViewModel selectedPatientViewModel;
 
     public static ShiftRadioButtonFragment newInstance(){
         ShiftRadioButtonFragment fragment = new ShiftRadioButtonFragment();
@@ -47,6 +52,14 @@ public class ShiftRadioButtonFragment extends Fragment {
         mRadioGroup = view.findViewById(R.id.shift_radiogroup);
         mFloatingActionButton = view.findViewById(R.id.patients_fab);
 
+//        //TODO:LiveData
+//        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
+//        selectedPatientViewModel.getPatientLiveData().observe(this, new Observer<PatientsCardViewModel>() {
+//            @Override
+//            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+//                Log.d("I have the selected patient", patientsCardViewModel.getPatientName());
+//            }
+//        });
         //set default view for shift_fragment_container
         selectItem(mRadioGroup, R.id.morning_radiobutton);
 
@@ -57,6 +70,15 @@ public class ShiftRadioButtonFragment extends Fragment {
             }
         });
 
+
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+              Log.d("I got the patient name", OddDayFragment.selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
+
+            }
+        });
         //setRetainInstance does not work
         //setRetainInstance(true);
         return view;
@@ -79,7 +101,7 @@ public class ShiftRadioButtonFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
-                transaction.replace(R.id.shift_fragment_container,morningFragment)
+                transaction.replace(R.id.shift_fragment_container, morningFragment)
                            .addToBackStack("patient")
                            .commit();
                 break;
@@ -88,7 +110,7 @@ public class ShiftRadioButtonFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
-                transaction.replace(R.id.shift_fragment_container,afternoonFragment)
+                transaction.replace(R.id.shift_fragment_container, afternoonFragment)
                            .addToBackStack("patient")
                            .commit();
                 break;
@@ -97,7 +119,7 @@ public class ShiftRadioButtonFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
-                transaction.replace(R.id.shift_fragment_container,nightFragment)
+                transaction.replace(R.id.shift_fragment_container, nightFragment)
                            .addToBackStack("patient")
                            .commit();
                 break;

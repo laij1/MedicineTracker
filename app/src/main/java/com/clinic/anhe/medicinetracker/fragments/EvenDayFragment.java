@@ -1,13 +1,18 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.adapters.PatientsRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
@@ -26,6 +31,7 @@ public class EvenDayFragment extends Fragment implements ArgumentVariables {
     private PatientsRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Shift shift;
+    public static SelectedPatientViewModel selectedPatientViewModel;
 
 
     public static EvenDayFragment newInstance(Shift shift) {
@@ -55,11 +61,19 @@ public class EvenDayFragment extends Fragment implements ArgumentVariables {
             shift = shift.fromString(getArguments().getString(ARG_PATIENT_SHIFT));
         }
 
+        //TODO:
+        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
+        selectedPatientViewModel.getPatientLiveData().observe(this, new Observer<PatientsCardViewModel>() {
+            @Override
+            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+                Log.d("I have the selected patient in EvenDayFragment", patientsCardViewModel.getPatientName());
+            }
+        });
         prepareEvenDayPatientData();
         mRecyclerView = view.findViewById(R.id.even_day_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new PatientsRecyclerViewAdapter(patientList);
+        mAdapter = new PatientsRecyclerViewAdapter(patientList, selectedPatientViewModel);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

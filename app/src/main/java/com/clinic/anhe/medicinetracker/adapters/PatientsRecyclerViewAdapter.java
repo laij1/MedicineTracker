@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import java.util.List;
 
@@ -17,10 +18,12 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
 
     private List<PatientsCardViewModel> patientList;
     private int lastCheckedPosition = -1;
+    private SelectedPatientViewModel selectedPatientViewModel;
 
     //constructor
-    public PatientsRecyclerViewAdapter(List<PatientsCardViewModel> patientList){
+    public PatientsRecyclerViewAdapter(List<PatientsCardViewModel> patientList, SelectedPatientViewModel selectedPatientViewModel){
         this.patientList = patientList;
+        this.selectedPatientViewModel = selectedPatientViewModel;
     }
 
     @NonNull
@@ -62,6 +65,8 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
                 @Override
                 public void onClick(View v) {
                     lastCheckedPosition = getAdapterPosition();
+                    //TODO:
+                    selectedPatientViewModel.getPatientLiveData().setValue(patientList.get(getAdapterPosition()));
                     notifyDataSetChanged();
                 }
             });
