@@ -1,5 +1,8 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +22,7 @@ import android.view.KeyEvent;
 import android.widget.RadioGroup;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.adapters.MedicineRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
@@ -31,13 +35,14 @@ import java.util.List;
 
 public class MedicineFragment extends Fragment implements View.OnKeyListener {
 
-    private List<MedicineCardViewModel> medicineList;
+    private CartViewModel medicineList;
     private RecyclerView mRecyclerView;
     private MedicineRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private CounterFab mCounterFab;
-    private ImageView mBottomImageView;
-    private RadioGroup mRadioGroup;
+   // private List<MedicineCardViewModel> list;
+   // private ImageView mBottomImageView;
+   // private RadioGroup mRadioGroup;
 
 
     public static MedicineFragment newInstance() {
@@ -81,16 +86,33 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 
         View view  = inflater.inflate(R.layout.fragment_medicine, container, false);
 
-        prepareMedicineData();
+
+       // prepareMedicineData();
         mRecyclerView = view.findViewById(R.id.medicine_recyclerview);
         mRecyclerView.setHasFixedSize(true);
        // mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager = new GridLayoutManager(getContext(), 2);
         mCounterFab = view.findViewById(R.id.medicine_fab);
-        mBottomImageView = view.findViewById(R.id.medicine_add_button);
-        mRadioGroup = view.findViewById(R.id.payment_radiogroup);
-        mAdapter = new MedicineRecyclerViewAdapter(medicineList, mCounterFab);
 
+        // Set up the WordViewModel.
+        medicineList = ViewModelProviders.of(this).get(CartViewModel.class);
+
+       // medicineList.setMedicineList(list);
+       // medicineList.getMedicineLiveData().setValue(list);
+
+        // and associate them to the adapter.
+        medicineList.getMedicineLiveData().observe(this, new Observer<List<MedicineCardViewModel>>() {
+            @Override
+            public void onChanged(@Nullable final List<MedicineCardViewModel> medicineList) {
+                // Update the cached copy of the words in the adapter.
+                mAdapter.setList(medicineList);
+            }
+        });
+
+       // mBottomImageView = view.findViewById(R.id.medicine_add_button);
+       // mRadioGroup = view.findViewById(R.id.payment_radiogroup);
+
+        mAdapter = new MedicineRecyclerViewAdapter(medicineList, mCounterFab);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -121,26 +143,26 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 
 
 
-    private void prepareMedicineData(){
-        medicineList = new ArrayList<>();
-
-        medicineList.add(new MedicineCardViewModel("HDF", "", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("NESP", "20ug", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("NESP", "40ug", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("EPO", "2000", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("Carnitine", "原廠", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("Carnitine", "台廠", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("Provita", " ", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("循利寧", "", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("Nephrosteril", "", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("IDPN", "", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("Methionin-B", "", R.drawable.ic_pills));
-        medicineList.add(new MedicineCardViewModel("Anol", "", R.drawable.ic_pills));
-
-
-
-
-    }
+//    private void prepareMedicineData(){
+//        list = new ArrayList<>();
+//
+//        list.add(new MedicineCardViewModel("HDF", "", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("NESP", "20ug", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("NESP", "40ug", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("EPO", "2000", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("Carnitine", "原廠", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("Carnitine", "台廠", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("Provita", " ", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("循利寧", "", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("Nephrosteril", "", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("IDPN", "", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("Methionin-B", "", R.drawable.ic_pills));
+//        list.add(new MedicineCardViewModel("Anol", "", R.drawable.ic_pills));
+//
+//
+//
+//
+//    }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {

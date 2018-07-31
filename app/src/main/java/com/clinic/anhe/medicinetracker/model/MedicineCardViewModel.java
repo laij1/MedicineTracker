@@ -6,6 +6,7 @@ public class MedicineCardViewModel {
     private String medicinName;
     private String medicineId;
     private boolean cashPayment = true;
+    private boolean isAddToCart = false;
 
     public MedicineCardViewModel(String medicinName, String medicineId, int medicineIcon) {
         this.medicinName = medicinName;
@@ -33,6 +34,18 @@ public class MedicineCardViewModel {
 
     public boolean IsCashPayment() {
         return cashPayment;
+    }
+
+    public void addToCart() {
+        isAddToCart = true;
+    }
+
+    public void removeFromCart(){
+        isAddToCart = false;
+    }
+
+    public boolean getIsAddToCart() {
+        return isAddToCart;
     }
 
 }

@@ -22,6 +22,7 @@ import android.widget.ToggleButton;
 import android.widget.CompoundButton;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
@@ -32,18 +33,17 @@ import java.util.List;
 
 public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRecyclerViewAdapter.MedicineViewHolder> {
 
-    private static List<MedicineCardViewModel> medicineList;
-    private static List<MedicineCardViewModel> cartList;
+    private static CartViewModel medicineList;
+    private static List<MedicineCardViewModel> mlist;
     private static Context mContext;
     private static CounterFab counterFab;
 
 
 
 
-    public MedicineRecyclerViewAdapter(List<MedicineCardViewModel> medicineList, CounterFab counterFab) {
+    public MedicineRecyclerViewAdapter(CartViewModel medicineList, CounterFab counterFab) {
         this.medicineList = medicineList;
         this.counterFab = counterFab;
-        cartList = new ArrayList<>();
     }
 
     @NonNull
@@ -58,18 +58,35 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 
     @Override
     public void onBindViewHolder(@NonNull MedicineViewHolder holder, int position) {
-        MedicineCardViewModel current = medicineList.get(position);
+        MedicineCardViewModel current = medicineList.getMedicineLiveData().getValue().get(position);
         holder.imageIcon.setImageResource(current.getMedicineIcon());
         holder.medicineName.setText(current.getMedicinName());
         holder.medicineId.setText(current.getMedicineId());
+
+        //TODO: if item in the cart, we need the ui to be ic_check
+        boolean isAddtoCart = medicineList.getMedicineLiveData().getValue().get(position).getIsAddToCart();
+        Log.d("position: " + position, "is added to cart: " + isAddtoCart);
+        if(medicineList.getMedicineLiveData().getValue().get(position).getIsAddToCart()) {
+            holder.imageButton.setImageResource(R.drawable.ic_check);
+        } else {
+            holder.imageButton.setImageResource(R.drawable.ic_add);
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return medicineList.size();
+        if (medicineList.getMedicineLiveData().getValue() != null) {
+            return medicineList.getMedicineLiveData().getValue().size();
+        }
+        return 0;
     }
 
+
+    public void setList(List<MedicineCardViewModel> list) {
+        mlist = list;
+        notifyDataSetChanged();
+    }
 
     public static class MedicineViewHolder extends RecyclerView.ViewHolder {
         ImageView imageIcon;
@@ -81,7 +98,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 
 //        AnimatedVectorDrawable mAddDrawable;
 //        AnimatedVectorDrawable mCheckDrawable;
-        boolean addButtonClicked = false;
+//        boolean addButtonClicked = false;
 
         public MedicineViewHolder(View itemView) {
             super(itemView);
@@ -100,17 +117,20 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             checkedRadioButton.setBackgroundTintList(
                     ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorPrimaryDark)));
 
+
             //setOnClickListener
             imageButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    if(addButtonClicked) {
+                    final int position = getAdapterPosition();
+
+                    if(medicineList.getMedicineList().get(position).getIsAddToCart()) {
 //                        imageButton.setImageDrawable(mCheckDrawable);
 //                        mCheckDrawable.start();
                         imageButton.setImageResource(R.drawable.ic_add);
-                        int position = getAdapterPosition();
-                        cartList.remove(medicineList.get(position));
+                        medicineList.removeFromCart(position);
+//                        cartList.remove(medicineList.get(position));
                         Log.d("cartList removed: " + position, ""+ position);
                         counterFab.decrease();
 
@@ -120,15 +140,13 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                             radioButton.setEnabled(true);
                         }
                     }else {
-//                        imageButton.setImageDrawable(mAddDrawable);
-//                        mAddDrawable.start();
                         imageButton.setImageResource(R.drawable.ic_check);
-                        //add to cartList
-                        int position = getAdapterPosition();
-                        MedicineCardViewModel item = medicineList.get(position);
-                        cartList.add(item);
-                        Log.d("cartList added: ", ""+ position);
-                        Log.d("" + item.getMedicinName(), "cash payment: "+ item.IsCashPayment());
+//                        List<MedicineCardViewModel> list = medicineList.getMedicineList();
+//                        list.get(position).addToCart();
+//                        medicineList.getMedicineLiveData().setValue(list);
+                        medicineList.addToCart(position);
+                        Log.d("cartList added: ", "" + position);
+                        //Log.d("" + item.getMedicinName(), "cash payment: "+ item.IsCashPayment());
                         counterFab.increase();
 
                         //when added to cart, you can not change payment radio button
@@ -138,7 +156,6 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                         }
 
                     }
-                    addButtonClicked = !addButtonClicked;
                 }
             });
 
@@ -160,14 +177,14 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                    checkedRadioButton.setBackgroundTintList(
                            ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorPrimaryDark)));
                    int position = getAdapterPosition();
-                   medicineList.get(position).setCashPayment(true);
+                   medicineList.getMedicineLiveData().getValue().get(position).setCashPayment(true);
                    break;
                 case R.id.credit_radiobutton:
                     checkedRadioButton = itemView.findViewById(R.id.credit_radiobutton);
                     checkedRadioButton.setBackgroundTintList(
                             ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorPrimaryDark)));
                     position = getAdapterPosition();
-                    medicineList.get(position).setCashPayment(false);
+                    medicineList.getMedicineLiveData().getValue().get(position).setCashPayment(false);
                     break;
             }
         }
