@@ -1,6 +1,7 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -51,7 +52,6 @@ public class SelectPatientFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_shift_radio_button, container, false);
         mRadioGroup = view.findViewById(R.id.shift_radiogroup);
         mFloatingActionButton = view.findViewById(R.id.patients_fab);
-        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
 
         //set default view for shift_fragment_container
         selectItem(mRadioGroup, R.id.morning_radiobutton);
@@ -69,6 +69,7 @@ public class SelectPatientFragment extends Fragment {
             @Override
             public void onClick(View v) {
               //Log.d("I got the patient name", OddDayFragment.selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
+                selectedPatientViewModel = ViewModelProviders.of(getChildFragmentManager().findFragmentByTag("selectpatientfragment")).get(SelectedPatientViewModel.class);
                 selectedPatientViewModel.getPatientLiveData().observe(getActivity(), new Observer<PatientsCardViewModel>() {
                     @Override
                     public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
@@ -111,7 +112,7 @@ public class SelectPatientFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
-                transaction.replace(R.id.shift_fragment_container, morningFragment, "morningfragment")
+                transaction.replace(R.id.shift_fragment_container, morningFragment, "selectpatientfragment")
                            .addToBackStack("patient")
                            .commit();
                 break;
@@ -120,7 +121,7 @@ public class SelectPatientFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
-                transaction.replace(R.id.shift_fragment_container, afternoonFragment, "noonfragment")
+                transaction.replace(R.id.shift_fragment_container, afternoonFragment, "selectpatientfragment")
                            .addToBackStack("patient")
                            .commit();
                 break;
@@ -129,7 +130,7 @@ public class SelectPatientFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
-                transaction.replace(R.id.shift_fragment_container, nightFragment,"nightfragment")
+                transaction.replace(R.id.shift_fragment_container, nightFragment,"selectpatientfragment")
                            .addToBackStack("patient")
                            .commit();
                 break;

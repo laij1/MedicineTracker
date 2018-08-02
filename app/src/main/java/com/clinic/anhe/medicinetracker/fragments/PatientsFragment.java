@@ -29,6 +29,7 @@ public class PatientsFragment  extends Fragment implements ArgumentVariables{
     private PatientsPagerAdapter mPatientsPagerAdapter;
     private Context mContext;
     private Shift shift;
+    private SelectedPatientViewModel selectedPatientViewModel;
 
     public static PatientsFragment newInstance(Shift shift) {
         PatientsFragment fragment = new PatientsFragment();
@@ -77,13 +78,13 @@ public class PatientsFragment  extends Fragment implements ArgumentVariables{
         highLightCurrentTab(0);
 
         //TODO
-//        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
-//        selectedPatientViewModel.getPatientLiveData().observe(this, new Observer<PatientsCardViewModel>() {
-//            @Override
-//            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
-//                Log.d("I have the selected patient in patientfragment", patientsCardViewModel.getPatientName());
-//            }
-//        });
+        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
+        selectedPatientViewModel.getPatientLiveData().observe(this, new Observer<PatientsCardViewModel>() {
+            @Override
+            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+                Log.d("I have the selected patient in patientfragment", patientsCardViewModel.getPatientName());
+            }
+        });
 
         mPatientsViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mPatientsTabLayout) {
             @Override
