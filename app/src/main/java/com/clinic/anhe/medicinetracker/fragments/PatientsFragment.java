@@ -1,8 +1,12 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
+import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.MainActivity;
 import com.clinic.anhe.medicinetracker.utils.Shift;
@@ -69,6 +75,15 @@ public class PatientsFragment  extends Fragment implements ArgumentVariables{
         mPatientsViewPager.setAdapter(mPatientsPagerAdapter);
 
         highLightCurrentTab(0);
+
+        //TODO
+//        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
+//        selectedPatientViewModel.getPatientLiveData().observe(this, new Observer<PatientsCardViewModel>() {
+//            @Override
+//            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+//                Log.d("I have the selected patient in patientfragment", patientsCardViewModel.getPatientName());
+//            }
+//        });
 
         mPatientsViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mPatientsTabLayout) {
             @Override

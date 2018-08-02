@@ -33,7 +33,7 @@ public class OddDayFragment extends Fragment implements ArgumentVariables {
         private RecyclerView.LayoutManager mLayoutManager;
 
         private Shift shift;
-        public static SelectedPatientViewModel selectedPatientViewModel;
+        private static SelectedPatientViewModel selectedPatientViewModel;
 
         public static OddDayFragment newInstance(Shift shift) {
             OddDayFragment fragment = new OddDayFragment();
@@ -64,7 +64,7 @@ public class OddDayFragment extends Fragment implements ArgumentVariables {
                 shift = shift.fromString(getArguments().getString(ARG_PATIENT_SHIFT));
             }
             //TODO:
-            selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
+            selectedPatientViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(SelectedPatientViewModel.class);
             selectedPatientViewModel.getPatientLiveData().observe(this, new Observer<PatientsCardViewModel>() {
                 @Override
                 public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {

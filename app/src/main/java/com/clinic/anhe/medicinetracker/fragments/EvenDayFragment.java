@@ -31,7 +31,7 @@ public class EvenDayFragment extends Fragment implements ArgumentVariables {
     private PatientsRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Shift shift;
-    public static SelectedPatientViewModel selectedPatientViewModel;
+    private static SelectedPatientViewModel selectedPatientViewModel;
 
 
     public static EvenDayFragment newInstance(Shift shift) {
@@ -62,7 +62,7 @@ public class EvenDayFragment extends Fragment implements ArgumentVariables {
         }
 
         //TODO:
-        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
+        selectedPatientViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(SelectedPatientViewModel.class);
         selectedPatientViewModel.getPatientLiveData().observe(this, new Observer<PatientsCardViewModel>() {
             @Override
             public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {

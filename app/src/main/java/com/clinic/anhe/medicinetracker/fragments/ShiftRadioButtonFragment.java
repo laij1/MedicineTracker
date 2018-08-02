@@ -36,6 +36,9 @@ public class ShiftRadioButtonFragment extends Fragment {
     private FloatingActionButton mFloatingActionButton;
     private SelectedPatientViewModel selectedPatientViewModel;
 
+    String patientName = "";
+    String paitientId = "";
+
     public static ShiftRadioButtonFragment newInstance(){
         ShiftRadioButtonFragment fragment = new ShiftRadioButtonFragment();
         return fragment;
@@ -51,15 +54,8 @@ public class ShiftRadioButtonFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_shift_radio_button, container, false);
         mRadioGroup = view.findViewById(R.id.shift_radiogroup);
         mFloatingActionButton = view.findViewById(R.id.patients_fab);
+        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
 
-//        //TODO:LiveData
-//        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
-//        selectedPatientViewModel.getPatientLiveData().observe(this, new Observer<PatientsCardViewModel>() {
-//            @Override
-//            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
-//                Log.d("I have the selected patient", patientsCardViewModel.getPatientName());
-//            }
-//        });
         //set default view for shift_fragment_container
         selectItem(mRadioGroup, R.id.morning_radiobutton);
 
@@ -75,8 +71,25 @@ public class ShiftRadioButtonFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-              Log.d("I got the patient name", OddDayFragment.selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
-
+              //Log.d("I got the patient name", OddDayFragment.selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
+                selectedPatientViewModel.getPatientLiveData().observe(getActivity(), new Observer<PatientsCardViewModel>() {
+                    @Override
+                    public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+                        patientName = selectedPatientViewModel.getPatientLiveData().getValue().getPatientName();
+                        paitientId = selectedPatientViewModel.getPatientLiveData().getValue().getPatientId();
+                        Log.d("I have the selected patient in shiftradiofragment", patientsCardViewModel.getPatientName());
+                    }
+                });
+              //TODO:
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                SummaryFragment summaryFragment = SummaryFragment.newInstance();
+                Bundle args = new Bundle();
+                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST));
+                args.putString("patientName", patientName);
+                args.putString("patientId", paitientId);
+                summaryFragment.setArguments(args);
+                transaction.replace(R.id.select_patient_layout, summaryFragment)
+                           .commit();
             }
         });
         //setRetainInstance does not work
@@ -101,7 +114,7 @@ public class ShiftRadioButtonFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
-                transaction.replace(R.id.shift_fragment_container, morningFragment)
+                transaction.replace(R.id.shift_fragment_container, morningFragment, "morningfragment")
                            .addToBackStack("patient")
                            .commit();
                 break;
@@ -110,7 +123,7 @@ public class ShiftRadioButtonFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
-                transaction.replace(R.id.shift_fragment_container, afternoonFragment)
+                transaction.replace(R.id.shift_fragment_container, afternoonFragment, "noonfragment")
                            .addToBackStack("patient")
                            .commit();
                 break;
@@ -119,7 +132,7 @@ public class ShiftRadioButtonFragment extends Fragment {
                 mCheckedRadioButton.setBackgroundTintList(
                         ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
                 PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
-                transaction.replace(R.id.shift_fragment_container, nightFragment)
+                transaction.replace(R.id.shift_fragment_container, nightFragment,"nightfragment")
                            .addToBackStack("patient")
                            .commit();
                 break;

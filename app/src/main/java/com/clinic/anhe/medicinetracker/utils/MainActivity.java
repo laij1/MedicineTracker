@@ -157,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
                                 .replace(R.id.main_fragment_container, medicineFragment)
                                 .addToBackStack("medicine").commit();
                         break;
-                    case 2:
-                        break;
+//                    case 2:
+//                        break;
                 }
 
                 if(packedPosition != 0) {
@@ -250,10 +250,10 @@ public class MainActivity extends AppCompatActivity {
         medicine.setIconImg(R.drawable.ic_medicine);
         listDataHeader.add(medicine);
 
-        GroupMenuModel cart = new GroupMenuModel();
-        cart.setIconName("購物車");
-        cart.setIconImg(R.drawable.ic_cart);
-        listDataHeader.add(cart);
+//        GroupMenuModel cart = new GroupMenuModel();
+//        cart.setIconName("購物車");
+//        cart.setIconImg(R.drawable.ic_cart);
+//        listDataHeader.add(cart);
 
         //Adding child data
         List<GroupMenuModel> shifts = new ArrayList<>();

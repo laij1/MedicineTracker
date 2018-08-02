@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/recyclerViewBackground"
+    android:elevation="5dp">
 
-</android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/summary_patientname"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="patient name"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:elevation="5dp"/>
+
+    <TextView
+        android:id="@+id/summary_patientid"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/summary_patientname"
+        android:text="patient id"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:elevation="5dp"/>
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/summary_fragment_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_below="@+id/summary_patientid"-->
+        <!--android:elevation="5dp"-->
+        <!--android:layout_height="match_parent">-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/summary_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="424dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="87dp"
+        android:background="@color/recyclerViewBackground"
+        android:padding="10dp"
+        android:scrollbars="vertical" />
+
+    <!--</FrameLayout>-->
+
+</RelativeLayout>
