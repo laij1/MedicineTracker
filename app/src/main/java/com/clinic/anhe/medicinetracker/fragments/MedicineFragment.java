@@ -1,25 +1,18 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
 import android.view.KeyEvent;
-import android.widget.RadioGroup;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
@@ -27,7 +20,6 @@ import com.clinic.anhe.medicinetracker.adapters.MedicineRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
-import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +122,7 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
                // FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-                ShiftRadioButtonFragment shiftRadioButtonFragment = ShiftRadioButtonFragment.newInstance();
+                SelectPatientFragment selectPatientFragment = SelectPatientFragment.newInstance();
                 Bundle args = new Bundle();
                 ArrayList<String> cartlist = new ArrayList<>();
                 for(MedicineCardViewModel item :medicineList.getMedicineList()) {
@@ -139,8 +131,8 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
                     }
                 }
                 args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
-                shiftRadioButtonFragment.setArguments(args);
-                transaction.replace(R.id.medicine_layout, shiftRadioButtonFragment)
+                selectPatientFragment.setArguments(args);
+                transaction.replace(R.id.medicine_layout, selectPatientFragment)
                         .addToBackStack("medicine")
                         .commit();
             }
