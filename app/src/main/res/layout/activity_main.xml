@@ -20,25 +20,25 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        app:itemTextColor="@color/menuTextIconColor"
+        app:menu="@menu/nav_menu">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<include layout="@layout/nav_header"-->
+                <!--android:id="@+id/header"/>-->
 
-            <include layout="@layout/nav_header"
-                android:id="@+id/header"/>
-
-            <ExpandableListView
-                android:id="@+id/nav_expandable_list"
-                android:layout_below="@+id/header"
-                android:choiceMode = "singleChoice"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingTop="10dp"
-                android:divider="@null"
-                android:dividerHeight="0dp"
-                android:groupIndicator="@android:color/transparent">
-            </ExpandableListView>
-        </RelativeLayout>
+            <!--<ExpandableListView-->
+                <!--android:id="@+id/nav_expandable_list"-->
+                <!--android:layout_below="@+id/header"-->
+                <!--android:choiceMode = "singleChoice"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:divider="@null"-->
+                <!--android:dividerHeight="0dp"-->
+                <!--android:groupIndicator="@android:color/transparent">-->
+            <!--</ExpandableListView>-->
+        <!--</RelativeLayout>-->
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

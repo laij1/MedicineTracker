@@ -1,0 +1,83 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <group android:checkableBehavior="single">
+        <item
+            android:title="病患">
+            <menu>
+                <group
+                    android:id="@+id/menu_patient"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/menu_morning"
+                        android:icon="@drawable/ic_morning"
+                        android:title="早班"
+                        />
+
+                    <item
+                        android:id="@+id/menu_afternoon"
+                        android:icon="@drawable/ic_afternoon"
+                        android:title="中班" />
+
+                    <item
+                        android:id="@+id/menu_night"
+                        android:icon="@drawable/ic_night"
+                        android:title="晚班" />
+                </group>
+            </menu>
+        </item>
+        <item
+            android:title="藥品">
+            <menu>
+                <group
+                    android:id="@+id/menu_medicine"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/menu_dialysis"
+                        android:icon="@drawable/ic_medicine"
+                        android:title="自費洗腎" />
+                    <item
+                        android:id="@+id/menu_edible"
+                        android:icon="@drawable/ic_edible"
+                        android:title="口服" />
+
+                    <item
+                        android:id="@+id/menu_needle"
+                        android:icon="@drawable/ic_needle"
+                        android:title="針劑" />
+
+                    <item
+                        android:id="@+id/menu_bandaid"
+                        android:icon="@drawable/ic_bandaid"
+                        android:title="耗材" />
+                </group>
+            </menu>
+        </item>
+        <item
+            android:title="管理">
+            <menu>
+                <group
+                    android:id="@+id/menu_manage"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/menu_record"
+                        android:icon="@drawable/ic_record"
+                        android:title="藥品紀錄" />
+
+                    <item
+                        android:id="@+id/menu_cashflow"
+                        android:icon="@drawable/ic_cashflow"
+                        android:title="現金收入" />
+
+                    <item
+                        android:id="@+id/menu_inventory"
+                        android:icon="@drawable/ic_inventory"
+                        android:title="庫存更新" />
+                </group>
+            </menu>
+        </item>
+
+
+    </group>
+</menu>
