@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 //        expandableList = (ExpandableListView) findViewById(R.id.nav_expandable_list);
 
 //        prepareListData();
-        mMenuAdapter = new NavigationDrawerAdapter(this, listDataHeader, listDataChild, expandableList);
+       // mMenuAdapter = new NavigationDrawerAdapter(this, listDataHeader, listDataChild, expandableList);
 
         // setting list adapter
 //        expandableList.setAdapter(mMenuAdapter);
@@ -192,12 +192,48 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         // set item as selected to persist highlight
                         item.setChecked(true);
+                        //fragment transaction has to be in the click method and start everytime you have a tranaction
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        switch(item.getItemId()) {
+                            //patient menu
+                            case R.id.menu_morning:
+                                PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                           .replace(R.id.main_fragment_container, morningFragment).commit();
+                                break;
+                            case R.id.menu_afternoon:
+                                PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                           .replace(R.id.main_fragment_container, afternoonFragment).commit();
+                                break;
+                            case R.id.menu_night:
+                                PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                           .replace(R.id.main_fragment_container, nightFragment).commit();
+                                break;
+                             //medicine menu
+                            case R.id.menu_dialysis:
+                                break;
+                            case R.id.menu_edible:
+                                MedicineFragment medicineFragment = MedicineFragment.newInstance();
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                           .replace(R.id.main_fragment_container, medicineFragment)
+                                           .addToBackStack("medicine").commit();
+                                break;
+                            case R.id.menu_needle:
+                                break;
+                            case R.id.menu_bandaid:
+                                break;
+                            //manage menu
+                            case R.id.menu_record:
+                                break;
+                            case R.id.menu_cashflow:
+                                break;
+                            case R.id.menu_inventory:
+                                break;
+                        }
                         // close drawer when item is tapped
-                       // mDrawerlayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
+                        mDrawerlayout.closeDrawers();
                         return true;
                     }
                 }
@@ -234,40 +270,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void prepareListData() {
-        listDataHeader = new ArrayList<GroupMenuModel>();
-        //listDataChild = new HashMap<GroupMenuModel, List<String>>();
-        listDataChild = new HashMap<>();
-
-        GroupMenuModel patients = new GroupMenuModel();
-        patients.setIconName("病患");
-        patients.setIconImg(R.drawable.ic_account);
-        // Adding data header
-        listDataHeader.add(patients);
-
-        GroupMenuModel medicine = new GroupMenuModel();
-        medicine.setIconName("藥品");
-        medicine.setIconImg(R.drawable.ic_medicine);
-        listDataHeader.add(medicine);
-
-//        GroupMenuModel cart = new GroupMenuModel();
-//        cart.setIconName("購物車");
-//        cart.setIconImg(R.drawable.ic_cart);
-//        listDataHeader.add(cart);
-
-        //Adding child data
-        List<GroupMenuModel> shifts = new ArrayList<>();
-        GroupMenuModel morning = new GroupMenuModel("早班", R.drawable.ic_morning);
-        shifts.add(morning);
-
-        GroupMenuModel afternoon = new GroupMenuModel("中班", R.drawable.ic_afternoon);
-        shifts.add(afternoon);
-
-        GroupMenuModel night = new GroupMenuModel("晚班", R.drawable.ic_night);
-        shifts.add(night);
-
-        listDataChild.put(listDataHeader.get(0), shifts);// Header, Child data
-
-
-    }
+//    private void prepareListData() {
+//        listDataHeader = new ArrayList<GroupMenuModel>();
+//        //listDataChild = new HashMap<GroupMenuModel, List<String>>();
+//        listDataChild = new HashMap<>();
+//
+//        GroupMenuModel patients = new GroupMenuModel();
+//        patients.setIconName("病患");
+//        patients.setIconImg(R.drawable.ic_account);
+//        // Adding data header
+//        listDataHeader.add(patients);
+//
+//        GroupMenuModel medicine = new GroupMenuModel();
+//        medicine.setIconName("藥品");
+//        medicine.setIconImg(R.drawable.ic_medicine);
+//        listDataHeader.add(medicine);
+//
+////        GroupMenuModel cart = new GroupMenuModel();
+////        cart.setIconName("購物車");
+////        cart.setIconImg(R.drawable.ic_cart);
+////        listDataHeader.add(cart);
+//
+//        //Adding child data
+//        List<GroupMenuModel> shifts = new ArrayList<>();
+//        GroupMenuModel morning = new GroupMenuModel("早班", R.drawable.ic_morning);
+//        shifts.add(morning);
+//
+//        GroupMenuModel afternoon = new GroupMenuModel("中班", R.drawable.ic_afternoon);
+//        shifts.add(afternoon);
+//
+//        GroupMenuModel night = new GroupMenuModel("晚班", R.drawable.ic_night);
+//        shifts.add(night);
+//
+//        listDataChild.put(listDataHeader.get(0), shifts);// Header, Child data
+//
+//
+//    }
 }
