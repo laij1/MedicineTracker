@@ -1,7 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -49,7 +48,7 @@ public class SelectPatientFragment extends Fragment {
 
         ArrayList<String> cartList = getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST);
 
-        view = inflater.inflate(R.layout.fragment_shift_radio_button, container, false);
+        view = inflater.inflate(R.layout.fragment_select_patients, container, false);
         mRadioGroup = view.findViewById(R.id.shift_radiogroup);
         mFloatingActionButton = view.findViewById(R.id.patients_fab);
 
