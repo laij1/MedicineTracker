@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.adapters.SummaryRecyclerViewAdapter;
-import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SummaryFragment  extends Fragment {
     private View view;
@@ -25,7 +28,11 @@ public class SummaryFragment  extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private SummaryRecyclerViewAdapter mAdapter;
-    private ArrayList<String> cartlist;
+
+    //TODO
+    private CartViewModel cartViewModel;
+    private List<MedicineCardViewModel> medicineList;
+    private List<MedicineCardViewModel> cartList;
 
     public static SummaryFragment newInstance(){
        SummaryFragment fragment = new SummaryFragment();
@@ -36,7 +43,10 @@ public class SummaryFragment  extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_summary, container, false);
-        cartlist = getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST);
+
+//        cartlist = getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST);
+        cartViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(CartViewModel.class);
+        medicineList = cartViewModel.getMedicineList();
 
         patientName = view.findViewById(R.id.summary_patientname);
         patientId = view.findViewById(R.id.summary_patientid);
@@ -47,7 +57,15 @@ public class SummaryFragment  extends Fragment {
         mRecyclerView = view.findViewById(R.id.summary_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new SummaryRecyclerViewAdapter(cartlist);
+
+        //TODO: only pass the meds that has been selected
+        cartList= new ArrayList<>();
+        for(MedicineCardViewModel m : medicineList) {
+            if(m.getIsAddToCart()) {
+                cartList.add(m);
+            }
+        }
+        mAdapter = new SummaryRecyclerViewAdapter(cartList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

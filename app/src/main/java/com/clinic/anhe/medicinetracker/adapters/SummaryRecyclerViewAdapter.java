@@ -8,13 +8,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SummaryRecyclerViewAdapter extends RecyclerView.Adapter<SummaryRecyclerViewAdapter.SummaryViewHolder> {
-    private ArrayList<String> cartlist;
+    private List<MedicineCardViewModel> cartlist;
 
-    public SummaryRecyclerViewAdapter(ArrayList<String> cartlist) {
+    public SummaryRecyclerViewAdapter(List<MedicineCardViewModel> cartlist) {
         this.cartlist = cartlist;
     }
     @NonNull
@@ -28,7 +30,7 @@ public class SummaryRecyclerViewAdapter extends RecyclerView.Adapter<SummaryRecy
 
     @Override
     public void onBindViewHolder(@NonNull SummaryViewHolder holder, int position) {
-        holder.ItemName.setText(cartlist.get(position));
+        holder.ItemName.setText(cartlist.get(position).getMedicinName());
     }
 
 

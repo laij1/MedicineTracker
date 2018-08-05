@@ -217,8 +217,8 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.menu_edible:
                                 MedicineFragment medicineFragment = MedicineFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                           .replace(R.id.main_fragment_container, medicineFragment)
-                                           .addToBackStack("medicine").commit();
+                                           .replace(R.id.main_fragment_container, medicineFragment,"medicinefragment")
+                                           .commit();
                                 break;
                             case R.id.menu_needle:
                                 break;

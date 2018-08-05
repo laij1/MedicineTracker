@@ -1,11 +1,13 @@
 package com.clinic.anhe.medicinetracker.model;
 
+import com.clinic.anhe.medicinetracker.utils.PaymentType;
+
 public class MedicineCardViewModel {
 
     private int medicineIcon = -1;
     private String medicinName;
     private String medicineId;
-    private boolean cashPayment = true;
+    private PaymentType cashPayment = PaymentType.UNSELECT;
     private boolean isAddToCart = false;
 
     public MedicineCardViewModel(String medicinName, String medicineId, int medicineIcon) {
@@ -26,13 +28,14 @@ public class MedicineCardViewModel {
 
     public void setCashPayment(boolean cash) {
         if(cash) {
-            cashPayment = true;
+            cashPayment = PaymentType.CASH;
         } else {
-            cashPayment = false;
+            cashPayment = PaymentType.MONTH;
         }
     }
 
-    public boolean IsCashPayment() {
+    public PaymentType isCashPayment() {
+
         return cashPayment;
     }
 

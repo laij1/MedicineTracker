@@ -123,15 +123,15 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
                 SelectPatientFragment selectPatientFragment = SelectPatientFragment.newInstance();
-                Bundle args = new Bundle();
-                ArrayList<String> cartlist = new ArrayList<>();
-                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
-                    if(item.getIsAddToCart() == true) {
-                        cartlist.add(item.getMedicinName());
-                    }
-                }
-                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
-                selectPatientFragment.setArguments(args);
+//                Bundle args = new Bundle();
+//                ArrayList<String> cartlist = new ArrayList<>();
+//                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
+//                    if(item.getIsAddToCart() == true) {
+//                        cartlist.add(item.getMedicinName());
+//                    }
+//                }
+//                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
+//                selectPatientFragment.setArguments(args);
                 transaction.replace(R.id.medicine_layout, selectPatientFragment)
                         .addToBackStack("medicine")
                         .commit();
