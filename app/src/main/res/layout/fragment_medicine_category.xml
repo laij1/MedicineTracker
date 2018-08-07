@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/patients_tabLayout"
+        android:id="@+id/medicine_category_tabLayout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="6dp"
@@ -23,11 +22,11 @@
 
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/patients_pager"
+        android:id="@+id/medicine_category_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/patients_tabLayout"
-        app:layout_constraintTop_toBottomOf="@+id/patients_tabLayout">
+        android:layout_below="@id/medicine_category_tabLayout"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_category_tabLayout">
 
     </android.support.v4.view.ViewPager>
 

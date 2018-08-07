@@ -27,33 +27,29 @@
                 </group>
             </menu>
         </item>
-        <item
-            android:title="藥品">
-            <menu>
+
                 <group
-                    android:id="@+id/menu_medicine"
                     android:checkableBehavior="single">
                     <item
-                        android:id="@+id/menu_dialysis"
+                        android:id="@+id/menu_medicine"
                         android:icon="@drawable/ic_medicine"
-                        android:title="自費洗腎" />
-                    <item
-                        android:id="@+id/menu_edible"
-                        android:icon="@drawable/ic_edible"
-                        android:title="口服" />
+                        android:title="藥品" />
+                    <!--<item-->
+                        <!--android:id="@+id/menu_edible"-->
+                        <!--android:icon="@drawable/ic_edible"-->
+                        <!--android:title="口服" />-->
 
-                    <item
-                        android:id="@+id/menu_needle"
-                        android:icon="@drawable/ic_needle"
-                        android:title="針劑" />
+                    <!--<item-->
+                        <!--android:id="@+id/menu_needle"-->
+                        <!--android:icon="@drawable/ic_needle"-->
+                        <!--android:title="針劑" />-->
 
-                    <item
-                        android:id="@+id/menu_bandaid"
-                        android:icon="@drawable/ic_bandaid"
-                        android:title="耗材" />
+                    <!--<item-->
+                        <!--android:id="@+id/menu_bandaid"-->
+                        <!--android:icon="@drawable/ic_bandaid"-->
+                        <!--android:title="耗材" />-->
                 </group>
-            </menu>
-        </item>
+
         <item
             android:title="管理">
             <menu>

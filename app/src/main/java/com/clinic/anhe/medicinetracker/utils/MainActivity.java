@@ -1,30 +1,25 @@
 package com.clinic.anhe.medicinetracker.utils;
 
-import android.support.v4.app.Fragment;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 
-import com.clinic.anhe.medicinetracker.fragments.MedicineFragment;
+import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
 import com.clinic.anhe.medicinetracker.model.GroupMenuModel;
 import com.clinic.anhe.medicinetracker.adapters.NavigationDrawerAdapter;
 import com.clinic.anhe.medicinetracker.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -212,18 +207,23 @@ public class MainActivity extends AppCompatActivity {
                                            .replace(R.id.main_fragment_container, nightFragment).commit();
                                 break;
                              //medicine menu
-                            case R.id.menu_dialysis:
-                                break;
-                            case R.id.menu_edible:
-                                MedicineFragment medicineFragment = MedicineFragment.newInstance();
+                            case R.id.menu_medicine:
+                                //MedicineFragment medicineFragment = MedicineFragment.newInstance();
+                                MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                           .replace(R.id.main_fragment_container, medicineFragment,"medicinefragment")
+                                           .replace(R.id.main_fragment_container, medicineCategoryFragment,"medicinefragment")
                                            .commit();
                                 break;
-                            case R.id.menu_needle:
-                                break;
-                            case R.id.menu_bandaid:
-                                break;
+//                            case R.id.menu_edible:
+//                                MedicineFragment medicineFragment = MedicineFragment.newInstance();
+//                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+//                                           .replace(R.id.main_fragment_container, medicineFragment,"medicinefragment")
+//                                           .commit();
+//                                break;
+//                            case R.id.menu_needle:
+//                                break;
+//                            case R.id.menu_bandaid:
+//                                break;
                             //manage menu
                             case R.id.menu_record:
                                 break;
