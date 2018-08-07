@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
-import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
+
 
 public class MedicineCategoryFragment extends Fragment {
 
@@ -54,13 +54,12 @@ public class MedicineCategoryFragment extends Fragment {
 
         mMedicineCategoryViewPager = (ViewPager) view.findViewById(R.id.medicine_category_pager);
         mMedicineCategoryTabLayout.setupWithViewPager(mMedicineCategoryViewPager);
+
         mMedicineCategoryPagerAdapter = new MedicineCategoryPagerAdapter(
                 getChildFragmentManager(), mMedicineCategoryTabLayout.getTabCount(), mContext);
 
         mMedicineCategoryViewPager.setAdapter(mMedicineCategoryPagerAdapter);
-
-
-
+//        mMedicineCategoryViewPager.setCurrentItem(1);
         highLightCurrentTab(0);
 
         mMedicineCategoryViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mMedicineCategoryTabLayout) {

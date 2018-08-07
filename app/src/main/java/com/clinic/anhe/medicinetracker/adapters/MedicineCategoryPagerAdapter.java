@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.fragments.MedicineFragment;
+import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
+import com.clinic.anhe.medicinetracker.utils.Shift;
 
 
 public class MedicineCategoryPagerAdapter extends FragmentPagerAdapter {

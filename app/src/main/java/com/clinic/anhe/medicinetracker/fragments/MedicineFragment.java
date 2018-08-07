@@ -67,9 +67,9 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
+//        super.onViewCreated(view, savedInstanceState);
+//        view.setFocusableInTouchMode(true);
+//        view.requestFocus();
         view.setOnKeyListener(this);
     }
 
