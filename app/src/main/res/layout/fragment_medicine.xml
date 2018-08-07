@@ -7,28 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/medicine_layout">
 
-    <ImageView
-        android:id="@+id/medicine_bottom_imageview"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorPrimaryDark" />
 
-    <com.clinic.anhe.medicinetracker.utils.CounterFab
-        android:id="@+id/medicine_fab"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="@color/colorAccent"
-        android:tint="@android:color/white"
-        app:elevation="2dp"
-        app:fabSize="normal"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_cart" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/medicine_recyclerview"
@@ -38,7 +17,6 @@
         android:layout_alignParentTop="true"
         android:background="@color/recyclerViewBackground"
         android:padding="10dp"
-        android:scrollbars="vertical"
-        android:layout_above="@id/medicine_bottom_imageview"/>
+        android:scrollbars="vertical" />
 
 </RelativeLayout>

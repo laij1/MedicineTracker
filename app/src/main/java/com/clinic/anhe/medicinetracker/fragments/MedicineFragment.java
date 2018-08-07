@@ -85,7 +85,7 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
         mRecyclerView.setHasFixedSize(true);
        // mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager = new GridLayoutManager(getContext(), 2);
-        mCounterFab = view.findViewById(R.id.medicine_fab);
+//        mCounterFab = view.findViewById(R.id.medicine_fab);
 
         // Set up the WordViewModel.
         medicineList = ViewModelProviders.of(this).get(CartViewModel.class);
@@ -112,33 +112,33 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 
 
 
-        mCounterFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                //cannot use getSupportFragmentManger(), it is for calling from activity, use getChildFragmentManager
-                //https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
-               // FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
-               FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-                SelectPatientFragment selectPatientFragment = SelectPatientFragment.newInstance();
-//                Bundle args = new Bundle();
-//                ArrayList<String> cartlist = new ArrayList<>();
-//                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
-//                    if(item.getIsAddToCart() == true) {
-//                        cartlist.add(item.getMedicinName());
-//                    }
-//                }
-//                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
-//                selectPatientFragment.setArguments(args);
-                transaction.replace(R.id.medicine_layout, selectPatientFragment)
-                        .addToBackStack("medicine")
-                        .commit();
-            }
-
-
-        });
+//        mCounterFab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//                //cannot use getSupportFragmentManger(), it is for calling from activity, use getChildFragmentManager
+//                //https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
+//               // FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
+//               FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//
+//                SelectPatientFragment selectPatientFragment = SelectPatientFragment.newInstance();
+////                Bundle args = new Bundle();
+////                ArrayList<String> cartlist = new ArrayList<>();
+////                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
+////                    if(item.getIsAddToCart() == true) {
+////                        cartlist.add(item.getMedicinName());
+////                    }
+////                }
+////                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
+////                selectPatientFragment.setArguments(args);
+//                transaction.replace(R.id.medicine_layout, selectPatientFragment)
+//                        .addToBackStack("medicine")
+//                        .commit();
+//            }
+//
+//
+//        });
 
 
         return view;
