@@ -32,14 +32,15 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
     private RecyclerView mRecyclerView;
     private MedicineRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private CounterFab mCounterFab;
+    private static CounterFab mCounterFab;
    // private List<MedicineCardViewModel> list;
    // private ImageView mBottomImageView;
    // private RadioGroup mRadioGroup;
 
 
-    public static MedicineFragment newInstance() {
+    public static MedicineFragment newInstance(CounterFab counterFab) {
         MedicineFragment fragment = new MedicineFragment();
+        mCounterFab = counterFab;
         return fragment;
     }
 

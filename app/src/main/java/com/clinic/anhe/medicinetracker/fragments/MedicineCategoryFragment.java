@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
+import com.clinic.anhe.medicinetracker.utils.CounterFab;
 
 
 public class MedicineCategoryFragment extends Fragment {
@@ -22,6 +24,7 @@ public class MedicineCategoryFragment extends Fragment {
     private Context mContext;
     private ViewPager mMedicineCategoryViewPager;
     private MedicineCategoryPagerAdapter mMedicineCategoryPagerAdapter;
+    private CounterFab mCounterfab;
 
     public static MedicineCategoryFragment newInstance(){
         MedicineCategoryFragment fragment = new MedicineCategoryFragment();
@@ -34,6 +37,7 @@ public class MedicineCategoryFragment extends Fragment {
         View view  = inflater.inflate(R.layout.fragment_medicine_category, container, false);
 
         mMedicineCategoryTabLayout = (TabLayout) view.findViewById(R.id.medicine_category_tabLayout);
+        mCounterfab = view.findViewById(R.id.medicine_category_fab);
 
         //set up tab
         TabLayout.Tab dialysis = mMedicineCategoryTabLayout.newTab();
@@ -56,7 +60,7 @@ public class MedicineCategoryFragment extends Fragment {
         mMedicineCategoryTabLayout.setupWithViewPager(mMedicineCategoryViewPager);
 
         mMedicineCategoryPagerAdapter = new MedicineCategoryPagerAdapter(
-                getChildFragmentManager(), mMedicineCategoryTabLayout.getTabCount(), mContext);
+                getChildFragmentManager(), mMedicineCategoryTabLayout.getTabCount(), mCounterfab, mContext);
 
         mMedicineCategoryViewPager.setAdapter(mMedicineCategoryPagerAdapter);
 //        mMedicineCategoryViewPager.setCurrentItem(1);
@@ -78,6 +82,7 @@ public class MedicineCategoryFragment extends Fragment {
 
 
         });
+
         mMedicineCategoryTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -93,6 +98,29 @@ public class MedicineCategoryFragment extends Fragment {
             }
         });
 
+        mCounterfab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //cannot use getSupportFragmentManger(), it is for calling from activity, use getChildFragmentManager
+                //https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
+               // FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
+               FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+                SelectPatientFragment selectPatientFragment = SelectPatientFragment.newInstance();
+//                Bundle args = new Bundle();
+//                ArrayList<String> cartlist = new ArrayList<>();
+//                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
+//                    if(item.getIsAddToCart() == true) {
+//                        cartlist.add(item.getMedicinName());
+//                    }
+//                }
+//                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
+//                selectPatientFragment.setArguments(args);
+                transaction.replace(R.id.medicine_category_layout, selectPatientFragment)
+                        .addToBackStack("medicine")
+                        .commit();
+            }
+        });
 
 
 

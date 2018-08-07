@@ -14,20 +14,23 @@ import android.widget.TextView;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.fragments.MedicineFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
+import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
 
 public class MedicineCategoryPagerAdapter extends FragmentPagerAdapter {
     private int numberOfTabs;
     private Context mContext;
+    private CounterFab mCounterFab;
 
     private static final String[] tabTitles =
             {" 自費洗腎", " 口服藥物", " 注射藥物", " 外用藥物"};
 
-    public MedicineCategoryPagerAdapter(FragmentManager fm, int numbersOfTabs, Context context) {
+    public MedicineCategoryPagerAdapter(FragmentManager fm, int numbersOfTabs, CounterFab mCounterFab, Context context) {
         super(fm);
         this.numberOfTabs = numbersOfTabs;
         this.mContext = context;
+        this.mCounterFab = mCounterFab;
     }
 
     @Override
@@ -39,16 +42,16 @@ public class MedicineCategoryPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                MedicineFragment dialysis = MedicineFragment.newInstance();
+                MedicineFragment dialysis = MedicineFragment.newInstance(mCounterFab);
                 return dialysis;
             case 1:
-                MedicineFragment edible = MedicineFragment.newInstance();
+                MedicineFragment edible = MedicineFragment.newInstance(mCounterFab);
                 return edible;
             case 2:
-                MedicineFragment needle = MedicineFragment.newInstance();
+                MedicineFragment needle = MedicineFragment.newInstance(mCounterFab);
                 return needle;
             case 3:
-                MedicineFragment bandaid = MedicineFragment.newInstance();
+                MedicineFragment bandaid = MedicineFragment.newInstance(mCounterFab);
                 return bandaid;
             default:
                 return null;
