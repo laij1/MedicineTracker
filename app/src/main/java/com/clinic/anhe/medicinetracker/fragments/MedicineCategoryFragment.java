@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 
@@ -25,6 +27,7 @@ public class MedicineCategoryFragment extends Fragment {
     private ViewPager mMedicineCategoryViewPager;
     private MedicineCategoryPagerAdapter mMedicineCategoryPagerAdapter;
     private CounterFab mCounterfab;
+    private CartViewModel cartViewModel;
 
     public static MedicineCategoryFragment newInstance(){
         MedicineCategoryFragment fragment = new MedicineCategoryFragment();
@@ -35,6 +38,9 @@ public class MedicineCategoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_medicine_category, container, false);
+
+        //set up view model
+        cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
 
         mMedicineCategoryTabLayout = (TabLayout) view.findViewById(R.id.medicine_category_tabLayout);
         mCounterfab = view.findViewById(R.id.medicine_category_fab);
@@ -117,7 +123,7 @@ public class MedicineCategoryFragment extends Fragment {
 //                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
 //                selectPatientFragment.setArguments(args);
                 transaction.replace(R.id.medicine_category_layout, selectPatientFragment)
-                        .addToBackStack("medicine")
+                        .addToBackStack("selectp")
                         .commit();
             }
         });

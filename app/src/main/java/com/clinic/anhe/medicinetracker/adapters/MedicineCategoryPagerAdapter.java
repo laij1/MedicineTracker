@@ -5,16 +5,20 @@ import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.clinic.anhe.medicinetracker.utils.MainActivity;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.fragments.MedicineFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
+import com.clinic.anhe.medicinetracker.utils.MedicineType;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
 
@@ -40,18 +44,22 @@ public class MedicineCategoryPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+//        MainActivity activity = (MainActivity)mContext;
+//        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         switch (position) {
             case 0:
-                MedicineFragment dialysis = MedicineFragment.newInstance(mCounterFab);
+                MedicineFragment dialysis = MedicineFragment.newInstance(mCounterFab, MedicineType.dialysis);
+                Log.d("dialysis tab view pager is created", "CHLOE!!!");
+//                transaction.add(dialysis, "dialysis").commit();
                 return dialysis;
             case 1:
-                MedicineFragment edible = MedicineFragment.newInstance(mCounterFab);
+                MedicineFragment edible = MedicineFragment.newInstance(mCounterFab, MedicineType.edible);
                 return edible;
             case 2:
-                MedicineFragment needle = MedicineFragment.newInstance(mCounterFab);
+                MedicineFragment needle = MedicineFragment.newInstance(mCounterFab, MedicineType.needle);
                 return needle;
             case 3:
-                MedicineFragment bandaid = MedicineFragment.newInstance(mCounterFab);
+                MedicineFragment bandaid = MedicineFragment.newInstance(mCounterFab, MedicineType.bandaid);
                 return bandaid;
             default:
                 return null;
@@ -60,7 +68,9 @@ public class MedicineCategoryPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
+        //Log.d("tab number is "+ numberOfTabs, "CHLOE!!");
         return numberOfTabs;
+
     }
 
     public View getTabView(int position) {

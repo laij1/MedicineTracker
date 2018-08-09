@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,59 +21,51 @@ import com.clinic.anhe.medicinetracker.adapters.MedicineRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
+import com.clinic.anhe.medicinetracker.utils.MedicineType;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-public class MedicineFragment extends Fragment implements View.OnKeyListener {
+public class MedicineFragment extends Fragment {
+//        implements View.OnKeyListener {
 
     private CartViewModel medicineList;
     private RecyclerView mRecyclerView;
     private MedicineRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static CounterFab mCounterFab;
+    private MedicineType medicineType;
    // private List<MedicineCardViewModel> list;
    // private ImageView mBottomImageView;
    // private RadioGroup mRadioGroup;
 
 
-    public static MedicineFragment newInstance(CounterFab counterFab) {
+    public static MedicineFragment newInstance(CounterFab counterFab, MedicineType medicineType) {
         MedicineFragment fragment = new MedicineFragment();
         mCounterFab = counterFab;
+        Bundle args = new Bundle();
+        args.putString(ArgumentVariables.ARG_MEDICINE_TYPE, medicineType.toString());
+        fragment.setArguments(args);
         return fragment;
     }
 
-//    @Override
-//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//        super.onViewStateRestored(savedInstanceState);
-//        FragmentManager manager = getFragmentManager();
-//        if (savedInstanceState != null) {
-//            medicineFragment = (MedicineFragment) manager.getFragment(savedInstanceState, "MedicineFragment");
-//        }
-//        Log.d("on restore instance is called", "CHLOE!!");
-//        //restore will be called!
-//
-//    }
-
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        onSaveInstanceState(new Bundle());
-//        //this will be called
-//        Log.d("the view has been destoried!", "CHLOE!!!");
-//    }
-
-
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        view.setFocusableInTouchMode(true);
-//        view.requestFocus();
-        view.setOnKeyListener(this);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ArgumentVariables.ARG_MEDICINE_TYPE, medicineType.toString());
     }
+
+//
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+////        super.onViewCreated(view, savedInstanceState);
+////        view.setFocusableInTouchMode(true);
+////        view.requestFocus();
+//        view.setOnKeyListener(this);
+//    }
 
     @Nullable
     @Override
@@ -80,6 +73,13 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 
         View view  = inflater.inflate(R.layout.fragment_medicine, container, false);
 
+        if(savedInstanceState != null) {
+            medicineType = medicineType.fromString(savedInstanceState.getString(ArgumentVariables.ARG_MEDICINE_TYPE));
+        }
+
+        if(medicineType == null) {
+            medicineType = medicineType.fromString(getArguments().getString(ArgumentVariables.ARG_MEDICINE_TYPE));
+        }
 
        // prepareMedicineData();
         mRecyclerView = view.findViewById(R.id.medicine_recyclerview);
@@ -89,10 +89,11 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 //        mCounterFab = view.findViewById(R.id.medicine_fab);
 
         // Set up the WordViewModel.
-        medicineList = ViewModelProviders.of(this).get(CartViewModel.class);
+        medicineList = ViewModelProviders.of(getParentFragment()).get(CartViewModel.class);
 
        // medicineList.setMedicineList(list);
        // medicineList.getMedicineLiveData().setValue(list);
+       // medicineList.init(medicineType);
 
         // and associate them to the adapter.
         medicineList.getMedicineLiveData().observe(this, new Observer<List<MedicineCardViewModel>>() {
@@ -170,16 +171,16 @@ public class MedicineFragment extends Fragment implements View.OnKeyListener {
 //
 //    }
 
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                //use getChildFragmentManager instead of getSupportedFragmentManager
-                getChildFragmentManager().popBackStack();
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    @Override
+//    public boolean onKey(View v, int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_UP) {
+//            if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                //use getChildFragmentManager instead of getSupportedFragmentManager
+//                getChildFragmentManager().popBackStack();
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 }

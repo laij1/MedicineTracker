@@ -20,6 +20,7 @@ import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
+import com.ramotion.fluidslider.FluidSlider;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     @Override
     public void onBindViewHolder(@NonNull MedicineViewHolder holder, int position) {
         MedicineCardViewModel current = medicineList.getMedicineLiveData().getValue().get(position);
-        holder.imageIcon.setImageResource(current.getMedicineIcon());
+//        holder.imageIcon.setImageResource(current.getMedicineIcon());
         holder.medicineName.setText(current.getMedicinName());
         holder.medicineId.setText(current.getMedicineId());
 
@@ -100,7 +101,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     }
 
     public static class MedicineViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageIcon;
+//        ImageView imageIcon;
         TextView medicineName;
         TextView medicineId;
         ImageButton imageButton;
@@ -108,20 +109,21 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 //        RadioButton checkedRadioButton;
         RadioButton cashRadioButton;
         RadioButton creditRadioButton;
-
+        FluidSlider fluidSlider;
 //        AnimatedVectorDrawable mAddDrawable;
 //        AnimatedVectorDrawable mCheckDrawable;
 //        boolean addButtonClicked = false;
 
         public MedicineViewHolder(View itemView) {
             super(itemView);
-            imageIcon = itemView.findViewById(R.id.medicine_icon);
+//            imageIcon = itemView.findViewById(R.id.medicine_icon);
             medicineName = itemView.findViewById(R.id.medicine_name);
             medicineId = itemView.findViewById(R.id.medicine_id);
             imageButton = itemView.findViewById(R.id.medicine_add_button);
             paymentRadioGroup = itemView.findViewById(R.id.payment_radiogroup);
             cashRadioButton = itemView.findViewById(R.id.cash_radiobutton);
             creditRadioButton = itemView.findViewById(R.id.credit_radiobutton);
+            fluidSlider = itemView.findViewById(R.id.medicine_fluidslider);
 //
 //            mAddDrawable = (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_add_animatable);
 //            mCheckDrawable =(AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_check_animatable);

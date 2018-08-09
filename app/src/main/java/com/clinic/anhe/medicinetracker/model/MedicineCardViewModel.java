@@ -4,7 +4,7 @@ import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
 public class MedicineCardViewModel {
 
-    private int medicineIcon = -1;
+//    private int medicineIcon = -1;
     private String medicinName;
     private String medicineId;
     private PaymentType cashPayment = PaymentType.UNSELECT;
@@ -13,7 +13,7 @@ public class MedicineCardViewModel {
     public MedicineCardViewModel(String medicinName, String medicineId, int medicineIcon) {
         this.medicinName = medicinName;
         this.medicineId = medicineId;
-        this.medicineIcon = medicineIcon;
+//        this.medicineIcon = medicineIcon;
     }
 
     public String getMedicinName(){
@@ -24,7 +24,7 @@ public class MedicineCardViewModel {
         return medicineId;
     }
 
-    public int getMedicineIcon() { return medicineIcon; }
+//    public int getMedicineIcon() { return medicineIcon; }
 
     public void setCashPayment(boolean cash) {
         if(cash) {
