@@ -30,14 +30,23 @@ public class CartViewModel extends ViewModel {
     private MutableLiveData<List<MedicineCardViewModel>> bandaidLiveData;
     List<MedicineCardViewModel> bandaidList;
 
+    private MutableLiveData<Integer> count;
+
     public CartViewModel(){
         initDialysisList();
         initEdibleList();
         initNeedleList();
         initBandaidList();
+        initCount();
         Log.d("all the medical list has been initiated", "CHLOE!!!!");
     }
 
+    public void initCount() {
+        count = new MutableLiveData<>();
+        Integer i = Integer.valueOf(0);
+        count.setValue(i);
+        Log.d("current count is: " + count.getValue(), "CHLOE!!!");
+    }
 
     public void initDialysisList() {
         dialysisLiveData = new MutableLiveData<>();
@@ -118,6 +127,10 @@ public class CartViewModel extends ViewModel {
         return bandaidLiveData;
     }
 
+    public MutableLiveData getCountLiveData() {
+        return count;
+    }
+
 //    public MutableLiveData<List<MedicineCardViewModel>> getMedicineLiveData() {
 //        return medicineLiveData;
 //    }
@@ -139,6 +152,21 @@ public class CartViewModel extends ViewModel {
         return bandaidLiveData.getValue();
     }
 
+
+
+    public MutableLiveData increaseCount() {
+        Integer i = count.getValue();
+        int added = i.intValue() + 1;
+        count.setValue(Integer.valueOf(added));
+        return count;
+    }
+
+    public MutableLiveData decreaseCount() {
+        Integer i = count.getValue();
+        int deduced = i.intValue() - 1;
+        count.setValue(Integer.valueOf(deduced));
+        return count;
+    }
 //    public List<MedicineCardViewModel> getMedicineList(){
 //        return medicineLiveData.getValue();
 //    }

@@ -30,7 +30,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     private CartViewModel cartViewModel;
     private List<MedicineCardViewModel> mlist;
     private Context mContext;
-    private CounterFab counterFab;
+    private static CounterFab counterFab;
     private MedicineType medicineType;
 
 
@@ -195,8 +195,10 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                         imageButton.setImageResource(R.drawable.ic_add);
                         cartViewModel.removeFromCart(position, medicineType);
 //                        cartList.remove(cartViewModel.get(position));
-                        Log.d("cartList removed: " + position, ""+ position);
-                        counterFab.decrease();
+                        //counterFab.decrease();
+                        cartViewModel.decreaseCount();
+                        Log.d("cartList removed: " + position, " counterfab count is: "+ counterFab.getCount());
+
 
                     }else {
                         imageButton.setImageResource(R.drawable.ic_check);
@@ -204,9 +206,10 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 //                        list.get(position).addToCart();
 //                        cartViewModel.getMedicineLiveData().setValue(list);
                         cartViewModel.addToCart(position, medicineType);
-                        Log.d("cartList added: ", "" + position);
                         //Log.d("" + item.getMedicinName(), "cash payment: "+ item.isCashPayment());
-                        counterFab.increase();
+                       // counterFab.increase();
+                        cartViewModel.increaseCount();
+                        Log.d("cartList added: " + position, " counterfab count is: " + counterFab.getCount());
 
                     }
                 }

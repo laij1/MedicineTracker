@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -41,11 +42,27 @@ public class MedicineCategoryFragment extends Fragment {
 
         //set up view model
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-        if(cartViewModel.getDialysisList() == null) {
-            Log.d("cartViewModel dialysis list in medicine Category fragment is null", "CHLOE!!!");
-        } else {
-            Log.d("cartViewModel dialysis list in medicine Category fragment is NOT null", "CHLOE!!WEEE!");
-        }
+        //observe addtocart and removefrom cart to update ui
+        cartViewModel.getCountLiveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+//                Log.d("counter fab get count is: " + mCounterfab.getCount(), "live data is: "+ integer.intValue());
+                    if(mCounterfab.getCount() + 1 == integer.intValue()) {
+                        mCounterfab.increase();
+                    } else if (mCounterfab.getCount() - 1 == integer.intValue()) {
+                        mCounterfab.decrease();
+                    }
+
+            }
+        });
+
+//        cartViewModel.decreaseCount().observe(this, new Observer() {
+//            @Override
+//            public void onChanged(@Nullable Object o) {
+//                mCounterfab.decrease();
+//            }
+//        });
+
 
         mMedicineCategoryTabLayout = (TabLayout) view.findViewById(R.id.medicine_category_tabLayout);
         mCounterfab = view.findViewById(R.id.medicine_category_fab);

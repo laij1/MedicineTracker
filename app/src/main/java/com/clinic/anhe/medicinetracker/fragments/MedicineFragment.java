@@ -49,8 +49,21 @@ public class MedicineFragment extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("OnDestory", "CHLOE!");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("OnDestoryView", "CHLOE!");
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        //TODO: medicineType could be null....
         outState.putString(ArgumentVariables.ARG_MEDICINE_TYPE, medicineType.toString());
     }
 
@@ -67,6 +80,7 @@ public class MedicineFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
         View view  = inflater.inflate(R.layout.fragment_medicine, container, false);
 
         if(savedInstanceState != null) {
@@ -75,6 +89,11 @@ public class MedicineFragment extends Fragment {
 
         if(medicineType == null) {
             medicineType = medicineType.fromString(getArguments().getString(ArgumentVariables.ARG_MEDICINE_TYPE));
+        }
+        if(medicineType == null) {
+            Log.d("medicineType is null in OnCreateView", "CHLOE!!!!");
+        } else {
+            Log.d("medicineType is NOT null in OnCreateView", "CHLOE");
         }
 
        // prepareMedicineData();
@@ -118,11 +137,6 @@ public class MedicineFragment extends Fragment {
                 @Override
                 public void onChanged(@Nullable final List<MedicineCardViewModel> dialysisList) {
                     // Update the cached copy of the words in the adapter.
-                    if(dialysisList == null) {
-                        Log.d("dialysisList in the observer method is null", "CHLOE");
-                    } else {
-                        Log.d("dialysis List in the observer method is NOT null", "CHLOE");
-                    }
                     mAdapter.setList(dialysisList);
                 }
             });
@@ -183,34 +197,11 @@ public class MedicineFragment extends Fragment {
 //
 //        });
 
-
+//setRetainInstance to true is important so that onSaveInstanceState will work
+        setRetainInstance(true);
         return view;
     }
 
-
-
-
-
-//    private void prepareMedicineData(){
-//        list = new ArrayList<>();
-//
-//        list.add(new MedicineCardViewModel("HDF", "", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("NESP", "20ug", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("NESP", "40ug", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("EPO", "2000", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("Carnitine", "原廠", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("Carnitine", "台廠", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("Provita", " ", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("循利寧", "", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("Nephrosteril", "", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("IDPN", "", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("Methionin-B", "", R.drawable.ic_pills));
-//        list.add(new MedicineCardViewModel("Anol", "", R.drawable.ic_pills));
-//
-//
-//
-//
-//    }
 
 //    @Override
 //    public boolean onKey(View v, int keyCode, KeyEvent event) {
