@@ -25,18 +25,18 @@ public class CartViewModel extends ViewModel {
         medicineLiveData = new MutableLiveData<>();
         medicineList = new ArrayList<>();
 
-        medicineList.add(new MedicineCardViewModel("HDF", "", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("NESP", "20ug", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("NESP", "40ug", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("EPO", "2000", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("Carnitine", "原廠", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("Carnitine", "台廠", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("Provita", " ", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("循利寧", "", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("Nephrosteril", "", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("IDPN", "", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("Methionin-B", "", R.drawable.ic_medicine));
-        medicineList.add(new MedicineCardViewModel("Anol", "", R.drawable.ic_medicine));
+        medicineList.add(new MedicineCardViewModel("HDF", ""));
+        medicineList.add(new MedicineCardViewModel("NESP", "20ug"));
+        medicineList.add(new MedicineCardViewModel("NESP", "40ug"));
+        medicineList.add(new MedicineCardViewModel("EPO", "2000"));
+        medicineList.add(new MedicineCardViewModel("Carnitine", "原廠"));
+        medicineList.add(new MedicineCardViewModel("Carnitine", "台廠"));
+        medicineList.add(new MedicineCardViewModel("Provita", " "));
+        medicineList.add(new MedicineCardViewModel("循利寧", ""));
+        medicineList.add(new MedicineCardViewModel("Nephrosteril", ""));
+        medicineList.add(new MedicineCardViewModel("IDPN", ""));
+        medicineList.add(new MedicineCardViewModel("Methionin-B", ""));
+        medicineList.add(new MedicineCardViewModel("Anol", ""));
 
 
         medicineLiveData.postValue(medicineList);

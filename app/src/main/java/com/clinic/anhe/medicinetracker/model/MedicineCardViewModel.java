@@ -10,7 +10,7 @@ public class MedicineCardViewModel {
     private PaymentType cashPayment = PaymentType.UNSELECT;
     private boolean isAddToCart = false;
 
-    public MedicineCardViewModel(String medicinName, String medicineId, int medicineIcon) {
+    public MedicineCardViewModel(String medicinName, String medicineId) {
         this.medicinName = medicinName;
         this.medicineId = medicineId;
 //        this.medicineIcon = medicineIcon;
