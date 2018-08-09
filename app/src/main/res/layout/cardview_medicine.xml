@@ -34,22 +34,39 @@
             android:id="@+id/medicine_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/medicine_add_button"
-            android:layout_marginStart="68dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/medicine_add_button"
             android:paddingTop="4dp"
             android:text="Line one"
             android:textSize="30dp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/medicine_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="3dp"
+            android:layout_alignStart="@+id/medicine_name"
+            android:layout_alignTop="@+id/medicine_fluidslider"
+            android:src="@drawable/ic_price"
+            android:tint="@color/menuTextIconColor"/>
+
         <TextView
             android:id="@+id/medicine_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/medicine_name"
-            android:layout_marginTop="58dp"
+            android:layout_alignTop="@+id/medicine_price"
+            android:layout_toEndOf="@+id/medicine_price"
             android:text="Line two"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/medicine_dose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/medicine_price"
+            android:layout_toEndOf="@+id/medicine_id"
+            android:text="Line three"
             android:textSize="20dp" />
 
 
@@ -57,9 +74,6 @@
             android:id="@+id/medicine_add_button"
             android:layout_width="54dp"
             android:layout_height="50dp"
-            android:layout_above="@+id/medicine_id"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="-58dp"
             android:backgroundTint="@android:color/white"
             android:minHeight="50dp"
             android:minWidth="54dp"
@@ -71,8 +85,8 @@
             android:id="@+id/medicine_fluidslider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/medicine_name"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/medicine_add_button"
             app:bar_color="@color/colorPrimaryDark"
             app:duration="@android:integer/config_mediumAnimTime"
             app:size="small" />

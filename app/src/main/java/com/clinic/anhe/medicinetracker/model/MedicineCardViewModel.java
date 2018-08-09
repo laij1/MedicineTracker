@@ -7,13 +7,14 @@ public class MedicineCardViewModel {
 //    private int medicineIcon = -1;
     private String medicinName;
     private String medicineId;
+    private String medicineDose;
     private PaymentType cashPayment = PaymentType.UNSELECT;
     private boolean isAddToCart = false;
 
-    public MedicineCardViewModel(String medicinName, String medicineId) {
+    public MedicineCardViewModel(String medicinName, String medicineId, String medicineDose) {
         this.medicinName = medicinName;
         this.medicineId = medicineId;
-//        this.medicineIcon = medicineIcon;
+        this.medicineDose = medicineDose;
     }
 
     public String getMedicinName(){
@@ -24,7 +25,7 @@ public class MedicineCardViewModel {
         return medicineId;
     }
 
-//    public int getMedicineIcon() { return medicineIcon; }
+    public String getMedicineDose() { return medicineDose; }
 
     public void setCashPayment(boolean cash) {
         if(cash) {

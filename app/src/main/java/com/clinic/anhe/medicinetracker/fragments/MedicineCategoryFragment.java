@@ -41,6 +41,11 @@ public class MedicineCategoryFragment extends Fragment {
 
         //set up view model
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        if(cartViewModel.getDialysisList() == null) {
+            Log.d("cartViewModel dialysis list in medicine Category fragment is null", "CHLOE!!!");
+        } else {
+            Log.d("cartViewModel dialysis list in medicine Category fragment is NOT null", "CHLOE!!WEEE!");
+        }
 
         mMedicineCategoryTabLayout = (TabLayout) view.findViewById(R.id.medicine_category_tabLayout);
         mCounterfab = view.findViewById(R.id.medicine_category_fab);

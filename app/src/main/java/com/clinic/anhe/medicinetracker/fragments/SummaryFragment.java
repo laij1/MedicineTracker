@@ -60,7 +60,8 @@ public class SummaryFragment  extends Fragment {
 //                "android:switcher:" + R.id.medicine_category_pager +":"+ 0)
         getParentFragment().getParentFragment()
         ).get(CartViewModel.class);
-        medicineList = cartViewModel.getMedicineList();
+        //TODO:!!!
+        medicineList = cartViewModel.getEdibleList();
 
         patientName = view.findViewById(R.id.summary_patientname);
         patientId = view.findViewById(R.id.summary_patientid);

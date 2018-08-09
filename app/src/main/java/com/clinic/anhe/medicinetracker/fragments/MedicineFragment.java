@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
@@ -22,9 +20,7 @@ import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
-import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,7 +28,7 @@ import java.util.List;
 public class MedicineFragment extends Fragment {
 //        implements View.OnKeyListener {
 
-    private CartViewModel medicineList;
+    private CartViewModel cartViewModel;
     private RecyclerView mRecyclerView;
     private MedicineRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -89,25 +85,70 @@ public class MedicineFragment extends Fragment {
 //        mCounterFab = view.findViewById(R.id.medicine_fab);
 
         // Set up the WordViewModel.
-        medicineList = ViewModelProviders.of(getParentFragment()).get(CartViewModel.class);
+//        Fragment f = getParentFragment();
+//        Log.d(f.getTag(), "WE NEED TO KNOW");
+        cartViewModel = ViewModelProviders.of(
+               getParentFragment()).get(CartViewModel.class);
 
-       // medicineList.setMedicineList(list);
-       // medicineList.getMedicineLiveData().setValue(list);
-       // medicineList.init(medicineType);
+        if(cartViewModel.getDialysisList() == null) {
+            Log.d("cartViewModel- dialysis list in medicineFragment is null", "CHLOEE!");
+        } else {
+            Log.d("cartViewModel- dialysis list in medicineFragment is NOT null", "CHLOEE!WEEE!!");
+        }
 
-        // and associate them to the adapter.
-        medicineList.getMedicineLiveData().observe(this, new Observer<List<MedicineCardViewModel>>() {
-            @Override
-            public void onChanged(@Nullable final List<MedicineCardViewModel> medicineList) {
-                // Update the cached copy of the words in the adapter.
-                mAdapter.setList(medicineList);
-            }
-        });
+
+        //init all the medicine in livedata
+//        if(medicineType == MedicineType.edible) {
+//            cartViewModel.initEdibleList();
+//        }
+
+       // cartViewModel.setMedicineList(list);
+       // cartViewModel.getMedicineLiveData().setValue(list);
+       // cartViewModel.init(medicineType);
+
 
        // mBottomImageView = view.findViewById(R.id.medicine_add_button);
        // mRadioGroup = view.findViewById(R.id.payment_radiogroup);
 
-        mAdapter = new MedicineRecyclerViewAdapter(medicineList, mCounterFab);
+        mAdapter = new MedicineRecyclerViewAdapter(cartViewModel, mCounterFab, medicineType);
+
+        // and associate them to the adapter.
+        if(medicineType == MedicineType.dialysis) {
+            cartViewModel.getDialysisLiveData().observe(getParentFragment(), new Observer<List<MedicineCardViewModel>>() {
+                @Override
+                public void onChanged(@Nullable final List<MedicineCardViewModel> dialysisList) {
+                    // Update the cached copy of the words in the adapter.
+                    if(dialysisList == null) {
+                        Log.d("dialysisList in the observer method is null", "CHLOE");
+                    } else {
+                        Log.d("dialysis List in the observer method is NOT null", "CHLOE");
+                    }
+                    mAdapter.setList(dialysisList);
+                }
+            });
+        } else if(medicineType == MedicineType.edible) {
+            cartViewModel.getEdibleLiveData().observe(getParentFragment(), new Observer<List<MedicineCardViewModel>>() {
+                @Override
+                public void onChanged(@Nullable List<MedicineCardViewModel> edibleList) {
+                    mAdapter.setList(edibleList);
+                }
+            });
+        } else if(medicineType == MedicineType.needle) {
+            cartViewModel.getNeedleLiveData().observe(getParentFragment(), new Observer<List<MedicineCardViewModel>>() {
+                @Override
+                public void onChanged(@Nullable List<MedicineCardViewModel> needleList) {
+                    mAdapter.setList(needleList);
+                }
+            });
+        } else {
+            cartViewModel.getBandaidLiveData().observe(getParentFragment(), new Observer<List<MedicineCardViewModel>>() {
+                @Override
+                public void onChanged(@Nullable List<MedicineCardViewModel> bandaidList) {
+                    mAdapter.setList(bandaidList);
+                }
+            });
+
+        }
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -127,7 +168,7 @@ public class MedicineFragment extends Fragment {
 //                SelectPatientFragment selectPatientFragment = SelectPatientFragment.newInstance();
 ////                Bundle args = new Bundle();
 ////                ArrayList<String> cartlist = new ArrayList<>();
-////                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
+////                for(MedicineCardViewModel item :cartViewModel.getMedicineList()) {
 ////                    if(item.getIsAddToCart() == true) {
 ////                        cartlist.add(item.getMedicinName());
 ////                    }
