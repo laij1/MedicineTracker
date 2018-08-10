@@ -264,6 +264,58 @@ public class CartViewModel extends ViewModel {
 //        medicineLiveData.postValue(medicineList);
     }
 
+    public void setQuantity(int position, MedicineType medicineType,  int quantity) {
+        MedicineCardViewModel item = null;
+        switch(medicineType) {
+            case dialysis:
+                item = getDialysisList().get(position);
+                item.setQuantity(quantity);
+                dialysisLiveData.postValue(dialysisList);
+                break;
+            case edible:
+                item = getEdibleList().get(position);
+                item.setQuantity(quantity);
+                edibleLiveData.postValue(edibleList);
+                break;
+            case needle:
+                item = getNeedleList().get(position);
+                item.setQuantity(quantity);
+                needleLiveData.postValue(needleList);
+                break;
+            case bandaid:
+                item = getBandaidList().get(position);
+                item.setQuantity(quantity);
+                bandaidLiveData.postValue(bandaidList);
+                break;
+        }
+    }
+
+    public void setSliderPosition(int position, MedicineType medicineType, float sliderPosition) {
+        MedicineCardViewModel item = null;
+        switch(medicineType) {
+            case dialysis:
+                item = getDialysisList().get(position);
+                item.setSliderPosition(sliderPosition);
+                dialysisLiveData.postValue(dialysisList);
+                break;
+            case edible:
+                item = getEdibleList().get(position);
+                item.setSliderPosition(sliderPosition);
+                edibleLiveData.postValue(edibleList);
+                break;
+            case needle:
+                item = getNeedleList().get(position);
+                item.setSliderPosition(sliderPosition);
+                needleLiveData.postValue(needleList);
+                break;
+            case bandaid:
+                item = getBandaidList().get(position);
+                item.setSliderPosition(sliderPosition);
+                bandaidLiveData.postValue(bandaidList);
+                break;
+        }
+    }
+
    public void setCreditPayment(int position, MedicineType medicineType) {
        MedicineCardViewModel item = null;
        switch(medicineType) {

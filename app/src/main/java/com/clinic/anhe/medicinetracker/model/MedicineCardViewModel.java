@@ -10,6 +10,9 @@ public class MedicineCardViewModel {
     private String medicineDose;
     private PaymentType cashPayment = PaymentType.UNSELECT;
     private boolean isAddToCart = false;
+    private int quantity = 0;
+    private float sliderPosition = 0f;
+
 
     public MedicineCardViewModel(String medicinName, String medicineId, String medicineDose) {
         this.medicinName = medicinName;
@@ -27,12 +30,24 @@ public class MedicineCardViewModel {
 
     public String getMedicineDose() { return medicineDose; }
 
+    public int getQuantity() { return quantity; }
+
+    public void setQuantity(int i) {
+        quantity = i;
+    }
+
     public void setCashPayment(boolean cash) {
         if(cash) {
             cashPayment = PaymentType.CASH;
         } else {
             cashPayment = PaymentType.MONTH;
         }
+    }
+
+    public float getSliderPosition() { return sliderPosition; }
+
+    public void setSliderPosition(float f) {
+        sliderPosition = f;
     }
 
     public PaymentType isCashPayment() {

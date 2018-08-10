@@ -25,6 +25,10 @@ import com.ramotion.fluidslider.FluidSlider;
 
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
+
 public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRecyclerViewAdapter.MedicineViewHolder> {
 
     private CartViewModel cartViewModel;
@@ -32,6 +36,14 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     private Context mContext;
     private static CounterFab counterFab;
     private MedicineType medicineType;
+    private final int min = 0;
+    private final int max = 10;
+    private final int total = max - min;
+    private float sliderPosition = 0f;
+    private String sliderQuantity = "0";
+
+
+
 
 
 
@@ -40,6 +52,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         this.cartViewModel = cartViewModel;
         this.counterFab = counterFab;
         this.medicineType = medicineType;
+
     }
 
     @NonNull
@@ -74,6 +87,9 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         holder.medicineName.setText(current.getMedicinName());
         holder.medicineId.setText(current.getMedicineId());
         holder.medicineDose.setText(current.getMedicineDose());
+        holder.fluidSlider.setBubbleText( "" + current.getQuantity());
+        holder.fluidSlider.setPosition(current.getSliderPosition());
+
 
         //TODO: if item in the cart, we need the ui to be ic_check
        boolean isAddtoCart = current.getIsAddToCart();
@@ -155,6 +171,44 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             creditRadioButton = itemView.findViewById(R.id.credit_radiobutton);
             fluidSlider = itemView.findViewById(R.id.medicine_fluidslider);
             imageView = itemView.findViewById(R.id.medicine_price);
+
+
+            fluidSlider.setPosition(0);
+            fluidSlider.setEndText(String.valueOf(max));
+            fluidSlider.setStartText(String.valueOf(min));
+            fluidSlider.setPositionListener(new Function1<Float, Unit>() {
+                @Override
+                public Unit invoke(Float pos) {
+                   // int position = getAdapterPosition();
+                    sliderQuantity = String.valueOf((int) (min + total * pos));
+                    Log.d("setPositionListener :" + sliderQuantity, "CHLOE");
+                    //cartViewModel.setQuantity(position, medicineType, Integer.valueOf(value).intValue());
+                    fluidSlider.setBubbleText(String.valueOf(sliderQuantity));
+
+                    return Unit.INSTANCE;
+                }
+            });
+
+            fluidSlider.setBeginTrackingListener(new Function0<Unit>() {
+                @Override
+                public Unit invoke() {
+                    Log.d("begintrackingListener", "CHLOE");
+                    return Unit.INSTANCE;
+                }
+            });
+
+            fluidSlider.setEndTrackingListener(new Function0<Unit>() {
+                @Override
+                public Unit invoke() {
+                    //TODO: we need livedata to save fluidSlider's position
+                    Log.d("endtrackingListener: " + sliderQuantity, "CHLOE"+ fluidSlider.getPosition() );
+                    int position = getAdapterPosition();
+                    cartViewModel.setQuantity(position, medicineType, Integer.valueOf(sliderQuantity).intValue());
+                    cartViewModel.setSliderPosition(position, medicineType, fluidSlider.getPosition());
+                    return Unit.INSTANCE;
+                }
+            });
+
 //
 //            mAddDrawable = (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_add_animatable);
 //            mCheckDrawable =(AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_check_animatable);

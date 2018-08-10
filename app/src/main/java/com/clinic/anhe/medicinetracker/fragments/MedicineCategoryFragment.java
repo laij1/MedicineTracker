@@ -45,11 +45,11 @@ public class MedicineCategoryFragment extends Fragment {
         //observe addtocart and removefrom cart to update ui
         cartViewModel.getCountLiveData().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable Integer integer) {
-//                Log.d("counter fab get count is: " + mCounterfab.getCount(), "live data is: "+ integer.intValue());
-                    if(mCounterfab.getCount() + 1 == integer.intValue()) {
+            public void onChanged(@Nullable Integer i) {
+//                Log.d("counter fab get count is: " + mCounterfab.getCount(), "live data is: "+ i.intValue());
+                    if(mCounterfab.getCount() + 1 == i.intValue()) {
                         mCounterfab.increase();
-                    } else if (mCounterfab.getCount() - 1 == integer.intValue()) {
+                    } else if (mCounterfab.getCount() - 1 == i.intValue()) {
                         mCounterfab.decrease();
                     }
 
