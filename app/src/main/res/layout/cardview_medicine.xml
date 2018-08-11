@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="150dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="15dp"
@@ -15,8 +15,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_height="150dp">
 
         <!--<ImageView-->
         <!--android:id="@+id/medicine_icon"-->
@@ -34,8 +33,11 @@
             android:id="@+id/medicine_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/medicine_add_button"
+
+            android:layout_alignBottom="@+id/medicine_add_button"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="61dp"
+            android:gravity="center_vertical"
             android:paddingTop="4dp"
             android:text="Line one"
             android:textSize="30dp"
@@ -45,11 +47,12 @@
             android:id="@+id/medicine_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="3dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/medicine_name"
-            android:layout_alignTop="@+id/medicine_fluidslider"
+            android:layout_marginBottom="39dp"
+            android:paddingTop="3dp"
             android:src="@drawable/ic_price"
-            android:tint="@color/menuTextIconColor"/>
+            android:tint="@color/menuTextIconColor" />
 
         <TextView
             android:id="@+id/medicine_id"
@@ -74,6 +77,8 @@
             android:id="@+id/medicine_add_button"
             android:layout_width="54dp"
             android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:backgroundTint="@android:color/white"
             android:minHeight="50dp"
             android:minWidth="54dp"
@@ -83,22 +88,34 @@
 
         <com.ramotion.fluidslider.FluidSlider
             android:id="@+id/medicine_fluidslider"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/medicine_name"
-            android:layout_centerVertical="true"
+            android:layout_alignBottom="@+id/payment_radiogroup"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="550dp"
+            android:layout_marginRight="20dp"
             app:bar_color="@color/colorPrimaryDark"
             app:duration="@android:integer/config_mediumAnimTime"
             app:size="small" />
 
+        <TextView
+            android:id="@+id/medicine_slidertemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/medicine_price"
+            android:layout_marginEnd="322dp"
+            android:visibility="gone"
+            android:text="10"
+            android:textSize="20dp" />
 
         <RadioGroup
             android:id="@+id/payment_radiogroup"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="11dp"
-            android:layout_toEndOf="@+id/medicine_add_button"
+            android:layout_alignBottom="@+id/medicine_price"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="410dp"
             android:orientation="horizontal">
 
             <RadioButton
@@ -106,7 +123,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginRight="35dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/addbutton_round"
                 android:backgroundTint="@color/menuTextIconColor"
                 android:button="@null"
@@ -119,7 +136,6 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginRight="35dp"
                 android:background="@drawable/addbutton_round"
                 android:backgroundTint="@color/menuTextIconColor"
                 android:button="@null"

@@ -50,18 +50,7 @@ public class SummaryFragment  extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_summary, container, false);
 
-//        cartlist = getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST);
-        Activity a = getActivity();
-        if(a == null) {
-            Log.d("cannot get view pager activity", "CHLOE!");
-        }
-        cartViewModel = ViewModelProviders.of(
-//                getActivity().getSupportFragmentManager().findFragmentByTag("selectp").getParentFragment().getActivity().getSupportFragmentManager().findFragmentByTag(
-//                "android:switcher:" + R.id.medicine_category_pager +":"+ 0)
-        getParentFragment().getParentFragment()
-        ).get(CartViewModel.class);
-        //TODO:!!!
-        medicineList = cartViewModel.getEdibleList();
+        cartViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(CartViewModel.class);
 
         patientName = view.findViewById(R.id.summary_patientname);
         patientId = view.findViewById(R.id.summary_patientid);
@@ -74,12 +63,17 @@ public class SummaryFragment  extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
 
         //TODO: only pass the meds that has been selected
-        cartList= new ArrayList<>();
-        for(MedicineCardViewModel m : medicineList) {
-            if(m.getIsAddToCart()) {
-                cartList.add(m);
-            }
-        }
+        cartList = new ArrayList<>();
+        //all four categories meds
+        medicineList = cartViewModel.getDialysisList();
+        addToCartList(medicineList);
+        medicineList = cartViewModel.getEdibleList();
+        addToCartList(medicineList);
+        medicineList = cartViewModel.getNeedleList();
+        addToCartList(medicineList);
+        medicineList = cartViewModel.getBandaidList();
+        addToCartList(medicineList);
+
         mAdapter = new SummaryRecyclerViewAdapter(cartList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -87,5 +81,13 @@ public class SummaryFragment  extends Fragment {
 
 
         return view;
+    }
+
+    private void addToCartList(List<MedicineCardViewModel> list) {
+        for(MedicineCardViewModel m : list) {
+            if(m.getIsAddToCart()) {
+                cartList.add(m);
+            }
+        }
     }
 }

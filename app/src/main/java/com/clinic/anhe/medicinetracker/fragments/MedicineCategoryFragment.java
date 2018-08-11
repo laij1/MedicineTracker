@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 
 
-public class MedicineCategoryFragment extends Fragment {
+public class MedicineCategoryFragment extends Fragment implements View.OnKeyListener{
 
     private TabLayout mMedicineCategoryTabLayout;
     private Context mContext;
@@ -34,6 +35,15 @@ public class MedicineCategoryFragment extends Fragment {
         MedicineCategoryFragment fragment = new MedicineCategoryFragment();
         return fragment;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.setFocusableInTouchMode(true);
+//        view.requestFocus();
+        view.setOnKeyListener(this);
+    }
+
 
     @Nullable
     @Override
@@ -169,4 +179,18 @@ public class MedicineCategoryFragment extends Fragment {
         tab.setCustomView(null);
         tab.setCustomView(mMedicineCategoryPagerAdapter.getSelectedTabView(position));
     }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                //use getChildFragmentManager instead of getSupportedFragmentManager
+                getChildFragmentManager().popBackStack();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

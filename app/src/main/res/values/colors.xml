@@ -5,4 +5,5 @@
     <color name="colorAccent">#00BFA5</color>
     <color name="menuTextIconColor">#757575</color>
     <color name="recyclerViewBackground">#FFE6EBF5</color>
+    <color name="functionButtonColor">#87CEEB</color>
 </resources>

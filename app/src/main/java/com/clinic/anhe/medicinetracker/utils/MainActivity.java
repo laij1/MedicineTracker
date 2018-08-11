@@ -211,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
                                 //MedicineFragment medicineFragment = MedicineFragment.newInstance();
                                 MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                           .replace(R.id.main_fragment_container, medicineCategoryFragment,"medicinefragment")
+                                           .replace(R.id.main_fragment_container, medicineCategoryFragment,ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                                           .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
                                            .commit();
                                 break;
 //                            case R.id.menu_edible:

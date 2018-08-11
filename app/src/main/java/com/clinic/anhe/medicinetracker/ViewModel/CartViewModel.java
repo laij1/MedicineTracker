@@ -54,6 +54,19 @@ public class CartViewModel extends ViewModel {
         dialysisList.add(new MedicineCardViewModel("Vit D3","500","/瓶"));
         dialysisList.add(new MedicineCardViewModel("Vit B3","1200","/瓶"));
         dialysisList.add(new MedicineCardViewModel("Cinacalcet","5100","/盒"));
+        dialysisList.add(new MedicineCardViewModel("1Kremezin","165","/包"));
+        dialysisList.add(new MedicineCardViewModel("1Kremezin","13500","/盒"));
+        dialysisList.add(new MedicineCardViewModel("1Renvela(錠)","6500", "/180顆"));
+        dialysisList.add(new MedicineCardViewModel("1Renvela(粉)","3250", "/90包"));
+        dialysisList.add(new MedicineCardViewModel("1Dephos","5000", "/2瓶1組"));
+        dialysisList.add(new MedicineCardViewModel("1Regpara","6300", "/30顆"));
+        dialysisList.add(new MedicineCardViewModel("1Fosrenal 750mg","6750", "/3+1瓶"));
+        dialysisList.add(new MedicineCardViewModel("1Forsrenal 1000mg","6750", "/3瓶"));
+        dialysisList.add(new MedicineCardViewModel("1普寧腎","90", "/瓶"));
+        dialysisList.add(new MedicineCardViewModel("1普寧腎","2160", "/箱"));
+        dialysisList.add(new MedicineCardViewModel("1福寧補","600", "/盒"));
+        dialysisList.add(new MedicineCardViewModel("1阿德比(錠)","350", "/瓶"));
+        dialysisList.add(new MedicineCardViewModel("1阿德比(粉)","1500", "/60包"));
 
         //dialysisLiveData.postValue(dialysisList);
         dialysisLiveData.setValue(dialysisList);

@@ -5,7 +5,9 @@ import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
+import android.text.TextWatcher;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
@@ -22,6 +24,7 @@ import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
 import com.ramotion.fluidslider.FluidSlider;
+
 
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     private static CounterFab counterFab;
     private MedicineType medicineType;
     private final int min = 0;
-    private final int max = 10;
+    private final int max = 20;
     private final int total = max - min;
     private float sliderPosition = 0f;
     private String sliderQuantity = "0";
@@ -155,6 +158,8 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         RadioButton creditRadioButton;
         FluidSlider fluidSlider;
         ImageView imageView;
+        //this is becoz we have a bug in updating fluidslider
+        TextView fluidSliderTemp;
 //        AnimatedVectorDrawable mAddDrawable;
 //        AnimatedVectorDrawable mCheckDrawable;
 //        boolean addButtonClicked = false;
@@ -171,6 +176,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             creditRadioButton = itemView.findViewById(R.id.credit_radiobutton);
             fluidSlider = itemView.findViewById(R.id.medicine_fluidslider);
             imageView = itemView.findViewById(R.id.medicine_price);
+            fluidSliderTemp = itemView.findViewById(R.id.medicine_slidertemp);
 
 
             fluidSlider.setPosition(0);
@@ -200,14 +206,47 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             fluidSlider.setEndTrackingListener(new Function0<Unit>() {
                 @Override
                 public Unit invoke() {
-                    //TODO: we need livedata to save fluidSlider's position
-                    Log.d("endtrackingListener: " + sliderQuantity, "CHLOE"+ fluidSlider.getPosition() );
+                    //we need livedata to save fluidSlider's position
+                    //update livedata here will cause a bug
+                    //workaround is to save the values in a textview
+//                    fluidSliderTemp.setText(sliderQuantity.toString() + "/" + fluidSlider.getPosition());
+////
                     int position = getAdapterPosition();
+                    Log.d("endtrackingListener: " + sliderQuantity + " postion is: " + position, "CHLOE"+ fluidSlider.getPosition() );
                     cartViewModel.setQuantity(position, medicineType, Integer.valueOf(sliderQuantity).intValue());
                     cartViewModel.setSliderPosition(position, medicineType, fluidSlider.getPosition());
+                    //notifyItemChanged(position);
                     return Unit.INSTANCE;
                 }
             });
+
+//            TextWatcher textWatcher = new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//                    String temp = s.toString();
+//                    String values[] = temp.split("/");
+//                    if(temp != "" || temp != null) {
+//                        int position = getAdapterPosition();
+//                        cartViewModel.setQuantity(position, medicineType, Integer.valueOf(values[0]).intValue());
+//                        cartViewModel.setSliderPosition(position, medicineType, Float.valueOf(values[1]).floatValue());
+//                    }
+//                }
+//            };
+//
+//            fluidSliderTemp.addTextChangedListener(textWatcher);
+
+
+
 
 //
 //            mAddDrawable = (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.ic_add_animatable);

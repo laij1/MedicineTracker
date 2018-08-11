@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SummaryRecyclerViewAdapter extends RecyclerView.Adapter<SummaryRecyclerViewAdapter.SummaryViewHolder> {
@@ -30,7 +30,13 @@ public class SummaryRecyclerViewAdapter extends RecyclerView.Adapter<SummaryRecy
 
     @Override
     public void onBindViewHolder(@NonNull SummaryViewHolder holder, int position) {
-        holder.ItemName.setText(cartlist.get(position).getMedicinName());
+        holder.itemName.setText(cartlist.get(position).getMedicinName());
+        holder.itemPayment.setText(cartlist.get(position).isCashPayment() == PaymentType.CASH ? "現" : "月");
+        //TODO: 買十送二 needs special calculation
+        int quantity = cartlist.get(position).getQuantity();
+        int subtotal = Integer.valueOf(cartlist.get(position).getMedicineId()).intValue() * quantity;
+        holder.itemQuantity.setText(String.valueOf(cartlist.get(position).getQuantity()));
+        holder.itemSubtotal.setText(String.valueOf(subtotal));
     }
 
 
@@ -41,10 +47,18 @@ public class SummaryRecyclerViewAdapter extends RecyclerView.Adapter<SummaryRecy
     }
 
     public static class SummaryViewHolder extends RecyclerView.ViewHolder {
-        private TextView ItemName;
+        private TextView itemName;
+        private TextView itemPayment;
+        private TextView itemQuantity;
+        private TextView itemSubtotal;
+
         public SummaryViewHolder(View itemView) {
             super(itemView);
-            ItemName = itemView.findViewById(R.id.summary_itemname);
+            itemName = itemView.findViewById(R.id.summary_itemname);
+            itemPayment = itemView.findViewById(R.id.summary_payment);
+            itemQuantity = itemView.findViewById(R.id.summary_quantity);
+            itemSubtotal = itemView.findViewById(R.id.summary_subtotal);
+
         }
 
     }
