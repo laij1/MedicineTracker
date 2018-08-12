@@ -23,11 +23,13 @@ import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ramotion.fluidslider.FluidSlider;
 
 
 import java.util.List;
 
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
@@ -93,7 +95,6 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         holder.fluidSlider.setBubbleText( "" + current.getQuantity());
         holder.fluidSlider.setPosition(current.getSliderPosition());
 
-
         //TODO: if item in the cart, we need the ui to be ic_check
        boolean isAddtoCart = current.getIsAddToCart();
         // boolean isAddtoCart = cartViewModel.getMedicineLiveData().getValue().get(position).getIsAddToCart();
@@ -121,6 +122,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                     ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.menuTextIconColor)));
             holder.creditRadioButton.setBackgroundTintList(
                     ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.menuTextIconColor)));
+
         }
 
     }
@@ -262,16 +264,30 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 
 
                     }else {
-                        imageButton.setImageResource(R.drawable.ic_check);
+
+                         if(current.isCashPayment() == PaymentType.UNSELECT) {
+                            //show the dialog to remind that these values should be set
+                            new SweetAlertDialog(mContext)
+                                    .setTitleText("請選擇付款方式")
+                                    .show();
+
+                         } else if(current.getQuantity() == 0) {
+                             //show the dialog to remind that these values should be set
+                             new SweetAlertDialog(mContext)
+                                     .setTitleText("請選擇藥品數量")
+                                     .show();
+
+                         } else {
+                            imageButton.setImageResource(R.drawable.ic_check);
 //                        List<MedicineCardViewModel> list = cartViewModel.getMedicineList();
 //                        list.get(position).addToCart();
 //                        cartViewModel.getMedicineLiveData().setValue(list);
-                        cartViewModel.addToCart(position, medicineType);
-                        //Log.d("" + item.getMedicinName(), "cash payment: "+ item.isCashPayment());
-                       // counterFab.increase();
-                        cartViewModel.increaseCount();
-                        Log.d("cartList added: " + position, " counterfab count is: " + counterFab.getCount());
-
+                            cartViewModel.addToCart(position, medicineType);
+                            //Log.d("" + item.getMedicinName(), "cash payment: "+ item.isCashPayment());
+                            // counterFab.increase();
+                            cartViewModel.increaseCount();
+                            Log.d("cartList added: " + position, " counterfab count is: " + counterFab.getCount());
+                        }
                     }
                 }
             });

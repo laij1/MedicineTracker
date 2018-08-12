@@ -23,6 +23,8 @@ android {
     }
 }
 
+
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -42,4 +44,5 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
 
     implementation 'com.ramotion.fluidslider:fluid-slider:0.3.0'
+    implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
 }

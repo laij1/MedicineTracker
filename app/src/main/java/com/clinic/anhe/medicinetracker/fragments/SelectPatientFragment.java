@@ -84,7 +84,8 @@ public class SelectPatientFragment extends Fragment {
                 args.putString("patientName", patientName);
                 args.putString("patientId", paitientId);
                 summaryFragment.setArguments(args);
-                transaction.replace(R.id.select_patient_layout, summaryFragment)
+                transaction.replace(R.id.select_patient_layout, summaryFragment, "summary")
+                           .addToBackStack("summary")
                            .commit();
             }
         });
