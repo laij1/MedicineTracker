@@ -57,7 +57,7 @@ public class SummaryFragment  extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_summary, container, false);
 
         cartViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(CartViewModel.class);
@@ -109,8 +109,15 @@ public class SummaryFragment  extends Fragment {
                         pDialog.setTitleText("Success!")
                                 .setConfirmText("OK")
                                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                                getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                            }
+                        });
 
-                        getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
 
                     }
                 }.start();
