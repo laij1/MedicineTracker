@@ -27,7 +27,7 @@
         app:elevation="2dp"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_cart" />
+        app:srcCompat="@drawable/ic_add_cart" />
 
 
     <android.support.design.widget.TabLayout
