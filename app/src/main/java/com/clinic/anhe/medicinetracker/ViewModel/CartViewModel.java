@@ -30,7 +30,15 @@ public class CartViewModel extends ViewModel {
     private MutableLiveData<List<MedicineCardViewModel>> bandaidLiveData;
     List<MedicineCardViewModel> bandaidList;
 
+    //for fluidslider
     private MutableLiveData<Integer> count;
+
+    //for payment alert Dialog
+    private MutableLiveData<Boolean> paymentAlert;
+
+    //for quantity alert Dialog
+    private MutableLiveData<Boolean> quantityAlert;
+
 
     public CartViewModel(){
         initDialysisList();

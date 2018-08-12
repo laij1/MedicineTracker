@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 
 import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
@@ -47,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_vector);
         //TODO: discuss what name the app should be and change the title later
         actionbar.setTitle("自費計價單");
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        PatientsFragment fragment = PatientsFragment.newInstance(Shift.morning);
+        transaction.replace(R.id.main_fragment_container, fragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                   .commit();
+
 
         mMenuDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_menu_animatable);
         mBackDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_back_animatable);

@@ -267,10 +267,18 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 
                          if(current.isCashPayment() == PaymentType.UNSELECT) {
                             //show the dialog to remind that these values should be set
-                            new SweetAlertDialog(mContext)
+                            final SweetAlertDialog paymentAlert = new SweetAlertDialog(mContext);
+                                    paymentAlert
                                     .setTitleText("請選擇付款方式")
                                     .show();
 
+                                  paymentAlert.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                      @Override
+                                      public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            Log.d("sweet dialog confirm button is clicked","CHLOE" );
+                                          sweetAlertDialog.dismiss();
+                                      }
+                                  });
                          } else if(current.getQuantity() == 0) {
                              //show the dialog to remind that these values should be set
                              new SweetAlertDialog(mContext)

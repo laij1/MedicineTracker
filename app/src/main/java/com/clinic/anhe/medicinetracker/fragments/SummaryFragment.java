@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Transaction;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +27,7 @@ import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
 import com.clinic.anhe.medicinetracker.adapters.SummaryRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,7 @@ public class SummaryFragment  extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private SummaryRecyclerViewAdapter mAdapter;
     private FloatingActionButton summaryFab;
-    private ViewGroup mContainer;
+    private int i = -1;
 
     //TODO
     private CartViewModel cartViewModel;
@@ -57,18 +59,64 @@ public class SummaryFragment  extends Fragment {
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_summary, container, false);
-        mContainer = container;
-
 
         cartViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(CartViewModel.class);
 
         patientName = view.findViewById(R.id.summary_patientname);
         patientId = view.findViewById(R.id.summary_patientid);
         summaryFab = view.findViewById(R.id.summary_fab);
+
         summaryFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                //launch a sweetAlertDialog
+
+                final SweetAlertDialog pDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.setTitleText("Loading");
+                pDialog.show();
+                pDialog.setCancelable(false);
+                CountDownTimer timer = new CountDownTimer(500 * 7, 100) {
+                    public void onTick(long millisUntilFinished) {
+                        // you can change the progress bar color by ProgressHelper every 800 millis
+                        i++;
+                        switch (i){
+                            case 0:
+                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.blue_btn_bg_color));
+                                break;
+                            case 1:
+                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.material_deep_teal_50));
+                                break;
+                            case 2:
+                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.success_stroke_color));
+                                break;
+                            case 3:
+                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.material_deep_teal_20));
+                                break;
+                            case 4:
+                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.material_blue_grey_80));
+                                break;
+                            case 5:
+                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.warning_stroke_color));
+                                break;
+                            case 6:
+                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.success_stroke_color));
+                                break;
+                        }
+                    }
+
+                    public void onFinish() {
+                        i = -1;
+                        pDialog.setTitleText("Success!")
+                                .setConfirmText("OK")
+                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+
+                        getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                    }
+                }.start();
+
+
+//                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 //getChildFragmentManager().popBackStackImmediate().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //                int backStackCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
 //                for (int i = 0; i < backStackCount; i++) {
@@ -76,31 +124,31 @@ public class SummaryFragment  extends Fragment {
 //                    // Get the back stack fragment id.
 //                    int backStackId = getActivity().getSupportFragmentManager().getBackStackEntryAt(i).getId();
 
-//                getActivity().getSupportFragmentManager().popBackStack("selectp", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//
+               // getActivity().getSupportFragmentManager().popBackStack("selectp", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
 //                getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-                //getActivity().getSupportFragmentManager().popBackStack("summary", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+               // getActivity().getSupportFragmentManager().popBackStack("summary", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
 //                Log.d("can we get the container? "+ getActivity().findViewById(R.id.main_fragment_container, "");
 //                } /* end of for */
 
 //                view = inflater.inflate(R.layout.activity_main, mContainer, false);
-                MedicineCategoryFragment fragment = MedicineCategoryFragment.newInstance();
-                transaction
-                        //.remove(getFragmentManager().findFragmentByTag(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT))
-                          // .remove(getFragmentManager().findFragmentByTag("selectp"))
-                        //.remove(getFragmentManager().findFragmentByTag("summary"))
-//
-//                        .replace(R.id.summary_layout,fragment,ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-//                           .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-                        .remove(getFragmentManager().findFragmentByTag("summary"))
-                        .remove(getParentFragment())
+//                MedicineCategoryFragment fragment = MedicineCategoryFragment.newInstance();
+//                transaction
+////                        .remove(getFragmentManager().findFragmentByTag(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT))
+////                           .remove(getFragmentManager().findFragmentByTag("selectp"))
+////                        .remove(getFragmentManager().findFragmentByTag("summary"))
+////
+////                        .replace(R.id.summary_layout,fragment,ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+////                           .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+//                        .remove(getFragmentManager().findFragmentByTag("summary"))
+//                        .remove(getParentFragment())
 //                        .remove(getParentFragment().getParentFragment())
-//                        .add(fragment, "test")
-                           //.remove(getFragmentManager().findFragmentByTag("summary"))
-
-                           .commit();
+////                        .add(fragment, "test")
+////                           .remove(getFragmentManager().findFragmentByTag("summary"))
+//
+//                           .commit();
 
 //                getActivity().getSupportFragmentManager().popBackStack("summary", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //                view.getRootView();
