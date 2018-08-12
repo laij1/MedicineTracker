@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/recyclerViewBackground"
-    android:elevation="8dp">
+    android:elevation="6dp">
 
 
     <TextView
@@ -18,7 +18,7 @@
         android:text="patient name"
         android:textSize="30dp"
         android:gravity="center"
-        android:elevation="8dp"/>
+        android:elevation="6dp"/>
 
     <TextView
         android:id="@+id/summary_patientid"
@@ -29,7 +29,7 @@
         android:text="patient id"
         android:textSize="20dp"
         android:gravity="center"
-        android:elevation="8dp"/>
+        android:elevation="6dp"/>
 
     <!--<FrameLayout-->
         <!--android:id="@+id/summary_fragment_container"-->
@@ -47,7 +47,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="87dp"
         android:background="@color/recyclerViewBackground"
-        android:elevation="8dp"
+        android:elevation="6dp"
         android:scrollbars="vertical" />
 
     <ImageView
@@ -68,7 +68,7 @@
         android:layout_marginBottom="28dp"
         android:layout_marginEnd="27dp"
         android:backgroundTint="@color/colorAccent"
-        android:elevation="6dp"
+        android:elevation="8dp"
         android:src="@drawable/ic_assign"
         android:tint="@android:color/white"
         app:fabSize="normal"

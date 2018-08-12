@@ -35,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
     List<GroupMenuModel> listDataHeader;
     HashMap<GroupMenuModel, List<GroupMenuModel>> listDataChild;
 
+    private String currentFragment = "patient_morning";
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("currentFragment",currentFragment );
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +56,25 @@ public class MainActivity extends AppCompatActivity {
         //TODO: discuss what name the app should be and change the title later
         actionbar.setTitle("自費計價單");
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        PatientsFragment fragment = PatientsFragment.newInstance(Shift.morning);
-        transaction.replace(R.id.main_fragment_container, fragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-                   .commit();
 
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if(savedInstanceState != null) {
+            switch(savedInstanceState.getString("currentFragment")) {
+                case "medicine_category":
+                    MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
+                    transaction.replace(
+                            R.id.main_fragment_container, medicineCategoryFragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                              // .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                               .commit();
+                    break;
+
+            }
+        } else {
+            PatientsFragment fragment = PatientsFragment.newInstance(Shift.morning);
+            transaction.replace(R.id.main_fragment_container, fragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                    .commit();
+        }
 
         mMenuDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_menu_animatable);
         mBackDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_back_animatable);
@@ -199,22 +220,26 @@ public class MainActivity extends AppCompatActivity {
                         switch(item.getItemId()) {
                             //patient menu
                             case R.id.menu_morning:
+                                currentFragment = "patient_morning";
                                 PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, morningFragment).commit();
                                 break;
                             case R.id.menu_afternoon:
+                                currentFragment = "patient_afternoon";
                                 PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, afternoonFragment).commit();
                                 break;
                             case R.id.menu_night:
+                                currentFragment = "patient_night";
                                 PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, nightFragment).commit();
                                 break;
                              //medicine menu
                             case R.id.menu_medicine:
+                                currentFragment = "medicine_category";
                                 //MedicineFragment medicineFragment = MedicineFragment.newInstance();
                                 MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -222,16 +247,6 @@ public class MainActivity extends AppCompatActivity {
                                            .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
                                            .commit();
                                 break;
-//                            case R.id.menu_edible:
-//                                MedicineFragment medicineFragment = MedicineFragment.newInstance();
-//                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                                           .replace(R.id.main_fragment_container, medicineFragment,"medicinefragment")
-//                                           .commit();
-//                                break;
-//                            case R.id.menu_needle:
-//                                break;
-//                            case R.id.menu_bandaid:
-//                                break;
                             //manage menu
                             case R.id.menu_record:
                                 break;
@@ -246,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
 
     }
 

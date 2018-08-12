@@ -161,7 +161,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         });
 
 
-
+        setRetainInstance(true);
         return view;
     }
 
