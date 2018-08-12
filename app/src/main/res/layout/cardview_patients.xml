@@ -6,7 +6,7 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="15dp"
-    android:elevation="50dp"
+    android:elevation="5dp"
     android:padding="20dp"
     app:cardCornerRadius="6dp">
 

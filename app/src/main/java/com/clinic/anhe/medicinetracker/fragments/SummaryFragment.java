@@ -114,7 +114,6 @@ public class SummaryFragment  extends Fragment {
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.dismiss();
                                 getActivity().getSupportFragmentManager().popBackStack();
-                               // getActivity().getSupportFragmentManager().popBackStack();
                             }
                         });
 
