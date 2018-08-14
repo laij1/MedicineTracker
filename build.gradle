@@ -19,6 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -30,3 +31,9 @@ ext {
     roomVersion = '1.1.0'
     archLifecycleVersion = '1.1.1'
 }
+//
+//allprojects {
+//    repositories {
+//        mavenCentral()
+//    }
+//}
