@@ -23,7 +23,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
             android:text="item name"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/summary_payment"

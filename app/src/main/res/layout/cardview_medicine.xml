@@ -88,12 +88,11 @@
 
         <com.ramotion.fluidslider.FluidSlider
             android:id="@+id/medicine_fluidslider"
-            android:layout_width="match_parent"
+            android:layout_width="254dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/payment_radiogroup"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="550dp"
-            android:layout_marginRight="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="26dp"
             app:bar_color="@color/colorPrimaryDark"
             app:duration="@android:integer/config_mediumAnimTime"
             app:size="small" />
@@ -102,9 +101,9 @@
             android:id="@+id/payment_radiogroup"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_alignBottom="@+id/medicine_price"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="410dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/medicine_price"
+            android:layout_marginEnd="318dp"
             android:orientation="horizontal">
 
             <RadioButton
