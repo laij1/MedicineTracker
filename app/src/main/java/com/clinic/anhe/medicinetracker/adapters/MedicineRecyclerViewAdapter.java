@@ -44,7 +44,6 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     private final int min = 0;
     private final int max = 20;
     private final int total = max - min;
-    private float sliderPosition = 0f;
     private String sliderQuantity = "0";
 
 
@@ -68,6 +67,11 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         mContext = parent.getContext();
         MedicineViewHolder medicineViewHolder = new MedicineViewHolder(view);
         return medicineViewHolder;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
