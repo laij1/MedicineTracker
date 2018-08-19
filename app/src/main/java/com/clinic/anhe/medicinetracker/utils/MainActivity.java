@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.utils;
 
+import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,17 +12,30 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
+import com.clinic.anhe.medicinetracker.fragments.MedicineManageFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
 import com.clinic.anhe.medicinetracker.model.GroupMenuModel;
 import com.clinic.anhe.medicinetracker.adapters.NavigationDrawerAdapter;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.networking.VolleyController;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,10 +45,13 @@ public class MainActivity extends AppCompatActivity {
     private AnimatedVectorDrawable mMenuDrawable;
     private AnimatedVectorDrawable mBackDrawable;
     private AnimatedVectorDrawable mCurrentDrawable;
-    NavigationDrawerAdapter mMenuAdapter;
-    ExpandableListView expandableList;
-    List<GroupMenuModel> listDataHeader;
-    HashMap<GroupMenuModel, List<GroupMenuModel>> listDataChild;
+    private List<MedicineCardViewModel> medicineList;
+    private Context mContext;
+    private VolleyController volleyController;
+//    NavigationDrawerAdapter mMenuAdapter;
+//    ExpandableListView expandableList;
+//    List<GroupMenuModel> listDataHeader;
+//    HashMap<GroupMenuModel, List<GroupMenuModel>> listDataChild;
 
     private String currentFragment = "patient_morning";
 
@@ -48,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = getApplicationContext();
 
         ActionBar actionbar = getSupportActionBar();
         //TODO: figure out if we need to setDisplayHome
@@ -248,6 +266,10 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             //manage menu
                             case R.id.menu_record:
+                                currentFragment= "medicine_manage";
+                                medicineList = new ArrayList<>();
+                                populateMedicineList();
+
                                 break;
                             case R.id.menu_cashflow:
                                 break;
@@ -293,6 +315,47 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private  void populateMedicineList (){
+        String url = "http://192.168.0.9:8080/anhe/medicine/all/";
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++){
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        String category = object.getString("category");
+                                        String name = object.getString("name");
+                                        Integer id = object.getInt("mid");
+                                        Integer price = object.getInt("price");
+                                        String dose = object.getString("dose");
+                                        Integer stock = object.getInt("stock");
+                                        Log.d("jason object" , name + id +price +dose + stock);
+
+                                        medicineList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.d("getting data from database", "CHLOE");
+                                    MedicineManageFragment medicineManageFragment = MedicineManageFragment.newInstance(medicineList);
+                                    getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                            .replace(R.id.main_fragment_container, medicineManageFragment).commit();
+
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                            }
+                        } );
+
+        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+    }
 //    private void prepareListData() {
 //        listDataHeader = new ArrayList<GroupMenuModel>();
 //        //listDataChild = new HashMap<GroupMenuModel, List<String>>();

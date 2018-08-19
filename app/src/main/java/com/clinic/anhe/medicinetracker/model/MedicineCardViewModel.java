@@ -10,6 +10,7 @@ public class MedicineCardViewModel {
     private String medicineDose;
     private Integer medicineId;
     private Integer medicineStock;
+    private String medicineCategory;
     private PaymentType cashPayment = PaymentType.UNSELECT;
     private boolean isAddToCart = false;
     private int quantity = 0;
@@ -17,12 +18,13 @@ public class MedicineCardViewModel {
 
 
     public MedicineCardViewModel(
-            Integer medicineId, String medicineName, String medicinePrice, String medicineDose, Integer medicineStock) {
+            Integer medicineId, String medicineName, String medicinePrice, String medicineDose, Integer medicineStock, String medicineCategory) {
         this.medicineId = medicineId;
         this.medicinName = medicineName;
         this.medicinePrice = medicinePrice;
         this.medicineDose = medicineDose;
         this.medicineStock = medicineStock;
+        this.medicineCategory = medicineCategory;
     }
 
     public String getMedicinName(){
@@ -87,4 +89,8 @@ public class MedicineCardViewModel {
     public void setMedicineStock(Integer medicineStock) {
         this.medicineStock = medicineStock;
     }
+
+    public void setMedicineCategory(String medicineCategory) { this.medicineCategory = medicineCategory; }
+
+    public String getMedicineCategory() { return medicineCategory; }
 }

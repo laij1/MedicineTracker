@@ -44,7 +44,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
     private CounterFab mCounterfab;
     private CartViewModel cartViewModel;
     private VolleyController volleyController;
-    String category;
+
 
     public static MedicineCategoryFragment newInstance(){
         MedicineCategoryFragment fragment = new MedicineCategoryFragment();

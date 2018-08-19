@@ -94,16 +94,16 @@ public class CartViewModel extends ViewModel {
                                         Log.d("jason object" , name + id +price +dose + stock);
                                         switch (category) {
                                             case "dialysis":
-                                                dialysisList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock));
+                                                dialysisList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
                                                 break;
                                             case "edible":
-                                                edibleList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock));
+                                                edibleList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
                                                 break;
                                             case "needle":
-                                                needleList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock));
+                                                needleList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
                                                 break;
                                             case "bandaid":
-                                                bandaidList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock));
+                                                bandaidList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
                                                 break;
                                         }
                                     } catch (JSONException e) {

@@ -343,4 +343,5 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 
         }
     }
+
 }
