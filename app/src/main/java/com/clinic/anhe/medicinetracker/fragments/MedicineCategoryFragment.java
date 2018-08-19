@@ -66,6 +66,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         View view  = inflater.inflate(R.layout.fragment_medicine_category, container, false);
 
         mContext = getContext();
+        volleyController.getInstance(mContext);
 
         //set up view model
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
@@ -104,10 +105,10 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
 //                    }
 //                } );
 //
-//        volleyController.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
 
-        cartViewModel.initDialysisList(mContext);
-        cartViewModel.initEdibleList();
+
+       // cartViewModel.initMedicineList(mContext);
+        //cartViewModel.initEdibleList();
 
         //observe addtocart and removefrom cart to update ui
         cartViewModel.getCountLiveData().observe(this, new Observer<Integer>() {

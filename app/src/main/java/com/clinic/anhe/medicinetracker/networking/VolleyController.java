@@ -25,6 +25,10 @@ public class VolleyController    {
         return mInstance;
     }
 
+    public static synchronized VolleyController getInstance() {
+        return mInstance;
+    }
+
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             // getApplicationContext() is key. It should not be activity context,
