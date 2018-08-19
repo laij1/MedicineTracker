@@ -5,9 +5,7 @@ import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.text.TextWatcher;
+
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
@@ -29,7 +27,6 @@ import com.ramotion.fluidslider.FluidSlider;
 
 import java.util.List;
 
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
@@ -94,7 +91,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         //MedicineCardViewModel current = cartViewModel.getMedicineLiveData().getValue().get(position);
 //        holder.imageIcon.setImageResource(current.getMedicineIcon());
         holder.medicineName.setText(current.getMedicinName());
-        holder.medicineId.setText(current.getMedicineId());
+        holder.medicinePrice.setText(current.getMedicinePrice());
         holder.medicineDose.setText(current.getMedicineDose());
         holder.fluidSlider.setBubbleText( "" + current.getQuantity());
         holder.fluidSlider.setPosition(current.getSliderPosition());
@@ -155,7 +152,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
     public class MedicineViewHolder extends RecyclerView.ViewHolder {
 //        ImageView imageIcon;
         TextView medicineName;
-        TextView medicineId;
+        TextView medicinePrice;
         TextView medicineDose;
         ImageButton imageButton;
         RadioGroup paymentRadioGroup;
@@ -173,14 +170,14 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             super(itemView);
 //            imageIcon = itemView.findViewById(R.id.medicine_icon);
             medicineName = itemView.findViewById(R.id.medicine_name);
-            medicineId = itemView.findViewById(R.id.medicine_id);
+            medicinePrice = itemView.findViewById(R.id.medicine_price);
             medicineDose = itemView.findViewById(R.id.medicine_dose);
             imageButton = itemView.findViewById(R.id.medicine_add_button);
             paymentRadioGroup = itemView.findViewById(R.id.payment_radiogroup);
             cashRadioButton = itemView.findViewById(R.id.cash_radiobutton);
             creditRadioButton = itemView.findViewById(R.id.credit_radiobutton);
             fluidSlider = itemView.findViewById(R.id.medicine_fluidslider);
-            imageView = itemView.findViewById(R.id.medicine_price);
+            imageView = itemView.findViewById(R.id.medicine_price_sign);
 
 
 
@@ -213,7 +210,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                 public Unit invoke() {
                     //we need livedata to save fluidSlider's position
                     int position = getAdapterPosition();
-                    Log.d("endtrackingListener: " + sliderQuantity + " postion is: " + position, "CHLOE"+ fluidSlider.getPosition() );
+                    Log.d("endtrackingListener: " + sliderQuantity + " position is: " + position, "CHLOE"+ fluidSlider.getPosition() );
                     cartViewModel.setQuantity(position, medicineType, Integer.valueOf(sliderQuantity).intValue());
                     cartViewModel.setSliderPosition(position, medicineType, fluidSlider.getPosition());
 

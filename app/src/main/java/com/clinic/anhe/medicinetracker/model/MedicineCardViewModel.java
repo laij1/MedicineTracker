@@ -6,26 +6,31 @@ public class MedicineCardViewModel {
 
 //    private int medicineIcon = -1;
     private String medicinName;
-    private String medicineId;
+    private String medicinePrice;
     private String medicineDose;
+    private Integer medicineId;
+    private Integer medicineStock;
     private PaymentType cashPayment = PaymentType.UNSELECT;
     private boolean isAddToCart = false;
     private int quantity = 0;
     private float sliderPosition = 0f;
 
 
-    public MedicineCardViewModel(String medicinName, String medicineId, String medicineDose) {
-        this.medicinName = medicinName;
+    public MedicineCardViewModel(
+            Integer medicineId, String medicineName, String medicinePrice, String medicineDose, Integer medicineStock) {
         this.medicineId = medicineId;
+        this.medicinName = medicineName;
+        this.medicinePrice = medicinePrice;
         this.medicineDose = medicineDose;
+        this.medicineStock = medicineStock;
     }
 
     public String getMedicinName(){
         return medicinName;
     }
 
-    public String getMedicineId(){
-        return medicineId;
+    public String getMedicinePrice(){
+        return medicinePrice;
     }
 
     public String getMedicineDose() { return medicineDose; }
@@ -67,4 +72,19 @@ public class MedicineCardViewModel {
         return isAddToCart;
     }
 
+    public Integer getMedicineId() {
+        return medicineId;
+    }
+
+    public void setMedicineId(Integer medicineId) {
+        this.medicineId = medicineId;
+    }
+
+    public Integer getMedicineStock() {
+        return medicineStock;
+    }
+
+    public void setMedicineStock(Integer medicineStock) {
+        this.medicineStock = medicineStock;
+    }
 }

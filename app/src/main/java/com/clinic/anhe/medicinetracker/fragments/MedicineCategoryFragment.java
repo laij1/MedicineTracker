@@ -16,10 +16,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
+import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class MedicineCategoryFragment extends Fragment implements View.OnKeyListener{
@@ -30,6 +43,8 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
     private MedicineCategoryPagerAdapter mMedicineCategoryPagerAdapter;
     private CounterFab mCounterfab;
     private CartViewModel cartViewModel;
+    private VolleyController volleyController;
+    String category;
 
     public static MedicineCategoryFragment newInstance(){
         MedicineCategoryFragment fragment = new MedicineCategoryFragment();
@@ -50,8 +65,50 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_medicine_category, container, false);
 
+        mContext = getContext();
+
         //set up view model
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+
+//        //TODO:get medicinelist from the database
+//        category = "dialysis";
+//        String url = "http://192.168.0.9:8080/anhe/medicine/all?category" + category;
+//        final List<MedicineCardViewModel> dialysisList = new ArrayList<>();
+//        JsonArrayRequest jsonArrayRequest =
+//                new JsonArrayRequest(Request.Method.GET, url, null,
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        for(int i = 0; i < response.length(); i++){
+//                            JSONObject object = null;
+//                            try {
+//                                object = response.getJSONObject(i);
+//                                String name = object.getString("name");
+//                                Integer id = object.getInt("mid");
+//                                Integer price = object.getInt("price");
+//                                String dose = object.getString("dose");
+//                                Integer stock = object.getInt("stock");
+//                                dialysisList.add(new MedicineCardViewModel(id, name, String.valueOf(price), dose, stock));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                            cartViewModel.initDialysisList(dialysisList);
+//                            Log.d("getting data from database", "CHLOE");
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("VOLLEY", error.toString());
+//                    }
+//                } );
+//
+//        volleyController.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
+
+        cartViewModel.initDialysisList(mContext);
+        cartViewModel.initEdibleList();
+
         //observe addtocart and removefrom cart to update ui
         cartViewModel.getCountLiveData().observe(this, new Observer<Integer>() {
             @Override
@@ -90,7 +147,6 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         TabLayout.Tab bandaid = mMedicineCategoryTabLayout.newTab();
         mMedicineCategoryTabLayout.addTab(bandaid);
 
-        mContext = getContext();
 
         mMedicineCategoryTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

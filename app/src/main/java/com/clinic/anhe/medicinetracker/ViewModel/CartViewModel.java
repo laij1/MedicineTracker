@@ -3,17 +3,29 @@ package com.clinic.anhe.medicinetracker.ViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class CartViewModel extends ViewModel {
+
+    private VolleyController volleyController;
 
     private MutableLiveData<List<MedicineCardViewModel>> medicineLiveData;
 //    List<MedicineCardViewModel> medicineList;
@@ -41,8 +53,8 @@ public class CartViewModel extends ViewModel {
 
 
     public CartViewModel(){
-        initDialysisList();
-        initEdibleList();
+        //initDialysisList(Context context);
+        //initEdibleList();
         initNeedleList();
         initBandaidList();
         initCount();
@@ -56,49 +68,67 @@ public class CartViewModel extends ViewModel {
         Log.d("current count is: " + count.getValue(), "CHLOE!!!");
     }
 
-    public void initDialysisList() {
+    public void initDialysisList(Context context) {
         dialysisLiveData = new MutableLiveData<>();
-        dialysisList = new ArrayList<>();
-        dialysisList.add(new MedicineCardViewModel("Vit D3","500","/瓶"));
-        dialysisList.add(new MedicineCardViewModel("Vit B3","1200","/瓶"));
-        dialysisList.add(new MedicineCardViewModel("Cinacalcet","5100","/盒"));
-        dialysisList.add(new MedicineCardViewModel("1Kremezin","165","/包"));
-        dialysisList.add(new MedicineCardViewModel("1Kremezin","13500","/盒"));
-        dialysisList.add(new MedicineCardViewModel("1Renvela(錠)","6500", "/180顆"));
-        dialysisList.add(new MedicineCardViewModel("1Renvela(粉)","3250", "/90包"));
-        dialysisList.add(new MedicineCardViewModel("1Dephos","5000", "/2瓶1組"));
-        dialysisList.add(new MedicineCardViewModel("1Regpara","6300", "/30顆"));
-        dialysisList.add(new MedicineCardViewModel("1Fosrenal 750mg","6750", "/3+1瓶"));
-        dialysisList.add(new MedicineCardViewModel("1Forsrenal 1000mg","6750", "/3瓶"));
-        dialysisList.add(new MedicineCardViewModel("1普寧腎","90", "/瓶"));
-        dialysisList.add(new MedicineCardViewModel("1普寧腎","2160", "/箱"));
-        dialysisList.add(new MedicineCardViewModel("1福寧補","600", "/盒"));
-        dialysisList.add(new MedicineCardViewModel("1阿德比(錠)","350", "/瓶"));
-        dialysisList.add(new MedicineCardViewModel("1阿德比(粉)","1500", "/60包"));
+        this.dialysisList = new ArrayList<>();
+//TODO:get medicinelist from the database
+        String category = "dialysis";
+        String url = "http://192.168.0.9:8080/anhe/medicine/all?category=" + category;
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++){
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        String name = object.getString("name");
+                                        Integer id = object.getInt("mid");
+                                        Integer price = object.getInt("price");
+                                        String dose = object.getString("dose");
+                                        Integer stock = object.getInt("stock");
+                                        Log.d("jason object" , name + id +price +dose + stock);
+                                        dialysisList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.d("getting data from database", "CHLOE");
 
-        //dialysisLiveData.postValue(dialysisList);
-        dialysisLiveData.setValue(dialysisList);
+                                }
+                                dialysisLiveData.postValue(dialysisList);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                            }
+                        } );
+
+        volleyController.getInstance(context).addToRequestQueue(jsonArrayRequest);
+        dialysisLiveData.setValue(this.dialysisList);
     }
 
     public void initEdibleList() {
         edibleLiveData = new MutableLiveData<>();
         edibleList = new ArrayList<>();
-        edibleList.add(new MedicineCardViewModel("Vit D3","500","/瓶"));
-        edibleList.add(new MedicineCardViewModel("Vit B3","1200","/瓶"));
-        edibleList.add(new MedicineCardViewModel("Cinacalcet","5100","/盒"));
-        edibleList.add(new MedicineCardViewModel("Kremezin","165","/包"));
-        edibleList.add(new MedicineCardViewModel("Kremezin","13500","/盒"));
-        edibleList.add(new MedicineCardViewModel("Renvela(錠)","6500", "/180顆"));
-        edibleList.add(new MedicineCardViewModel("Renvela(粉)","3250", "/90包"));
-        edibleList.add(new MedicineCardViewModel("Dephos","5000", "/2瓶1組"));
-        edibleList.add(new MedicineCardViewModel("Regpara","6300", "/30顆"));
-        edibleList.add(new MedicineCardViewModel("Fosrenal 750mg","6750", "/3+1瓶"));
-        edibleList.add(new MedicineCardViewModel("Forsrenal 1000mg","6750", "/3瓶"));
-        edibleList.add(new MedicineCardViewModel("普寧腎","90", "/瓶"));
-        edibleList.add(new MedicineCardViewModel("普寧腎","2160", "/箱"));
-        edibleList.add(new MedicineCardViewModel("福寧補","600", "/盒"));
-        edibleList.add(new MedicineCardViewModel("阿德比(錠)","350", "/瓶"));
-        edibleList.add(new MedicineCardViewModel("阿德比(粉)","1500", "/60包"));
+        edibleList.add(new MedicineCardViewModel(Integer.valueOf(1),"Vit D3","500","/瓶", Integer.valueOf(0)));
+//        edibleList.add(new MedicineCardViewModel("Vit B3","1200","/瓶"));
+//        edibleList.add(new MedicineCardViewModel("Cinacalcet","5100","/盒"));
+//        edibleList.add(new MedicineCardViewModel("Kremezin","165","/包"));
+//        edibleList.add(new MedicineCardViewModel("Kremezin","13500","/盒"));
+//        edibleList.add(new MedicineCardViewModel("Renvela(錠)","6500", "/180顆"));
+//        edibleList.add(new MedicineCardViewModel("Renvela(粉)","3250", "/90包"));
+//        edibleList.add(new MedicineCardViewModel("Dephos","5000", "/2瓶1組"));
+//        edibleList.add(new MedicineCardViewModel("Regpara","6300", "/30顆"));
+//        edibleList.add(new MedicineCardViewModel("Fosrenal 750mg","6750", "/3+1瓶"));
+//        edibleList.add(new MedicineCardViewModel("Forsrenal 1000mg","6750", "/3瓶"));
+//        edibleList.add(new MedicineCardViewModel("普寧腎","90", "/瓶"));
+//        edibleList.add(new MedicineCardViewModel("普寧腎","2160", "/箱"));
+//        edibleList.add(new MedicineCardViewModel("福寧補","600", "/盒"));
+//        edibleList.add(new MedicineCardViewModel("阿德比(錠)","350", "/瓶"));
+//        edibleList.add(new MedicineCardViewModel("阿德比(粉)","1500", "/60包"));
        // edibleList.add(new MedicineCardViewModel("福寧補","600", "/盒"));
 
        // edibleLiveData.postValue(edibleList);
@@ -110,9 +140,9 @@ public class CartViewModel extends ViewModel {
     public void initNeedleList() {
         needleLiveData = new MutableLiveData<>();
         needleList = new ArrayList<>();
-        needleList.add(new MedicineCardViewModel("(needle)Vit D3","500","/瓶"));
-        needleList.add(new MedicineCardViewModel("(needle)Vit B3","1200","/瓶"));
-        needleList.add(new MedicineCardViewModel("(needle)Cinacalcet","5100","/盒"));
+//        needleList.add(new MedicineCardViewModel("(needle)Vit D3","500","/瓶"));
+//        needleList.add(new MedicineCardViewModel("(needle)Vit B3","1200","/瓶"));
+//        needleList.add(new MedicineCardViewModel("(needle)Cinacalcet","5100","/盒"));
 
        // needleLiveData.postValue(needleList);
         needleLiveData.setValue(needleList);
@@ -120,9 +150,9 @@ public class CartViewModel extends ViewModel {
     public void initBandaidList() {
         bandaidLiveData = new MutableLiveData<>();
         bandaidList = new ArrayList<>();
-        bandaidList.add(new MedicineCardViewModel("(bandaid)Vit D3","500","/瓶"));
-        bandaidList.add(new MedicineCardViewModel("(bandaid)Vit B3","1200","/瓶"));
-        bandaidList.add(new MedicineCardViewModel("(bandaid)Cinacalcet","5100","/盒"));
+//        bandaidList.add(new MedicineCardViewModel("(bandaid)Vit D3","500","/瓶"));
+//        bandaidList.add(new MedicineCardViewModel("(bandaid)Vit B3","1200","/瓶"));
+//        bandaidList.add(new MedicineCardViewModel("(bandaid)Cinacalcet","5100","/盒"));
 
        // bandaidLiveData.postValue(bandaidList);
         bandaidLiveData.setValue(bandaidList);

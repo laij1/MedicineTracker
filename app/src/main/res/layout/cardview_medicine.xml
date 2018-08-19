@@ -44,7 +44,7 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/medicine_price"
+            android:id="@+id/medicine_price_sign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -55,11 +55,11 @@
             android:tint="@color/menuTextIconColor" />
 
         <TextView
-            android:id="@+id/medicine_id"
+            android:id="@+id/medicine_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/medicine_price"
-            android:layout_toEndOf="@+id/medicine_price"
+            android:layout_alignTop="@+id/medicine_price_sign"
+            android:layout_toEndOf="@+id/medicine_price_sign"
             android:text="Line two"
             android:textSize="20dp" />
 
@@ -67,8 +67,8 @@
             android:id="@+id/medicine_dose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/medicine_price"
-            android:layout_toEndOf="@+id/medicine_id"
+            android:layout_alignTop="@+id/medicine_price_sign"
+            android:layout_toEndOf="@+id/medicine_price"
             android:text="Line three"
             android:textSize="20dp" />
 
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/medicine_price"
+            android:layout_alignTop="@+id/medicine_price_sign"
             android:layout_marginEnd="318dp"
             android:orientation="horizontal">
 

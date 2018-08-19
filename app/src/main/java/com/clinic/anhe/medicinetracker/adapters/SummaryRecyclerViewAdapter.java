@@ -34,7 +34,7 @@ public class SummaryRecyclerViewAdapter extends RecyclerView.Adapter<SummaryRecy
         holder.itemPayment.setText(cartlist.get(position).isCashPayment() == PaymentType.CASH ? "現" : "月");
         //TODO: 買十送二 needs special calculation
         int quantity = cartlist.get(position).getQuantity();
-        int subtotal = Integer.valueOf(cartlist.get(position).getMedicineId()).intValue() * quantity;
+        int subtotal = Integer.valueOf(cartlist.get(position).getMedicinePrice()).intValue() * quantity;
         holder.itemQuantity.setText(String.valueOf(cartlist.get(position).getQuantity()));
         holder.itemSubtotal.setText(String.valueOf(subtotal));
     }
