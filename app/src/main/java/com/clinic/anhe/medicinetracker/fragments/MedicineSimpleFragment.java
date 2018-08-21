@@ -72,71 +72,8 @@ public class MedicineSimpleFragment extends Fragment {
 
         mAdapter = new MedicineSimpleRecyclerViewAdapter(medicineType, medicineList);
 
-//        // and associate them to the adapter.
-//        if(medicineType == MedicineType.dialysis) {
-//            cartViewModel.getDialysisLiveData().observe(getParentFragment(), new Observer<List<MedicineCardViewModel>>() {
-//                @Override
-//                public void onChanged(@Nullable final List<MedicineCardViewModel> dialysisList) {
-//                    // Update the cached copy of the words in the adapter.
-//                    mAdapter.setList(dialysisList);
-//                }
-//            });
-//        } else if(medicineType == MedicineType.edible) {
-//            cartViewModel.getEdibleLiveData().observe(getParentFragment(), new Observer<List<MedicineCardViewModel>>() {
-//                @Override
-//                public void onChanged(@Nullable List<MedicineCardViewModel> edibleList) {
-//                    mAdapter.setList(edibleList);
-//                }
-//            });
-//        } else if(medicineType == MedicineType.needle) {
-//            cartViewModel.getNeedleLiveData().observe(getParentFragment(), new Observer<List<MedicineCardViewModel>>() {
-//                @Override
-//                public void onChanged(@Nullable List<MedicineCardViewModel> needleList) {
-//                    mAdapter.setList(needleList);
-//                }
-//            });
-//        } else {
-//            cartViewModel.getBandaidLiveData().observe(getParentFragment(), new Observer<List<MedicineCardViewModel>>() {
-//                @Override
-//                public void onChanged(@Nullable List<MedicineCardViewModel> bandaidList) {
-//                    mAdapter.setList(bandaidList);
-//                }
-//            });
-//
-//        }
-
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
-
-
-//        mCounterFab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//                //cannot use getSupportFragmentManger(), it is for calling from activity, use getChildFragmentManager
-//                //https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
-//               // FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
-//               FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//
-//                SelectPatientFragment selectPatientFragment = SelectPatientFragment.newInstance();
-////                Bundle args = new Bundle();
-////                ArrayList<String> cartlist = new ArrayList<>();
-////                for(MedicineCardViewModel item :cartViewModel.getMedicineList()) {
-////                    if(item.getIsAddToCart() == true) {
-////                        cartlist.add(item.getMedicinName());
-////                    }
-////                }
-////                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
-////                selectPatientFragment.setArguments(args);
-//                transaction.replace(R.id.medicine_layout, selectPatientFragment)
-//                        .addToBackStack("medicine")
-//                        .commit();
-//            }
-//
-//
-//        });
 
 //setRetainInstance to true is important so that onSaveInstanceState will work
         setRetainInstance(true);

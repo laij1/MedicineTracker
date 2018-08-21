@@ -1,6 +1,9 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -37,7 +41,7 @@ public class MedicineManageFragment extends Fragment {
     private ViewPager mMedicineManageViewPager;
     private MedicineManagePagerAdapter mMedicineManagePagerAdapter;
     private CounterFab mCounterfab;
-    private VolleyController volleyController;
+    //private VolleyController volleyController;
     private static List<MedicineCardViewModel> medicineList;
 
 
@@ -120,6 +124,17 @@ public class MedicineManageFragment extends Fragment {
             }
         });
 
+        mCounterfab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //new fragment for add medicine
+                //pop a dialog
+                AddMedicineDialogFragment addMedicineDialogFragment = new AddMedicineDialogFragment();
+                addMedicineDialogFragment.show(getChildFragmentManager(), "addmedicine");
+
+
+            }
+        });
 
         setRetainInstance(true);
         return view;

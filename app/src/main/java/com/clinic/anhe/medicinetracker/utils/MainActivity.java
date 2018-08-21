@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private  void populateMedicineList (){
-        String url = "http://192.168.0.9:8080/anhe/medicine/all/";
+        String url = "http://192.168.0.2:8080/anhe/medicine/all/";
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
