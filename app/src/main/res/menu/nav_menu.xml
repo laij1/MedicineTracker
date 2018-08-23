@@ -4,6 +4,26 @@
     >
     <group android:checkableBehavior="single">
         <item
+            android:title="總覽">
+            <menu>
+                <group
+                    android:id="@+id/menu_dashboard"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/menu_home"
+                        android:icon="@drawable/ic_home"
+                        android:title="今日值班"
+                        />
+
+                    <item
+                        android:id="@+id/menu_medicine"
+                        android:icon="@drawable/ic_medicine"
+                        android:title="藥品總覽" />
+
+                </group>
+            </menu>
+        </item>
+        <item
             android:title="病患">
             <menu>
                 <group
@@ -28,12 +48,12 @@
             </menu>
         </item>
 
-                <group
-                    android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/menu_medicine"
-                        android:icon="@drawable/ic_medicine"
-                        android:title="藥品" />
+                <!--<group-->
+                    <!--android:checkableBehavior="single">-->
+                    <!--<item-->
+                        <!--android:id="@+id/menu_medicine"-->
+                        <!--android:icon="@drawable/ic_medicine"-->
+                        <!--android:title="藥品" />-->
                     <!--<item-->
                         <!--android:id="@+id/menu_edible"-->
                         <!--android:icon="@drawable/ic_edible"-->
@@ -48,7 +68,7 @@
                         <!--android:id="@+id/menu_bandaid"-->
                         <!--android:icon="@drawable/ic_bandaid"-->
                         <!--android:title="耗材" />-->
-                </group>
+                <!--</group>-->
 
         <item
             android:title="管理">

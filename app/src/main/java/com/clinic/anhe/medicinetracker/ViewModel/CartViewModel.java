@@ -26,7 +26,7 @@ import org.json.JSONObject;
 public class CartViewModel extends ViewModel {
 
 
-    private Context context;
+//    private Context context;
 
 
     private MutableLiveData<List<MedicineCardViewModel>> dialysisLiveData;
@@ -52,7 +52,7 @@ public class CartViewModel extends ViewModel {
 
 
     public CartViewModel(){
-        initMedicineList(context);
+        initMedicineList();
         initCount();
     }
 
@@ -62,7 +62,7 @@ public class CartViewModel extends ViewModel {
         count.setValue(i);
     }
 
-    public void initMedicineList(Context context) {
+    public void initMedicineList() {
         dialysisLiveData = new MutableLiveData<>();
         dialysisList = new ArrayList<>();
 
@@ -371,7 +371,7 @@ public class CartViewModel extends ViewModel {
 
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
+//    public void setContext(Context context) {
+//        this.context = context;
+//    }
 }

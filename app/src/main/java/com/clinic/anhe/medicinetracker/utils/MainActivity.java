@@ -22,6 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
+import com.clinic.anhe.medicinetracker.fragments.CashflowFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineManageFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
@@ -235,6 +237,18 @@ public class MainActivity extends AppCompatActivity {
                         //fragment transaction has to be in the click method and start everytime you have a tranaction
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         switch(item.getItemId()) {
+                            //dashboard menu
+                            case R.id.menu_medicine:
+                                currentFragment = "medicine_category";
+                                //MedicineFragment medicineFragment = MedicineFragment.newInstance();
+                                MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                        .replace(R.id.main_fragment_container, medicineCategoryFragment,ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                                        .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                                        .commit();
+                                break;
+                            case R.id.menu_home:
+                                break;
                             //patient menu
                             case R.id.menu_morning:
                                 currentFragment = "patient_morning";
@@ -254,24 +268,17 @@ public class MainActivity extends AppCompatActivity {
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, nightFragment).commit();
                                 break;
-                             //medicine menu
-                            case R.id.menu_medicine:
-                                currentFragment = "medicine_category";
-                                //MedicineFragment medicineFragment = MedicineFragment.newInstance();
-                                MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
-                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                           .replace(R.id.main_fragment_container, medicineCategoryFragment,ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-                                           .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-                                           .commit();
-                                break;
-                            //manage menu
                             case R.id.menu_record:
                                 currentFragment= "medicine_manage";
                                 medicineList = new ArrayList<>();
                                 populateMedicineList();
-
                                 break;
                             case R.id.menu_cashflow:
+                                CashflowFragment cashflowFragment = new CashflowFragment();
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                        .replace(R.id.main_fragment_container,cashflowFragment,"cashflow")
+                                        .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                                        .commit();
                                 break;
                             case R.id.menu_inventory:
                                 break;

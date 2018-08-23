@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/patients_layout">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/patients_tabLayout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="6dp"
+        android:elevation="0dp"
         android:fontFamily="Roboto-Medium"
         app:tabMaxWidth="0dp"
         app:tabGravity="fill"

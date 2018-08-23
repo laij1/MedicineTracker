@@ -18,4 +18,6 @@ public class PatientsCardViewModel {
         return patientId;
     }
 
+    public void setPatientName(String name) { patientName = name; }
+
 }
