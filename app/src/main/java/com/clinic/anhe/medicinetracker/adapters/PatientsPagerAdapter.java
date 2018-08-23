@@ -6,16 +6,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 import android.widget.ImageView;
 
 import com.clinic.anhe.medicinetracker.R;
-import com.clinic.anhe.medicinetracker.fragments.EvenDayFragment;
-import com.clinic.anhe.medicinetracker.fragments.OddDayFragment;
-import com.clinic.anhe.medicinetracker.utils.MainActivity;
+import com.clinic.anhe.medicinetracker.fragments.PatientListDayFragment;
+import com.clinic.anhe.medicinetracker.fragments.PatientDayFragment;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.DayType;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
 public class PatientsPagerAdapter extends FragmentPagerAdapter {
@@ -23,6 +23,7 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
     private int numberOfTabs;
     private Context mContext;
     private Shift shift;
+    private String kind = "";
 
 
     private int imageResId = R.drawable.ic_calender;
@@ -30,11 +31,12 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
             {" 一 三 五", " 二 四 六"};
 
 
-    public PatientsPagerAdapter(FragmentManager fm, int NumOfTabs, Context mContext, Shift shift) {
+    public PatientsPagerAdapter(FragmentManager fm, int NumOfTabs, Context mContext, Shift shift, String kind) {
         super(fm);
         this.numberOfTabs = NumOfTabs;
         this.mContext = mContext;
         this.shift = shift;
+        this.kind = kind;
     }
 
     @Override
@@ -44,15 +46,28 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        if(kind.equals(ArgumentVariables.KIND_PATIENTS)) {
         switch (position) {
             case 0:
-                OddDayFragment oddDayFragment = OddDayFragment.newInstance(shift);
+                PatientDayFragment oddDayFragment = PatientDayFragment.newInstance(shift, DayType.oddDay);
                 return oddDayFragment;
             case 1:
-                EvenDayFragment evenDayFragment = EvenDayFragment.newInstance(shift);
+                PatientDayFragment evenDayFragment = PatientDayFragment.newInstance(shift, DayType.evenDay);
                 return evenDayFragment;
             default:
                 return null;
+        }
+        } else {
+            switch (position) {
+            case 0:
+                 PatientListDayFragment patientListOddDayFragment = PatientListDayFragment.newInstance(shift, DayType.oddDay);
+                return patientListOddDayFragment;
+            case 1:
+                 PatientListDayFragment patientListEvenDayFragment = PatientListDayFragment.newInstance(shift, DayType.evenDay);
+                return patientListEvenDayFragment;
+            default:
+                return null;
+        }
         }
     }
 

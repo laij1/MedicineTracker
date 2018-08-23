@@ -48,6 +48,8 @@ public class SelectPatientFragment extends Fragment {
 //        ArrayList<String> cartList = getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST);
 
         view = inflater.inflate(R.layout.fragment_select_patients, container, false);
+
+        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
         mRadioGroup = view.findViewById(R.id.shift_radiogroup);
         mFloatingActionButton = view.findViewById(R.id.patients_fab);
 
@@ -66,8 +68,8 @@ public class SelectPatientFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-              //Log.d("I got the patient name", OddDayFragment.selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
-                selectedPatientViewModel = ViewModelProviders.of(getChildFragmentManager().findFragmentByTag(ArgumentVariables.TAG_SELECT_PATIENT_FRAGMENT)).get(SelectedPatientViewModel.class);
+              //Log.d("I got the patient name", PatientDayFragment.selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
+                //selectedPatientViewModel = ViewModelProviders.of(getChildFragmentManager().findFragmentByTag(ArgumentVariables.TAG_SELECT_PATIENT_FRAGMENT)).get(SelectedPatientViewModel.class);
                 selectedPatientViewModel.getPatientLiveData().observe(getActivity(), new Observer<PatientsCardViewModel>() {
                     @Override
                     public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {

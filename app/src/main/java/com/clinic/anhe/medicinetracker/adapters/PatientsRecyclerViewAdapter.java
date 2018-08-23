@@ -17,7 +17,7 @@ import java.util.List;
 public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRecyclerViewAdapter.PatientsViewHolder> {
 
     private List<PatientsCardViewModel> patientList;
-    private int lastCheckedPosition = -1;
+//    private int lastCheckedPosition = -1;
     private SelectedPatientViewModel selectedPatientViewModel;
 
     //constructor
@@ -40,8 +40,13 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         PatientsCardViewModel current =  patientList.get(position);
         holder.patientName.setText(current.getPatientName());
         holder.patientId.setText(current.getPatientId());
-        holder.imageButton.setChecked(position == lastCheckedPosition);
 
+        if(selectedPatientViewModel.getPatientLiveData().getValue()!= null &&
+                selectedPatientViewModel.getPatientLiveData().getValue().getPatientName().equals(current.getPatientName())) {
+            holder.imageButton.setChecked(true);
+        } else {
+            holder.imageButton.setChecked(false);
+        }
 
     }
 
@@ -64,7 +69,7 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    lastCheckedPosition = getAdapterPosition();
+//                    lastCheckedPosition = getAdapterPosition();
                     //TODO:
                     selectedPatientViewModel.getPatientLiveData().setValue(patientList.get(getAdapterPosition()));
                     notifyDataSetChanged();

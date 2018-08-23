@@ -27,11 +27,13 @@ import com.clinic.anhe.medicinetracker.fragments.CashflowFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineManageFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
+import com.clinic.anhe.medicinetracker.fragments.PatientListFragment;
 import com.clinic.anhe.medicinetracker.model.GroupMenuModel;
 import com.clinic.anhe.medicinetracker.adapters.NavigationDrawerAdapter;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,18 +84,18 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: there is a bug in this part of the code, maybe the following post is the solution
         //TODO: https://stackoverflow.com/questions/28133600/set-initial-fragment-on-startup/34856256#34856256
-        if(savedInstanceState != null) {
-            switch(savedInstanceState.getString("currentFragment")) {
-                case "medicine_category":
-                    getFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    break;
-
-            }
-        } else {
-            PatientsFragment fragment = PatientsFragment.newInstance(Shift.morning);
-            transaction.replace(R.id.main_fragment_container, fragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-                    .commit();
-        }
+//        if(savedInstanceState != null) {
+//            switch(savedInstanceState.getString("currentFragment")) {
+//                case "medicine_category":
+//                    getFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                    break;
+//
+//            }
+//        } else {
+//            PatientsFragment fragment = PatientsFragment.newInstance(Shift.morning);
+//            transaction.replace(R.id.main_fragment_container, fragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+//                    .commit();
+//        }
 
         mMenuDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_menu_animatable);
         mBackDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_back_animatable);
@@ -252,19 +254,19 @@ public class MainActivity extends AppCompatActivity {
                             //patient menu
                             case R.id.menu_morning:
                                 currentFragment = "patient_morning";
-                                PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
+                                PatientListFragment morningFragment = PatientListFragment.newInstance(Shift.morning);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, morningFragment).commit();
                                 break;
                             case R.id.menu_afternoon:
                                 currentFragment = "patient_afternoon";
-                                PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
+                                PatientListFragment afternoonFragment = PatientListFragment.newInstance(Shift.afternoon);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, afternoonFragment).commit();
                                 break;
                             case R.id.menu_night:
                                 currentFragment = "patient_night";
-                                PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
+                                PatientListFragment nightFragment = PatientListFragment.newInstance(Shift.night);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, nightFragment).commit();
                                 break;

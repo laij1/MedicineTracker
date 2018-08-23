@@ -1,7 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,25 +13,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
-import com.clinic.anhe.medicinetracker.utils.MainActivity;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
-public class PatientsFragment  extends Fragment implements ArgumentVariables{
+public class PatientListFragment extends Fragment implements ArgumentVariables {
 
     private ViewPager mPatientsViewPager;
     private TabLayout mPatientsTabLayout;
     private PatientsPagerAdapter mPatientsPagerAdapter;
     private Context mContext;
     private Shift shift;
-    private SelectedPatientViewModel selectedPatientViewModel;
 
-    public static PatientsFragment newInstance(Shift shift) {
-        PatientsFragment fragment = new PatientsFragment();
+    public static PatientListFragment newInstance(Shift shift) {
+        PatientListFragment fragment = new PatientListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PATIENT_SHIFT, shift.toString());
         fragment.setArguments(args);
@@ -47,18 +45,16 @@ public class PatientsFragment  extends Fragment implements ArgumentVariables{
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_patients, container, false);
-        //TODO: register view model right here.
-//        selectedPatientViewModel = ViewModelProviders.of(getParentFragment()).get(SelectedPatientViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_patient_list, container, false);
 
         if(savedInstanceState != null) {
-          shift = shift.fromString(savedInstanceState.getString(ARG_PATIENT_SHIFT));
+            shift = shift.fromString(savedInstanceState.getString(ARG_PATIENT_SHIFT));
         }
 
         if(shift == null) {
             shift = shift.fromString(getArguments().getString(ARG_PATIENT_SHIFT));
         }
-        mPatientsTabLayout = (TabLayout) view.findViewById(R.id.patients_tabLayout);
+        mPatientsTabLayout = (TabLayout) view.findViewById(R.id.patient_list_tabLayout);
 
         //set up tab
         TabLayout.Tab OddDays = mPatientsTabLayout.newTab();
@@ -71,10 +67,10 @@ public class PatientsFragment  extends Fragment implements ArgumentVariables{
 
         mPatientsTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        mPatientsViewPager = (ViewPager) view.findViewById(R.id.patients_pager);
+        mPatientsViewPager = (ViewPager) view.findViewById(R.id.patient_list_pager);
         mPatientsTabLayout.setupWithViewPager(mPatientsViewPager);
         mPatientsPagerAdapter = new PatientsPagerAdapter
-                (getChildFragmentManager(), mPatientsTabLayout.getTabCount(), mContext, shift, KIND_PATIENTS);
+                (getChildFragmentManager(), mPatientsTabLayout.getTabCount(), mContext, shift, KIND_PATIENTLIST);
         mPatientsViewPager.setAdapter(mPatientsPagerAdapter);
 
         highLightCurrentTab(0);
@@ -128,6 +124,5 @@ public class PatientsFragment  extends Fragment implements ArgumentVariables{
         tab.setCustomView(null);
         tab.setCustomView(mPatientsPagerAdapter.getSelectedTabView(position));
     }
-
 
 }

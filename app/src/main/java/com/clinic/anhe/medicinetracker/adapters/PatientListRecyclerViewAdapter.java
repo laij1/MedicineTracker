@@ -1,11 +1,9 @@
 package com.clinic.anhe.medicinetracker.adapters;
 
-import android.arch.persistence.room.Transaction;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +11,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
-import com.clinic.anhe.medicinetracker.fragments.CashflowFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientDetailFragment;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import java.util.List;
 
-public class PatientsListRecyclerViewAdapter extends RecyclerView.Adapter<PatientsListRecyclerViewAdapter.PatientsListViewHolder> {
+public class PatientListRecyclerViewAdapter extends RecyclerView.Adapter<PatientListRecyclerViewAdapter.PatientsListViewHolder> {
 
     private List<PatientsCardViewModel> patientList;
     private Fragment mFragment;
@@ -32,7 +29,7 @@ public class PatientsListRecyclerViewAdapter extends RecyclerView.Adapter<Patien
 //        mListener = listener;
 //    }
     //constructor
-    public PatientsListRecyclerViewAdapter(List<PatientsCardViewModel> patientList, Fragment fragment){
+    public PatientListRecyclerViewAdapter(List<PatientsCardViewModel> patientList, Fragment fragment){
         this.patientList = patientList;
         this.mFragment = fragment;
     }
@@ -81,7 +78,7 @@ public class PatientsListRecyclerViewAdapter extends RecyclerView.Adapter<Patien
                     PatientDetailFragment patientDetailFragment = new PatientDetailFragment();
 
                     FragmentTransaction transaction = mFragment.getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.patients_layout,patientDetailFragment).commit();
+                    transaction.replace(R.id.patient_list_layout,patientDetailFragment).commit();
 
                 }
             });
