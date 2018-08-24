@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_favorites"
+        android:id="@+id/patient_detail_cash"
         android:enabled="true"
         android:icon="@drawable/ic_star"
         android:title="現金未結"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_schedules"
+        android:id="@+id/patient_detail_month"
         android:enabled="true"
         android:icon="@drawable/ic_warning"
         android:title="月份未結"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_music"
+        android:id="@+id/patient_detail_search"
         android:enabled="true"
         android:icon="@drawable/ic_search"
         android:title="紀錄查詢"

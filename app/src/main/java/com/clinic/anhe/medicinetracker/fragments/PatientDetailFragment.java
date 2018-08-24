@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,24 @@ public class PatientDetailFragment extends Fragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 item.setChecked(true);
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                switch(item.getItemId()) {
+                    case R.id.patient_detail_cash:
+                        PatientDetailCashFragment patientDetailCashFragment = PatientDetailCashFragment.newInstance();
+                        transaction.replace(R.id.patient_detail_container, patientDetailCashFragment)
+                                   .commit();
+                        break;
+                    case R.id.patient_detail_month:
+                        PatientDetailMonthFragment patientDetailMonthFragment = PatientDetailMonthFragment.newInstance();
+                        transaction.replace(R.id.patient_detail_container, patientDetailMonthFragment)
+                                   .commit();
+                        break;
+                    case R.id.patient_detail_search:
+                        PatientDetailSearchFragment patientDetailSearchFragment = PatientDetailSearchFragment.newInstance();
+                        transaction.replace(R.id.patient_detail_container, patientDetailSearchFragment)
+                                   .commit();
+                        break;
+                }
                 return false;
             }
         });

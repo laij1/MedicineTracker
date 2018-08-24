@@ -276,14 +276,13 @@ public class MainActivity extends AppCompatActivity {
                                 populateMedicineList();
                                 break;
                             case R.id.menu_cashflow:
-                                CashflowFragment cashflowFragment = new CashflowFragment();
+                                CashflowFragment cashflowFragment = CashflowFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                         .replace(R.id.main_fragment_container,cashflowFragment,"cashflow")
                                         .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
                                         .commit();
                                 break;
-                            case R.id.menu_inventory:
-                                break;
+
                         }
                         // close drawer when item is tapped
                         mDrawerlayout.closeDrawers();

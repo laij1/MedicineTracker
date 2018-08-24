@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_favorites"
+        android:id="@+id/cashflow_today"
         android:enabled="true"
         android:icon="@drawable/ic_star"
         android:title="今日收入"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_schedules"
+        android:id="@+id/cashflow_uncharged"
         android:enabled="true"
         android:icon="@drawable/ic_warning"
         android:title="未結項目"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_music"
+        android:id="@+id/cashflow_search"
         android:enabled="true"
         android:icon="@drawable/ic_search"
         android:title="紀錄查詢"

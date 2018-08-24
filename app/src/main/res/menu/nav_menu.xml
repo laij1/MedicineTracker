@@ -86,10 +86,6 @@
                         android:icon="@drawable/ic_cashflow"
                         android:title="現金收入" />
 
-                    <item
-                        android:id="@+id/menu_inventory"
-                        android:icon="@drawable/ic_inventory"
-                        android:title="庫存更新" />
                 </group>
             </menu>
         </item>
