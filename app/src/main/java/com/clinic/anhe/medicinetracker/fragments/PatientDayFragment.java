@@ -86,12 +86,7 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
 
             //TODO:
             selectedPatientViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(SelectedPatientViewModel.class);
-            selectedPatientViewModel.getPatientLiveData().observe(getParentFragment().getParentFragment(), new Observer<PatientsCardViewModel>() {
-                @Override
-                public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
-                    Log.d("I have the selected patient in PatientDayFragment", patientsCardViewModel.getPatientName());
-                }
-            });
+
             preparePatientData();
             mRecyclerView = view.findViewById(R.id.patient_day_recyclerview);
             mRecyclerView.setHasFixedSize(true);
@@ -100,6 +95,15 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
 
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mAdapter);
+
+            selectedPatientViewModel.getPatientLiveData().observe(getParentFragment().getParentFragment(), new Observer<PatientsCardViewModel>() {
+            @Override
+            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+                Log.d("I have the selected patient in PatientDayFragment", patientsCardViewModel.getPatientName());
+                //update all patients in different tabs when a new patient is selected
+                mAdapter.notifyDataSetChanged();
+                }
+            });
 
             setRetainInstance(true);
             return view;

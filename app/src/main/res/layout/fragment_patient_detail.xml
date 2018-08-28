@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:elevation="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/patient_detail_layout">
 
@@ -22,7 +21,6 @@
         android:id="@+id/patient_detail_view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:elevation="6dp"
         android:layout_above="@+id/patient_detail_bottom_navigation"
         android:background="@android:color/darker_gray"></View>
 
@@ -30,8 +28,8 @@
         android:id="@+id/patient_detail_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="7dp"
         android:layout_alignParentBottom="true"
+        android:background="?android:windowBackground"
         app:menu="@menu/patient_detail_navigation" />
 
 </RelativeLayout>

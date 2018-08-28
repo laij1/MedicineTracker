@@ -2,6 +2,7 @@ package com.clinic.anhe.medicinetracker.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +45,10 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         if(selectedPatientViewModel.getPatientLiveData().getValue()!= null &&
                 selectedPatientViewModel.getPatientLiveData().getValue().getPatientName().equals(current.getPatientName())) {
             holder.imageButton.setChecked(true);
+            Log.d("the select patient live data is: ", selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
         } else {
             holder.imageButton.setChecked(false);
+           // Log.d("the select patient live data is: ", selectedPatientViewModel==null?"null":"not null");
         }
 
     }

@@ -29,7 +29,7 @@ public class PatientsFragment  extends Fragment implements ArgumentVariables{
     private PatientsPagerAdapter mPatientsPagerAdapter;
     private Context mContext;
     private Shift shift;
-    private SelectedPatientViewModel selectedPatientViewModel;
+//    private SelectedPatientViewModel selectedPatientViewModel;
 
     public static PatientsFragment newInstance(Shift shift) {
         PatientsFragment fragment = new PatientsFragment();
