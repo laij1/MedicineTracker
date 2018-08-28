@@ -1,19 +1,36 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.adapters.PatientListRecyclerViewAdapter;
+import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
+import com.clinic.anhe.medicinetracker.networking.VolleyController;
+import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.DayType;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +44,8 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
     private RecyclerView.LayoutManager mLayoutManager;
     private Shift shift;
     private DayType dayType;
+    private VolleyController volleyController;
+    private Context mContext;
 
 
     public static PatientListDayFragment newInstance(Shift shift, DayType dayType) {
@@ -49,6 +68,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_patient_list_day, container, false);
+        mContext = getContext();
 
         if(savedInstanceState != null) {
             shift = shift.fromString(savedInstanceState.getString(ARG_PATIENT_SHIFT));
@@ -61,10 +81,11 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
         }
 
 
-        prepareEvenDayPatientData();
-        mRecyclerView = view.findViewById(R.id.even_day_recyclerview);
+        preparePatientData();
+        mRecyclerView = view.findViewById(R.id.patient_list_day_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
+        //here we need to filter
         mAdapter = new PatientListRecyclerViewAdapter(patientList, this);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -75,99 +96,122 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
 
     }
 
-    private void prepareEvenDayPatientData() {
+    private void preparePatientData() {
         patientList = new ArrayList<>();
+        String url = "";
         if(dayType == DayType.evenDay) {
         switch(shift) {
             case morning:
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩", "1234"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩1", "12345"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩2", "12346"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩3", "12347"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩4", "12348"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩5", "1234"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩6", "12345"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩7", "12346"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩8", "12347"));
-                patientList.add(new PatientsCardViewModel("M-E賴蓉瑩9", "12348"));
+                url = "http://192.168.0.4:8080/anhe/patient?day=二四六&shift=早班";
+                parsePatientList(url, new VolleyCallBack() {
+                    @Override
+                    public void onResult(VolleyStatus status) {
+                        if(status == VolleyStatus.SUCCESS) {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
                 break;
             case afternoon:
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩", "1234"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩1", "12345"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩2", "12346"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩3", "12347"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩4", "12348"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩5", "1234"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩6", "12345"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩7", "12346"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩8", "12347"));
-                patientList.add(new PatientsCardViewModel("A-E賴蓉瑩9", "12348"));
+                url = "http://192.168.0.4:8080/anhe/patient?day=二四六&shift=中班";
+                parsePatientList(url, new VolleyCallBack() {
+                    @Override
+                    public void onResult(VolleyStatus status) {
+                        if(status == VolleyStatus.SUCCESS) {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
                 break;
             case night:
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩", "1234"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩1", "12345"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩2", "12346"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩3", "12347"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩4", "12348"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩5", "1234"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩6", "12345"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩7", "12346"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩8", "12347"));
-                patientList.add(new PatientsCardViewModel("N-E賴蓉瑩9", "12348"));
+                url = "http://192.168.0.4:8080/anhe/patient?day=二四六&shift=晚班";
+                parsePatientList(url, new VolleyCallBack() {
+                    @Override
+                    public void onResult(VolleyStatus status) {
+                        if(status == VolleyStatus.SUCCESS) {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
                 break;
         }
         } else {
             switch(shift) {
                 case morning:
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩", "1234"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩1", "12345"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩2", "12346"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩3", "12347"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩4", "12348"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩5", "1234"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩6", "12345"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩7", "12346"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩8", "12347"));
-                    patientList.add(new PatientsCardViewModel("M賴蓉瑩9", "12348"));
+                    url = "http://192.168.0.4:8080/anhe/patient?day=一三五&shift=早班";
+                    parsePatientList(url, new VolleyCallBack() {
+                        @Override
+                        public void onResult(VolleyStatus status) {
+                            if(status == VolleyStatus.SUCCESS) {
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
                     break;
                 case afternoon:
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩", "1234"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩1", "12345"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩2", "12346"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩3", "12347"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩4", "12348"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩5", "1234"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩6", "12345"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩7", "12346"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩8", "12347"));
-                    patientList.add(new PatientsCardViewModel("A賴蓉瑩9", "12348"));
+                    url = "http://192.168.0.4:8080/anhe/patient?day=一三五&shift=中班";
+                    parsePatientList(url, new VolleyCallBack() {
+                        @Override
+                        public void onResult(VolleyStatus status) {
+                            if(status == VolleyStatus.SUCCESS) {
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
                     break;
                 case night:
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩", "1234"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩1", "12345"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩2", "12346"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩3", "12347"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩4", "12348"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩5", "1234"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩6", "12345"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩7", "12346"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩8", "12347"));
-                    patientList.add(new PatientsCardViewModel("N賴蓉瑩9", "12348"));
+                    url = "http://192.168.0.4:8080/anhe/patient?day=一三五&shift=晚班";
+                    parsePatientList(url, new VolleyCallBack() {
+                        @Override
+                        public void onResult(VolleyStatus status) {
+                            if(status == VolleyStatus.SUCCESS) {
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
                     break;
 
             }
         }
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩Even", "1234"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩1Even", "12345"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩2Even", "12346"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩3Even", "12347"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩4Even", "12348"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩5Even", "1234"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩6Even", "12345"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩7Even", "12346"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩8Even", "12347"));
-//        patientList.add(new PatientsCardViewModel("賴蓉瑩9Even", "12348"));
 
+    }
+
+    private void parsePatientList(String url, final VolleyCallBack volleyCallBack) {
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++){
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        Integer pid = object.getInt("pid");
+                                        String name = object.getString("name");
+                                        String shift = object.getString("shift");
+                                        String ic = object.getString("ic");
+                                        String day = object.getString("day");
+//                                        Log.d("patient jason object" , name + pid + shift + day + ic);
+
+                                        patientList.add(new PatientsCardViewModel(pid, name, ic, shift, day));
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                   // Log.d("getting patient data from database", "CHLOE");
+                                    volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
     }
 
 }

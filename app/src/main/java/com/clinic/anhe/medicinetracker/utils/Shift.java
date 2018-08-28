@@ -1,9 +1,9 @@
 package com.clinic.anhe.medicinetracker.utils;
 
 public enum Shift {
-    morning("morning"),
-    afternoon("afternoon"),
-    night("night");
+    morning("早班"),
+    afternoon("中班"),
+    night("晚班");
 
     private final String name;
 

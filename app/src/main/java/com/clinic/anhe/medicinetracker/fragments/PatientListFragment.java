@@ -21,13 +21,18 @@ import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
+import java.util.List;
+
 public class PatientListFragment extends Fragment implements ArgumentVariables {
 
+    //patients cardview
+    private List<PatientsCardViewModel> patientList;
     private ViewPager mPatientsViewPager;
     private TabLayout mPatientsTabLayout;
     private PatientsPagerAdapter mPatientsPagerAdapter;
     private Context mContext;
     private Shift shift;
+
 
     public static PatientListFragment newInstance(Shift shift) {
         PatientListFragment fragment = new PatientListFragment();
