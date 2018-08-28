@@ -24,7 +24,7 @@ public class PatientsCardViewModel {
         return patientName;
     }
 
-    public String getPatientId(){
+    public String getPatientIC(){
         return patientIC;
     }
 

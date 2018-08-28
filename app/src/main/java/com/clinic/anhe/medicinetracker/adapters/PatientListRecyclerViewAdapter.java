@@ -47,7 +47,7 @@ public class PatientListRecyclerViewAdapter extends RecyclerView.Adapter<Patient
     public void onBindViewHolder(@NonNull PatientsListViewHolder holder, int position) {
         PatientsCardViewModel current =  patientList.get(position);
         holder.patientName.setText(current.getPatientName());
-        holder.patientId.setText(current.getPatientId());
+        holder.patientId.setText(current.getPatientIC());
         holder.imageButton.setVisibility(View.GONE);
 
 

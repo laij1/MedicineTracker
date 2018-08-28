@@ -74,7 +74,7 @@ public class SelectPatientFragment extends Fragment {
                     @Override
                     public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
                         patientName = selectedPatientViewModel.getPatientLiveData().getValue().getPatientName();
-                        paitientId = selectedPatientViewModel.getPatientLiveData().getValue().getPatientId();
+                        paitientId = selectedPatientViewModel.getPatientLiveData().getValue().getPatientIC();
                         Log.d("I have the selected patient in selectpatientfragment", patientsCardViewModel.getPatientName());
                     }
                 });

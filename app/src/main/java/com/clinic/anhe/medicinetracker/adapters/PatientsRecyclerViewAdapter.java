@@ -40,7 +40,7 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
     public void onBindViewHolder(@NonNull PatientsViewHolder holder, int position) {
         PatientsCardViewModel current =  patientList.get(position);
         holder.patientName.setText(current.getPatientName());
-        holder.patientId.setText(current.getPatientId());
+        holder.patientId.setText(current.getPatientIC());
 
         if(selectedPatientViewModel.getPatientLiveData().getValue()!= null &&
                 selectedPatientViewModel.getPatientLiveData().getValue().getPatientName().equals(current.getPatientName())) {
