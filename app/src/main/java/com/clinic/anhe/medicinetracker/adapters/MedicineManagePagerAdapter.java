@@ -27,34 +27,33 @@ public class MedicineManagePagerAdapter extends FragmentPagerAdapter {
     private int numberOfTabs;
     private Context mContext;
     private CounterFab mCounterFab;
-    private List<MedicineCardViewModel> medicineList;
+//    private List<MedicineCardViewModel> medicineList;
 
     private static final String[] tabTitles =
             {" 自費洗腎", " 口服藥物", " 注射藥物", " 外用藥物"};
 
-    public MedicineManagePagerAdapter(FragmentManager fm, int numbersOfTabs, Context context, List<MedicineCardViewModel> medicineList) {
+    public MedicineManagePagerAdapter(FragmentManager fm, int numbersOfTabs, Context context) {
         super(fm);
         this.numberOfTabs = numbersOfTabs;
         this.mContext = context;
-        this.medicineList = medicineList;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                MedicineSimpleFragment dialysis = MedicineSimpleFragment.newInstance(MedicineType.dialysis, medicineList);
+                MedicineSimpleFragment dialysis = MedicineSimpleFragment.newInstance(MedicineType.dialysis);
                 Log.d("dialysis tab view pager is created", "CHLOE!!!");
 //                transaction.add(dialysis, "dialysis").commit();
                 return dialysis;
             case 1:
-                MedicineSimpleFragment edible = MedicineSimpleFragment.newInstance(MedicineType.edible, medicineList);
+                MedicineSimpleFragment edible = MedicineSimpleFragment.newInstance(MedicineType.edible);
                 return edible;
             case 2:
-                MedicineSimpleFragment needle = MedicineSimpleFragment.newInstance(MedicineType.needle, medicineList);
+                MedicineSimpleFragment needle = MedicineSimpleFragment.newInstance(MedicineType.needle);
                 return needle;
             case 3:
-                MedicineSimpleFragment bandaid = MedicineSimpleFragment.newInstance(MedicineType.bandaid, medicineList);
+                MedicineSimpleFragment bandaid = MedicineSimpleFragment.newInstance(MedicineType.bandaid);
                 return bandaid;
             default:
                 return null;

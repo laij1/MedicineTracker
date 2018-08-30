@@ -273,7 +273,11 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.menu_record:
                                 currentFragment= "medicine_manage";
                                 medicineList = new ArrayList<>();
-                                populateMedicineList();
+                                MedicineManageFragment medicineManageFragment = MedicineManageFragment.newInstance();
+                                getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                        .replace(R.id.main_fragment_container, medicineManageFragment).commit();
+
+                                //populateMedicineList();
                                 break;
                             case R.id.menu_cashflow:
                                 CashflowFragment cashflowFragment = CashflowFragment.newInstance();
@@ -323,47 +327,47 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private  void populateMedicineList (){
-        String url = "http://192.168.0.4:8080/anhe/medicine/all/";
-        JsonArrayRequest jsonArrayRequest =
-                new JsonArrayRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                for(int i = 0; i < response.length(); i++){
-                                    JSONObject object = null;
-                                    try {
-                                        object = response.getJSONObject(i);
-                                        String category = object.getString("category");
-                                        String name = object.getString("name");
-                                        Integer id = object.getInt("mid");
-                                        Integer price = object.getInt("price");
-                                        String dose = object.getString("dose");
-                                        Integer stock = object.getInt("stock");
-                                        Log.d("jason object" , name + id +price +dose + stock);
-
-                                        medicineList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    Log.d("getting data from database", "CHLOE");
-                                    MedicineManageFragment medicineManageFragment = MedicineManageFragment.newInstance(medicineList);
-                                    getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                            .replace(R.id.main_fragment_container, medicineManageFragment).commit();
-
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
-                            }
-                        } );
-
-        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
-    }
+//    private  void populateMedicineList (){
+//        String url = "http://192.168.0.4:8080/anhe/medicine/all/";
+//        JsonArrayRequest jsonArrayRequest =
+//                new JsonArrayRequest(Request.Method.GET, url, null,
+//                        new Response.Listener<JSONArray>() {
+//                            @Override
+//                            public void onResponse(JSONArray response) {
+//                                for(int i = 0; i < response.length(); i++){
+//                                    JSONObject object = null;
+//                                    try {
+//                                        object = response.getJSONObject(i);
+//                                        String category = object.getString("category");
+//                                        String name = object.getString("name");
+//                                        Integer id = object.getInt("mid");
+//                                        Integer price = object.getInt("price");
+//                                        String dose = object.getString("dose");
+//                                        Integer stock = object.getInt("stock");
+//                                        Log.d("jason object" , name + id +price +dose + stock);
+//
+//                                        medicineList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
+//
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    Log.d("getting data from database", "CHLOE");
+//                                    MedicineManageFragment medicineManageFragment = MedicineManageFragment.newInstance(medicineList);
+//                                    getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+//                                            .replace(R.id.main_fragment_container, medicineManageFragment).commit();
+//
+//                                }
+//                            }
+//                        },
+//                        new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                                Log.d("VOLLEY", error.toString());
+//                            }
+//                        } );
+//
+//        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+//    }
 //    private void prepareListData() {
 //        listDataHeader = new ArrayList<GroupMenuModel>();
 //        //listDataChild = new HashMap<GroupMenuModel, List<String>>();

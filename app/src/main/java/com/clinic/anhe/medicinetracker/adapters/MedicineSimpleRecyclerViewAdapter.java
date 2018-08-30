@@ -20,17 +20,17 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
     private MedicineType medicineType;
     private Context mContext;
     private List<MedicineCardViewModel> medicineList;
-    private List<MedicineCardViewModel> currentList;
+//    private List<MedicineCardViewModel> currentList;
 
     public MedicineSimpleRecyclerViewAdapter( MedicineType medicineType, List<MedicineCardViewModel> medicineList) {
         this.medicineType = medicineType;
         this.medicineList = medicineList;
-        currentList = new ArrayList<>();
-        for(MedicineCardViewModel m : medicineList) {
-            if(medicineType.toString().equals(m.getMedicineCategory())) {
-                currentList.add(m);
-            }
-        }
+//        currentList = new ArrayList<>();
+//        for(MedicineCardViewModel m : medicineList) {
+//            if(medicineType.toString().equals(m.getMedicineCategory())) {
+//                currentList.add(m);
+//            }
+//        }
     }
 
     @NonNull
@@ -45,14 +45,14 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
 
     @Override
     public void onBindViewHolder(@NonNull MedicineSimpleViewHolder holder, int position) {
-        holder.name.setText(currentList.get(position).getMedicinName());
+        holder.name.setText(medicineList.get(position).getMedicinName());
 
     }
 
 
     @Override
     public int getItemCount() {
-        return currentList.size();
+        return medicineList.size();
     }
 
     public class MedicineSimpleViewHolder extends RecyclerView.ViewHolder {

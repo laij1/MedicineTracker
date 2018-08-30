@@ -4,13 +4,13 @@
     <item
         android:id="@+id/patient_detail_cash"
         android:enabled="true"
-        android:icon="@drawable/ic_star"
+        android:icon="@drawable/ic_cash"
         android:title="現金未結"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/patient_detail_month"
         android:enabled="true"
-        android:icon="@drawable/ic_warning"
+        android:icon="@drawable/ic_credit"
         android:title="月份未結"
         app:showAsAction="ifRoom" />
     <item

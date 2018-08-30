@@ -41,14 +41,12 @@ public class MedicineManageFragment extends Fragment {
     private ViewPager mMedicineManageViewPager;
     private MedicineManagePagerAdapter mMedicineManagePagerAdapter;
     private CounterFab mCounterfab;
-    //private VolleyController volleyController;
-    private static List<MedicineCardViewModel> medicineList;
+   // private static List<MedicineCardViewModel> medicineList;
 
 
 
-    public static MedicineManageFragment newInstance(List<MedicineCardViewModel> mList){
+    public static MedicineManageFragment newInstance(){
         MedicineManageFragment fragment = new MedicineManageFragment();
-        medicineList = mList;
         return fragment;
     }
 
@@ -86,7 +84,7 @@ public class MedicineManageFragment extends Fragment {
         mMedicineManageTabLayout.setupWithViewPager(mMedicineManageViewPager);
 
         mMedicineManagePagerAdapter = new MedicineManagePagerAdapter(
-                getChildFragmentManager(), mMedicineManageTabLayout.getTabCount(), mContext, medicineList);
+                getChildFragmentManager(), mMedicineManageTabLayout.getTabCount(), mContext);
 
         mMedicineManageViewPager.setAdapter(mMedicineManagePagerAdapter);
 
