@@ -114,7 +114,8 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
                         @Override
                         public void onResult(VolleyStatus status) {
                             if(status == VolleyStatus.SUCCESS) {
-                                SignatureDialogFragment signatureDialogFragment = SignatureDialogFragment.newInstance(employee, current.getRid());
+                                SignatureDialogFragment signatureDialogFragment =
+                                        SignatureDialogFragment.newInstance(employee, current.getRid(), getAdapterPosition());
                                 signatureDialogFragment.show( mFragement.getChildFragmentManager(),"signature");
                             }
                         }

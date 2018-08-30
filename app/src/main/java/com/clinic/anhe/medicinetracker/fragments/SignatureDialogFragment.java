@@ -46,11 +46,13 @@ public class SignatureDialogFragment extends DialogFragment {
     private VolleyController volleyController;
     private Context mContext;
     private static Integer rid;
+    private static  int index;
     private AlertDialog dialog;
 
-    public static SignatureDialogFragment newInstance(Map<String, Integer> employeeMap, Integer recordID) {
+    public static SignatureDialogFragment newInstance(Map<String, Integer> employeeMap, Integer recordID, int i) {
 //        Bundle args = new Bundle();
         SignatureDialogFragment fragment = new SignatureDialogFragment();
+        index = i;
         employee = employeeMap;
         rid = recordID;
         return fragment;
@@ -84,13 +86,25 @@ public class SignatureDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        final int[] checkedItem = {-1};
         dialog = builder.setTitle("請簽名")
                 .setItems(employeeList, null)
                 .setPositiveButton("簽名", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO: can't get the item clicked position
-                        Log.d("Signature is", which +"");
+                        Integer eid = employee.get(employeeList[checkedItem[0]]);
+                        String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
+                        chargeItem(url, new VolleyCallBack() {
+                            @Override
+                            public void onResult(VolleyStatus status) {
+                                if (status == VolleyStatus.SUCCESS) {
+                                    PatientDetailCashFragment fragment = (PatientDetailCashFragment)getParentFragment();
+                                    fragment.refreshRecyclerView(index);
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -102,11 +116,12 @@ public class SignatureDialogFragment extends DialogFragment {
                 .create();
 
         // add this listener after dialog creation to stop auto dismiss on selection
-//        AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                switch(position) {
-////                    Log.d("Signature is", position +"");
+        AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                checkedItem[0] = position;
+//                switch(position) {
+                    Log.d("Signature is", checkedItem[0] +"");
 //                String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + employee.get(employeeList[position]);
 //                    chargeItem(url, new VolleyCallBack() {
 //                        @Override
@@ -116,9 +131,9 @@ public class SignatureDialogFragment extends DialogFragment {
 //                            }
 //                        }
 //                    });
-//            }
-//        };
-//        dialog.getListView().setOnItemClickListener(listener);
+            }
+        };
+        dialog.getListView().setOnItemClickListener(listener);
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
