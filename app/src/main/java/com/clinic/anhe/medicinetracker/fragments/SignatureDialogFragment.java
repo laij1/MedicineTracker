@@ -85,27 +85,40 @@ public class SignatureDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         dialog = builder.setTitle("請簽名")
-                .setItems(employeeList, null) // any listener will do!
+                .setItems(employeeList, null)
+                .setPositiveButton("簽名", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO: can't get the item clicked position
+                        Log.d("Signature is", which +"");
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dismiss();
+                    }
+                })
                 .create();
 
         // add this listener after dialog creation to stop auto dismiss on selection
-        AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                switch(position) {
-                    Log.d("Signature is", position +"");
-                String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + employee.get(employeeList[position]);
-                    chargeItem(url, new VolleyCallBack() {
-                        @Override
-                        public void onResult(VolleyStatus status) {
-                            if(status== VolleyStatus.SUCCESS) {
-                                dialog.dismiss();
-                            }
-                        }
-                    });
-            }
-        };
-        dialog.getListView().setOnItemClickListener(listener);
+//        AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+////                switch(position) {
+////                    Log.d("Signature is", position +"");
+//                String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + employee.get(employeeList[position]);
+//                    chargeItem(url, new VolleyCallBack() {
+//                        @Override
+//                        public void onResult(VolleyStatus status) {
+//                            if(status== VolleyStatus.SUCCESS) {
+//                                dialog.dismiss();
+//                            }
+//                        }
+//                    });
+//            }
+//        };
+//        dialog.getListView().setOnItemClickListener(listener);
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
