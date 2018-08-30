@@ -75,7 +75,7 @@ public class PatientListRecyclerViewAdapter extends RecyclerView.Adapter<Patient
                 public void onClick(View v) {
 
                     //TODO: here we enter the patient detail view
-                    PatientDetailFragment patientDetailFragment = new PatientDetailFragment();
+                    PatientDetailFragment patientDetailFragment = PatientDetailFragment.newInstance(patientList.get(getAdapterPosition()));
 
                     FragmentTransaction transaction = mFragment.getFragmentManager().beginTransaction();
                     transaction.replace(R.id.patient_list_layout,patientDetailFragment).commit();

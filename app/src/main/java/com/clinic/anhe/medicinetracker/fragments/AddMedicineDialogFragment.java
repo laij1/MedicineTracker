@@ -1,7 +1,7 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
 
-import android.app.Dialog;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

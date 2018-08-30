@@ -38,6 +38,7 @@ import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
 import com.clinic.anhe.medicinetracker.adapters.SummaryRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
@@ -50,6 +51,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
+import java.util.ListIterator;
 
 
 public class SummaryFragment  extends Fragment {
@@ -99,14 +101,11 @@ public class SummaryFragment  extends Fragment {
             @Override
             public void onClick(View v) {
                 //launch a sweetAlertDialog
-//                jasonParse();
-                addRecordToDatabase();
-
                 final SweetAlertDialog pDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE);
                 pDialog.setTitleText("Loading");
                 pDialog.show();
                 pDialog.setCancelable(false);
-                CountDownTimer timer = new CountDownTimer(500 * 7, 100) {
+                final CountDownTimer timer = new CountDownTimer(500 * 7, 100) {
                     public void onTick(long millisUntilFinished) {
                         // you can change the progress bar color by ProgressHelper every 800 millis
                         i++;
@@ -136,16 +135,16 @@ public class SummaryFragment  extends Fragment {
                     }
 
                     public void onFinish() {
-                        i = -1;
-                        pDialog.setTitleText("Success!")
-                                .setConfirmText("OK")
-                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        i=-1;
                         pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismiss();
-                                getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
+                                if(sweetAlertDialog.getTitleText().equals("Success!")) {
+                                    sweetAlertDialog.dismiss();
+                                    getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                } else {
+                                    sweetAlertDialog.dismiss();
+                                }
                             }
                         });
 
@@ -153,6 +152,23 @@ public class SummaryFragment  extends Fragment {
 
                     }
                 }.start();
+
+                addRecordToDatabase(new VolleyCallBack() {
+                    @Override
+                    public void onResult(VolleyStatus status) {
+                        if(status == VolleyStatus.SUCCESS) {
+
+                            pDialog.setTitleText("Success!")
+                                    .setConfirmText("OK")
+                                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        } else {
+                            pDialog.setTitleText("Fail!")
+                                    .setConfirmText("Try Again")
+                                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        }
+                        timer.onFinish();
+                    }
+                });
 
             }
         });
@@ -184,109 +200,68 @@ public class SummaryFragment  extends Fragment {
         return view;
     }
 
-    private void addRecordToDatabase() {
-        String url = "http://192.168.0.4:8080/anhe/record/add?mid=" + cartList.get(0).getMedicineId()
-                                                             + "&name=" + cartList.get(0).getMedicinName()
-                                                             + "&payment=" + cartList.get(0).isCashPayment().toString()
-                                                             + "&pid=" + selectedPatientViewModel.getPatient().getPID()
-                                                             + "&quantity=" + cartList.get(0).getQuantity()
-                                                             + "&create_by=" + 1
-                                                             + "&subtotal=" + 10000;
-        JsonArrayRequest jsonArrayRequest =
-                new JsonArrayRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                Log.d("add record successfully", "chloe");
+    private void addRecordToDatabase(final VolleyCallBack volleyCallBack) {
+        //TODO: needs to modified create_by and subtotal
+        String url = "http://192.168.0.4:8080/anhe/record/addlist";
+        JSONArray jsonArray = new JSONArray();
+        try {
+            for(MedicineCardViewModel item : cartList) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("mid", item.getMedicineId());
+                jsonObject.put("medicineName", item.getMedicinName());
+                jsonObject.put("payment", item.isCashPayment().toString());
+                jsonObject.put("pid", selectedPatientViewModel.getPatient().getPID());
+                jsonObject.put("quantity", item.getQuantity());
+                jsonObject.put("createBy", 1);
+                int subtotal = Integer.parseInt(item.getMedicinePrice()) * item.getQuantity();
+                jsonObject.put("subtotal", subtotal);
+                jsonArray.put(jsonObject);
+            }
+        } catch (JSONException e) {
 
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
-                            }
-                        } );
+        }
+        final String requestBody = jsonArray.toString();
+        Log.d(requestBody, "");
 
-        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       if(response.equals("saved")) {
+                           volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                       } else {
+                           volleyCallBack.onResult(VolleyStatus.FAIL);
+                       }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY", error.toString());
+                        volleyCallBack.onResult(VolleyStatus.FAIL);
+                    }
+                })
+        {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+
+        };
+
+        volleyController.getInstance().addToRequestQueue(stringRequest);
     }
 
-//    private boolean jasonParse(){
-//        String url= "http://192.168.0.9:8080/anhe/medicine/add/";
-//        JSONObject jsonBody = new JSONObject();
-//        try {
-//            jsonBody.put("name", "Android Volley Demo");
-//            jsonBody.put("dose", "BNK");
-//            jsonBody.put("price", 1);
-//            jsonBody.put("category", "test");
-//            jsonBody.put("stock", 0);
-//        } catch (JSONException e) {
-//
-//        }
-//        final String requestBody = jsonBody.toString();
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        patientId.setText("Response is: "+ response.toString());
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("VOLLEY", error.toString());
-//                    }
-//                })
-//        {
-//            @Override
-//            public String getBodyContentType() {
-//                return "application/json; charset=utf-8";
-//            }
-//
-//            @Override
-//            public byte[] getBody() throws AuthFailureError {
-//                try {
-//                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-//                } catch (UnsupportedEncodingException uee) {
-//                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-//                    return null;
-//                }
-//            }
-
-//            @Override
-//            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-//                String responseString = "";
-//                if (response != null) {
-//                    responseString = String.valueOf(response.statusCode);
-//                    // can get more details such as response.headers
-//                }
-//                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-//            }
-//        };
-//
-//        volleyController.getInstance(getContext()).addToRequestQueue(stringRequest);
-        //mQueue.add(stringRequest);
-
-
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        // Display the first 500 characters of the response string.
-//                        patientId.setText("Response is: "+ response.toString());
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                patientId.setText((CharSequence) error.toString());
-//            }
-//        });
-
-// Add the request to the RequestQueue.
-//        mQueue.add(stringRequest);
-//        return false;
-//    }
 
     private void addToCartList(List<MedicineCardViewModel> list) {
         for(MedicineCardViewModel m : list) {

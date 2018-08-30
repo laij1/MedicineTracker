@@ -5,14 +5,46 @@
     android:orientation="vertical"
     android:id="@+id/patient_detail_cash_layout">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/gradientbackground"
+        android:id="@+id/patient_detail_cash_upperview"
+        android:orientation="vertical">
 
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/patient_detail_cash_recyclerview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:scrollbars="vertical"-->
-        <!--android:padding="4dp"-->
-        <!--android:background="@color/menuTextIconColor"/>-->
+
+        <TextView
+            android:id="@+id/patient_detail_cash_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:text="patient name"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/patient_detail_cash_ic"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/patient_detail_cash_name"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:text="patient id"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/patient_detail_cash_recyclerview"
+        android:layout_below="@id/patient_detail_cash_upperview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:padding="4dp"
+        android:background="@color/recyclerViewBackground"/>
 
 
 
