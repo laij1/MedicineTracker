@@ -11,8 +11,10 @@ public interface ArgumentVariables {
     public static final String ARG_SELECTED_PATIENT_PID = "selected patient pid";
     public static final String ARG_EMPLOYEE_LIST = "employee list";
 
+    //for pager to recognize what kind of fragment to new
     public static final String KIND_PATIENTS = "patients";
     public static final String KIND_PATIENTLIST = "patientlist";
+
 
     public static final String TAG_MEDICINE_CATEGORY_FRAGMENT = "medicinecategoryfragment";
     public static final String TAG_SELECT_PATIENT_FRAGMENT = "selectpatientfragment";

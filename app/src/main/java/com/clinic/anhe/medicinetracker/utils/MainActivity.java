@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.fragments.CashflowFragment;
+import com.clinic.anhe.medicinetracker.fragments.DashboardSettingFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineManageFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                         switch(item.getItemId()) {
                             //dashboard menu
                             case R.id.menu_medicine:
-                                currentFragment = "medicine_category";
+//                                currentFragment = "medicine_category";
                                 //MedicineFragment medicineFragment = MedicineFragment.newInstance();
                                 MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -250,28 +251,31 @@ public class MainActivity extends AppCompatActivity {
                                         .commit();
                                 break;
                             case R.id.menu_home:
+                                DashboardSettingFragment dashboardSettingFragment = DashboardSettingFragment.newInstance();
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                        .replace(R.id.main_fragment_container, dashboardSettingFragment).commit();
                                 break;
                             //patient menu
                             case R.id.menu_morning:
-                                currentFragment = "patient_morning";
+//                                currentFragment = "patient_morning";
                                 PatientListFragment morningFragment = PatientListFragment.newInstance(Shift.morning);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, morningFragment).commit();
                                 break;
                             case R.id.menu_afternoon:
-                                currentFragment = "patient_afternoon";
+//                                currentFragment = "patient_afternoon";
                                 PatientListFragment afternoonFragment = PatientListFragment.newInstance(Shift.afternoon);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, afternoonFragment).commit();
                                 break;
                             case R.id.menu_night:
-                                currentFragment = "patient_night";
+//                                currentFragment = "patient_night";
                                 PatientListFragment nightFragment = PatientListFragment.newInstance(Shift.night);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                            .replace(R.id.main_fragment_container, nightFragment).commit();
                                 break;
                             case R.id.menu_record:
-                                currentFragment= "medicine_manage";
+//                                currentFragment= "medicine_manage";
                                 medicineList = new ArrayList<>();
                                 MedicineManageFragment medicineManageFragment = MedicineManageFragment.newInstance();
                                 getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)

@@ -16,10 +16,12 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -93,18 +95,25 @@ public class SignatureDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO: can't get the item clicked position
-                        Integer eid = employee.get(employeeList[checkedItem[0]]);
-                        String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
-                        chargeItem(url, new VolleyCallBack() {
-                            @Override
-                            public void onResult(VolleyStatus status) {
-                                if (status == VolleyStatus.SUCCESS) {
-                                    PatientDetailCashFragment fragment = (PatientDetailCashFragment)getParentFragment();
-                                    fragment.refreshRecyclerView(index);
-                                    dialog.dismiss();
+                        if(checkedItem[0] == -1) {
+                            Toast.makeText(getActivity(), "請簽名再結帳",Toast.LENGTH_LONG).show();
+
+                        } else {
+                            Integer eid = employee.get(employeeList[checkedItem[0]]);
+                            String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
+                            chargeItem(url, new VolleyCallBack() {
+                                @Override
+                                public void onResult(VolleyStatus status) {
+                                    if (status == VolleyStatus.SUCCESS) {
+                                        PatientDetailCashFragment fragment = (PatientDetailCashFragment)getParentFragment();
+                                        fragment.refreshRecyclerView(index);
+                                        Toast.makeText(getParentFragment().getContext(), "結帳完成",Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getParentFragment().getContext(), "結帳未完成", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -119,18 +128,11 @@ public class SignatureDialogFragment extends DialogFragment {
         AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                checkedItem[0] = position;
-//                switch(position) {
-                    Log.d("Signature is", checkedItem[0] +"");
-//                String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + employee.get(employeeList[position]);
-//                    chargeItem(url, new VolleyCallBack() {
-//                        @Override
-//                        public void onResult(VolleyStatus status) {
-//                            if(status== VolleyStatus.SUCCESS) {
-//                                dialog.dismiss();
-//                            }
-//                        }
-//                    });
+                    if(checkedItem[0] != -1) {
+                        parent.getChildAt(checkedItem[0]).setBackgroundColor(getResources().getColor(R.color.dialog_bg_color));
+                    }
+                    checkedItem[0] = position;
+                    view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         };
         dialog.getListView().setOnItemClickListener(listener);
@@ -141,6 +143,7 @@ public class SignatureDialogFragment extends DialogFragment {
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_round);
 
         }
+
         return dialog;
     }
 

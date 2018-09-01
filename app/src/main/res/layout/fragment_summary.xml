@@ -15,27 +15,28 @@
     android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/summary_patientname"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:elevation="6dp"
-            android:gravity="center"
-            android:text="patient name"
-            android:textSize="30dp" />
+    <TextView
+        android:id="@+id/summary_patientname"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="27dp"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:text="patient name"
+        android:textSize="30dp" />
 
-        <TextView
-            android:id="@+id/summary_patientid"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/summary_patientname"
-            android:elevation="6dp"
-            android:gravity="center"
-            android:text="patient id"
-            android:textSize="20dp" />
+    <TextView
+        android:id="@+id/summary_patientid"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/summary_patientname"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:text="patient id"
+        android:textSize="20dp" />
 
 </RelativeLayout>
 

@@ -4,7 +4,6 @@ import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
 public class MedicineCardViewModel {
 
-//    private int medicineIcon = -1;
     private String medicinName;
     private String medicinePrice;
     private String medicineDose;
@@ -15,6 +14,7 @@ public class MedicineCardViewModel {
     private boolean isAddToCart = false;
     private int quantity = 0;
     private float sliderPosition = 0f;
+    private int subtotal = 0;
 
 
     public MedicineCardViewModel(
@@ -93,4 +93,16 @@ public class MedicineCardViewModel {
     public void setMedicineCategory(String medicineCategory) { this.medicineCategory = medicineCategory; }
 
     public String getMedicineCategory() { return medicineCategory; }
+
+    public int getSubtotal() {
+        if(subtotal == 0) {
+            calculateSubtotal();
+        }
+        return subtotal;
+    }
+
+    public void calculateSubtotal() {
+        //TODO: here we need to calculate 買ㄧ送醫
+        subtotal = Integer.parseInt(medicinePrice) * quantity;
+    }
 }

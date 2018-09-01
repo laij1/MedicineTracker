@@ -57,6 +57,8 @@ public class PatientDetailFragment extends Fragment {
             selectedPatientPID = getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
         }
         mBottomNavigationView = view.findViewById(R.id.patient_detail_bottom_navigation);
+
+
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -83,6 +85,10 @@ public class PatientDetailFragment extends Fragment {
                 return false;
             }
         });
+
+        //check detail cash when start up
+        mBottomNavigationView.getMenu().performIdentifierAction(R.id.patient_detail_cash, 0);
+
         return view;
     }
 }

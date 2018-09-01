@@ -54,6 +54,8 @@ public class CashflowFragment extends Fragment {
             }
         });
 
+        mBottomNavigationView.getMenu().performIdentifierAction(R.id.cashflow_today, 0);
+
         return view;
     }
 }
