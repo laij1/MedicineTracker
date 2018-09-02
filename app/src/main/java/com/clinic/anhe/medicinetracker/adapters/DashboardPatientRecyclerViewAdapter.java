@@ -47,18 +47,23 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
 
     @Override
     public void onBindViewHolder(@NonNull PatientsViewHolder holder, int position) {
+
         PatientsCardViewModel current =  patientList.get(position);
         holder.patientId.setVisibility(View.GONE);
         holder.patientName.setText(current.getPatientName());
         holder.imageButton.setChecked(false);
-//        for(String name : dashboardViewModel.getSelectedPatientsList()) {
-//            Log.d("the live data has:" + dashboardViewModel.getSelectedPatientsList().size(), name);
-//            if(name.equalsIgnoreCase(current.getPatientName())) {
-//                Log.d("check radio button:", name);
-//                holder.imageButton.setChecked(true);
-//            }
-//        }
+//        holder.imageButton.setSelected(false);
 
+        if(nurseName.equalsIgnoreCase(dashboardViewModel.getNurseLiveData().getValue())) {
+            for (String name : dashboardViewModel.getSelectedPatientsList()) {
+                Log.d("the live data has:" + dashboardViewModel.getSelectedPatientsList().size(), name);
+                if (name.equalsIgnoreCase(current.getPatientName())) {
+                    Log.d("check radio button:", name);
+                    holder.imageButton.setChecked(true);
+//                holder.imageButton.setSelected(true);
+                }
+            }
+        }
 //        Iterator<Map.Entry<String, List<String>>> it =  dashboardViewModel.getDashboardMap().entrySet().iterator();
 //        while (it.hasNext()) {
 //            Map.Entry<String, List<String>> pair = it.next();
@@ -73,16 +78,18 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
 //            }
 //        }
 
-        for(Map.Entry<String,List<String>> entry: dashboardViewModel.getDashboardMap().entrySet()) {
-                if(entry.getKey().equalsIgnoreCase(nurseName)) {
-                    for(String p : entry.getValue()) {
-                        if(p.equalsIgnoreCase(current.getPatientName())){
-                            Log.d("checking radio button" , p);
-                            holder.imageButton.setChecked(true);
-                        }
-                    }
-                }
-        }
+//        for(Map.Entry<String,List<String>> entry: dashboardViewModel.getDashboardMap().entrySet()) {
+//                if(entry.getKey().equalsIgnoreCase(nurseName)) {
+//                    for(String p : entry.getValue()) {
+//                        if(p.equalsIgnoreCase(current.getPatientName())){
+//                            Log.d("checking radio button" , p);
+//                            holder.imageButton.setChecked(true);
+//                        }
+//                    }
+//                }
+//        }
+//
+//        Log.d(holder.imageButton.isChecked()?"imagebutton is checked":"not check", "chloe blind view" );
 
     }
 
@@ -117,12 +124,20 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
 //            imageButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //                @Override
 //                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    PatientsCardViewModel current = patientList.get(getAdapterPosition());
 //                    if(isChecked == true) {
-//                        Log.d("radio buttonis :" , isChecked==true?"true":"false");
-//                        dashboardViewModel.getSelectedPatientsList().add(patientList.get(getAdapterPosition()).getPatientName());
+//                        Log.d("radio button is :" , isChecked==true?"true":"false");
+//                        dashboardViewModel.getSelectedPatientsList().add(current.getPatientName());
 //                        dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
 //                        dashboardViewModel.getDashboardMap().put(nurseName,dashboardViewModel.getSelectedPatientsList());
 //                        dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
+//                    } else {
+//                        if (dashboardViewModel.getSelectedPatientsList().contains(current.getPatientName())) {
+//                            dashboardViewModel.getSelectedPatientsList().remove(current.getPatientName());
+//                            dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
+//                            dashboardViewModel.getDashboardMap().put(nurseName, dashboardViewModel.getSelectedPatientsList());
+//                            dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
+//                        }
 //                    }
 //                }
 //            });
@@ -131,35 +146,43 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
                 @Override
                 public void onClick(View v) {
                     PatientsCardViewModel current = patientList.get(getAdapterPosition());
+//                    if (imageButton.isChecked()) {
+//                        imageButton.setChecked(false);
+//                    } else {
+//                        imageButton.setChecked(true);
+//                    }
+
 //                    lastCheckedPosition = getAdapterPosition();
+                    //TODO: set nurseName
+                    if(nurseName.equalsIgnoreCase(dashboardViewModel.getNurseLiveData().getValue())) {
+                        Log.d(imageButton.isChecked() ? "imagebutton is checked" : "not check", "chloe before live data");
 //                    //TODO:
-                    if(dashboardViewModel.getSelectedPatientsList().contains(current.getPatientName())){
-                        dashboardViewModel.getSelectedPatientsList().remove(current.getPatientName());
-                        imageButton.setChecked(false);
-                    } else {
-                        dashboardViewModel.getSelectedPatientsList().add(patientList.get(getAdapterPosition()).getPatientName());
-                        dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
+                        if (dashboardViewModel.getSelectedPatientsList().contains(current.getPatientName())) {
+                            dashboardViewModel.getSelectedPatientsList().remove(current.getPatientName());
+                            dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
+                            imageButton.setChecked(false);
+                        } else {
+                            dashboardViewModel.getSelectedPatientsList().add(current.getPatientName());
+                            dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
+                            imageButton.setChecked(true);
+                        }
                     }
+                    Log.d(imageButton.isChecked()?"imagebutton is checked":"not check", "chloe after live data" );
 //                    dashboardViewModel.getDashboardMap().put(nurseName,dashboardViewModel.getSelectedPatientsList());
 //                    dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
-                    Iterator<Map.Entry<String, List<String>>> it =  dashboardViewModel.getDashboardMap().entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry<String, List<String>> pair = it.next();
-                        if(pair.getKey().equalsIgnoreCase(nurseName)){
-                            Iterator<String> listIt = pair.getValue().iterator();
-                            while (listIt.hasNext()) {
-                                String s = listIt.next();
-            //                    if(s.equalsIgnoreCase(current.getPatientName())){
-                                    Log.d("livedata for ",  pair.getKey() + s);
-                                }
-                            }
-                        }
+//                    Iterator<Map.Entry<String, List<String>>> it =  dashboardViewModel.getDashboardMap().entrySet().iterator();
+//                    while (it.hasNext()) {
+//                        Map.Entry<String, List<String>> pair = it.next();
+//                        if(pair.getKey().equalsIgnoreCase(nurseName)){
+//                            Iterator<String> listIt = pair.getValue().iterator();
+//                            while (listIt.hasNext()) {
+//                                String s = listIt.next();
+//            //                    if(s.equalsIgnoreCase(current.getPatientName())){
+//                                    Log.d("livedata for ",  pair.getKey() + s);
+//                                }
+//                            }
+//                        }
 
-
-
-
-//                    selectedPatientViewModel.getPatientLiveData().setValue(patientList.get(getAdapterPosition()));
-//                    notifyDataSetChanged();
                 }
             });
         }

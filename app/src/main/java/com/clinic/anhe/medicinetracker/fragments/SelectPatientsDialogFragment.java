@@ -168,16 +168,16 @@ public class SelectPatientsDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 //dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
-                if(dashboardViewModel.getDashboardMap().containsKey(nurseName)) {
-                    for(String s: dashboardViewModel.getDashboardMap().get(nurseName)){
-                        list.add(s);
-                    }
-                }
-                list.addAll(dashboardViewModel.getSelectedPatientsList());
-                dashboardViewModel.getDashboardMap().put(nurseName,list);
-                dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
-                //clearup the patient list live data
-                dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
+//                if(dashboardViewModel.getDashboardMap().containsKey(nurseName)) {
+//                    for(String s: dashboardViewModel.getDashboardMap().get(nurseName)){
+//                        list.add(s);
+//                    }
+//                }
+//                list.addAll(dashboardViewModel.getSelectedPatientsList());
+//                dashboardViewModel.getDashboardMap().put(nurseName,list);
+//                dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
+//                //clearup the patient list live data
+//                dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
                 dismiss();
 //                Toast.makeText(getActivity(), "confirm is clicked", Toast.LENGTH_LONG).show();
             }

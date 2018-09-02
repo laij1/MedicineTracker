@@ -13,27 +13,33 @@ import java.util.Map;
 
 public class DashboardViewModel extends ViewModel {
 
-    private MutableLiveData<Map<String, List<String>>> dashboardLiveData;
-    private Map<String, List<String>> dashboardMap;
+//    private MutableLiveData<Map<String, List<String>>> dashboardLiveData;
+//    private Map<String, List<String>> dashboardMap;
 
     private MutableLiveData<List<String>> selectedPatientsLiveData;
     private List<String> patientList;
+    private MutableLiveData<String> nurseLiveData;
 
 
     public DashboardViewModel(){
-        dashboardLiveData = new MutableLiveData<>();
-        dashboardMap = new HashMap<>();
+//        dashboardLiveData = new MutableLiveData<>();
+//        dashboardMap = new HashMap<>();
 
         selectedPatientsLiveData = new MutableLiveData<>();
         patientList = new ArrayList<>();
         selectedPatientsLiveData.setValue(patientList);
-        dashboardMap.put("test",selectedPatientsLiveData.getValue());
-        dashboardLiveData.setValue(dashboardMap);
+
+        nurseLiveData = new MutableLiveData<>();
+//        dashboardMap.put("test",selectedPatientsLiveData.getValue());
+//        dashboardLiveData.setValue(dashboardMap);
     }
 
-    public Map<String, List<String>> getDashboardMap() {
-        return dashboardLiveData.getValue();
-    }
+//    public Map<String, List<String>> getDashboardMap() {
+//        return dashboardLiveData.getValue();
+
+//    }
+
+    public MutableLiveData<String> getNurseLiveData(){ return nurseLiveData; }
 
     public List<String> getSelectedPatientsList(){
         return selectedPatientsLiveData.getValue();
@@ -41,7 +47,7 @@ public class DashboardViewModel extends ViewModel {
 
     public MutableLiveData<List<String>> getSelectedPatientsLiveData()  { return selectedPatientsLiveData; }
 
-    public MutableLiveData<Map<String, List<String>>> getDashboardMapLiveData() {
-        return dashboardLiveData;
-    }
+//    public MutableLiveData<Map<String, List<String>>> getDashboardMapLiveData() {
+//        return dashboardLiveData;
+//    }
 }

@@ -53,7 +53,7 @@ public class DashboardFragment extends Fragment {
 
         mRecyclerView = view.findViewById(R.id.dashboard_recyclerview);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(getContext(), 4);
+        mLayoutManager = new GridLayoutManager(getContext(), 1);
 
         employeeList = new ArrayList<>();
         prepareEmployeeData();
