@@ -4,7 +4,8 @@ package com.clinic.anhe.medicinetracker.networking;
 public enum  VolleyStatus {
 
     SUCCESS("success"),
-    FAIL("fail");
+    FAIL("fail"),
+    UNKNOWN("unknown");
 
     private final String name;
 

@@ -1,6 +1,7 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Transaction;
 import android.os.Bundle;
@@ -64,6 +65,7 @@ public class SummaryFragment  extends Fragment {
     private FloatingActionButton summaryFab;
     private int i = -1;
     private VolleyController volleyController;
+    private static VolleyStatus status= VolleyStatus.UNKNOWN;
 
     //TODO
     private CartViewModel cartViewModel;
@@ -82,6 +84,32 @@ public class SummaryFragment  extends Fragment {
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_summary, container, false);
+
+        if(status == VolleyStatus.SUCCESS) {
+            final SweetAlertDialog successDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.SUCCESS_TYPE);
+            successDialog.setTitleText("Success!")
+                    .setConfirmText("OK")
+                    .show();
+            successDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismiss();
+                    getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+            });
+        }
+        else if(status == VolleyStatus.FAIL) {
+            final SweetAlertDialog failDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.ERROR_TYPE);
+            failDialog.setTitleText("Fail!")
+                    .setConfirmText("Try Again")
+                    .show();
+            failDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismiss();
+                }
+            });
+        }
 
         volleyController.getInstance(getContext());
        // mQueue = Volley.newRequestQueue(getContext());
@@ -156,8 +184,8 @@ public class SummaryFragment  extends Fragment {
                 addRecordToDatabase(new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
+                        SummaryFragment.status = status;
                         if(status == VolleyStatus.SUCCESS) {
-
                             pDialog.setTitleText("Success!")
                                     .setConfirmText("OK")
                                     .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
