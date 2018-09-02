@@ -27,6 +27,9 @@ import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SelectPatientsDialogFragment extends DialogFragment {
     private ViewPager mPatientsViewPager;
     private TabLayout mPatientsTabLayout;
@@ -37,6 +40,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     private Shift shift;
     private String nurseName;
     private DashboardViewModel dashboardViewModel;
+    private List<String> list = new ArrayList<>();
 
 
     public static SelectPatientsDialogFragment newInstance(String name) {
@@ -74,6 +78,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
             nurseName = getArguments().getString(ArgumentVariables.ARG_NURSE_NAME);
         }
 
+        Log.d(nurseName, "chloein sleect");
         View view = inflater.inflate(R.layout.fragment_dashboard_patients, container, false);
         //right here shift does not matter
         shift = Shift.morning;
@@ -136,21 +141,21 @@ public class SelectPatientsDialogFragment extends DialogFragment {
             }
         });
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-//                Toast.makeText(getActivity(), "confirm is clicked!", Toast.LENGTH_LONG).show();
-            }
-        });
+//        addButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dismiss();
+////                Toast.makeText(getActivity(), "confirm is clicked!", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-//                Toast.makeText(getActivity(), "cancel is clicked!", Toast.LENGTH_LONG).show();
-            }
-        });
+//        cancelButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dismiss();
+////                Toast.makeText(getActivity(), "cancel is clicked!", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -162,9 +167,19 @@ public class SelectPatientsDialogFragment extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
+                if(dashboardViewModel.getDashboardMap().containsKey(nurseName)) {
+                    for(String s: dashboardViewModel.getDashboardMap().get(nurseName)){
+                        list.add(s);
+                    }
+                }
+                list.addAll(dashboardViewModel.getSelectedPatientsList());
+                dashboardViewModel.getDashboardMap().put(nurseName,list);
+                dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
+                //clearup the patient list live data
                 dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
-
-                Toast.makeText(getActivity(), "confirm is clicked", Toast.LENGTH_LONG).show();
+                dismiss();
+//                Toast.makeText(getActivity(), "confirm is clicked", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -172,7 +187,8 @@ public class SelectPatientsDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
-                Toast.makeText(getActivity(), "cancel is clicked", Toast.LENGTH_LONG).show();
+                dismiss();
+//                Toast.makeText(getActivity(), "cancel is clicked", Toast.LENGTH_LONG).show();
             }
         });
 

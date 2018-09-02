@@ -32,6 +32,7 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
         this.patientList = patientList;
         this.dashboardViewModel = dashboardViewModel;
         this.nurseName = nurseName;
+        Log.d("nurseName is ", nurseName);
 
     }
 
@@ -50,13 +51,13 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
         holder.patientId.setVisibility(View.GONE);
         holder.patientName.setText(current.getPatientName());
         holder.imageButton.setChecked(false);
-        for(String name : dashboardViewModel.getSelectedPatientsList()) {
-            Log.d("the live data has:" + dashboardViewModel.getSelectedPatientsList().size(), name);
-            if(name.equalsIgnoreCase(current.getPatientName())) {
-                Log.d("check radio button:", name);
-                holder.imageButton.setChecked(true);
-            }
-        }
+//        for(String name : dashboardViewModel.getSelectedPatientsList()) {
+//            Log.d("the live data has:" + dashboardViewModel.getSelectedPatientsList().size(), name);
+//            if(name.equalsIgnoreCase(current.getPatientName())) {
+//                Log.d("check radio button:", name);
+//                holder.imageButton.setChecked(true);
+//            }
+//        }
 
 //        Iterator<Map.Entry<String, List<String>>> it =  dashboardViewModel.getDashboardMap().entrySet().iterator();
 //        while (it.hasNext()) {
@@ -72,18 +73,16 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
 //            }
 //        }
 
-//        for(Map.Entry<String,List<String>> entry: dashboardViewModel.getDashboardMap().entrySet()) {
-//                if(entry.getKey().equalsIgnoreCase(nurseName)) {
-//
-//
-//                    for(String p : entry.getValue()) {
-//                        if(p.equalsIgnoreCase(current.getPatientName())){
-//                            Log.d("checking radio button" , p);
-//                            holder.imageButton.setChecked(true);
-//                        }
-//                    }
-//                }
-//        }
+        for(Map.Entry<String,List<String>> entry: dashboardViewModel.getDashboardMap().entrySet()) {
+                if(entry.getKey().equalsIgnoreCase(nurseName)) {
+                    for(String p : entry.getValue()) {
+                        if(p.equalsIgnoreCase(current.getPatientName())){
+                            Log.d("checking radio button" , p);
+                            holder.imageButton.setChecked(true);
+                        }
+                    }
+                }
+        }
 
     }
 
@@ -141,8 +140,24 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
                         dashboardViewModel.getSelectedPatientsList().add(patientList.get(getAdapterPosition()).getPatientName());
                         dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
                     }
-                    dashboardViewModel.getDashboardMap().put(nurseName,dashboardViewModel.getSelectedPatientsList());
-                    dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
+//                    dashboardViewModel.getDashboardMap().put(nurseName,dashboardViewModel.getSelectedPatientsList());
+//                    dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
+                    Iterator<Map.Entry<String, List<String>>> it =  dashboardViewModel.getDashboardMap().entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry<String, List<String>> pair = it.next();
+                        if(pair.getKey().equalsIgnoreCase(nurseName)){
+                            Iterator<String> listIt = pair.getValue().iterator();
+                            while (listIt.hasNext()) {
+                                String s = listIt.next();
+            //                    if(s.equalsIgnoreCase(current.getPatientName())){
+                                    Log.d("livedata for ",  pair.getKey() + s);
+                                }
+                            }
+                        }
+
+
+
+
 //                    selectedPatientViewModel.getPatientLiveData().setValue(patientList.get(getAdapterPosition()));
 //                    notifyDataSetChanged();
                 }

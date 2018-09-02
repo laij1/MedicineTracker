@@ -25,7 +25,7 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     private Shift shift;
     private String kind = "";
-    private String nurseName = "";
+    private String nurseName;
 
 
     private int imageResId = R.drawable.ic_calender;
@@ -39,6 +39,7 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
         this.mContext = mContext;
         this.shift = shift;
         this.kind = kind;
+        this.nurseName = nurseName;
     }
 
     @Override

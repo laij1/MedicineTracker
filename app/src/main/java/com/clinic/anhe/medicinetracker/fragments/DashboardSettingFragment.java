@@ -1,9 +1,11 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,8 +19,10 @@ import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardSettingPagerAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
+import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +52,18 @@ public class DashboardSettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard_setting, container, false);
 
         ViewModelProviders.of(this).get(DashboardViewModel.class);
+//        dashboardViewModel.getDashboardMapLiveData().observe(this, new Observer<Map<String, List<String>>>() {
+//            @Override
+//            public void onChanged(@Nullable Map<String, List<String>> map) {
+//                Log.d("we are at dashboardsetting",  " chloe");
+//                for(Map.Entry<String, List<String>> s: map.entrySet()) {
+//                    for(String n: s.getValue()) {
+//                        Log.d(s.getKey(), n + " chloe");
+//                    }
+//                }
+//            }
+//        });
+
 
         mDashboardSettingFab = view.findViewById(R.id.dashboard_setting_fab);
         mDashboardSettingTabLayout = (TabLayout) view.findViewById(R.id.dashboard_setting_tabLayout);
@@ -105,15 +121,22 @@ public class DashboardSettingFragment extends Fragment {
             }
         });
 
+
         mDashboardSettingFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(Map.Entry<String, List<String>> s: dashboardViewModel.getDashboardMap().entrySet()) {
-                     for(String n: s.getValue()) {
-                         Log.d(s.getKey(), n + " chloe");
-                     }
+                Iterator<Map.Entry<String, List<String>>> it =  dashboardViewModel.getDashboardMap().entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry<String, List<String>> pair = it.next();
+                        Iterator<String> listIt = pair.getValue().iterator();
+                        while (listIt.hasNext()) {
+                            String s = listIt.next();
+                            //                    if(s.equalsIgnoreCase(current.getPatientName())){
+                            Log.d("setting: livedata for ",  pair.getKey() + s);
+                        }
+                    }
                 }
-            }
+
         });
 
 

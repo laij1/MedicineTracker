@@ -46,7 +46,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
     private VolleyController volleyController;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
-    private String nurseName= "";
+    private String nurseName;
 
 
     public static DashboardPatientsFragment newInstance(DayType dayType, String nurseName) {
@@ -54,6 +54,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         Bundle args = new Bundle();
         args.putString(ARG_DAY_TYPE, dayType.toString());
         args.putString(ARG_NURSE_NAME, nurseName);
+//        nurseName = nurseName;
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,8 +82,10 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         if(dayType == null) {
             dayType= dayType.fromString(getArguments().getString(ARG_DAY_TYPE));
             nurseName = getArguments().getString(ARG_NURSE_NAME);
+
         }
 
+        Log.d("nurseName in dashboardPatientFragment", nurseName);
 //
         preparePatientData();
 

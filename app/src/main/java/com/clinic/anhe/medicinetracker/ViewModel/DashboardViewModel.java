@@ -23,10 +23,12 @@ public class DashboardViewModel extends ViewModel {
     public DashboardViewModel(){
         dashboardLiveData = new MutableLiveData<>();
         dashboardMap = new HashMap<>();
-        dashboardLiveData.setValue(dashboardMap);
+
         selectedPatientsLiveData = new MutableLiveData<>();
         patientList = new ArrayList<>();
         selectedPatientsLiveData.setValue(patientList);
+        dashboardMap.put("test",selectedPatientsLiveData.getValue());
+        dashboardLiveData.setValue(dashboardMap);
     }
 
     public Map<String, List<String>> getDashboardMap() {
