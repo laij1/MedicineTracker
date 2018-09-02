@@ -18,6 +18,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.view.View;
@@ -60,20 +62,38 @@ public class SignatureDialogFragment extends DialogFragment {
         return fragment;
     }
 
-//    @Override
-//    public void onSaveInstanceState(@NonNull Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putStringArray(ArgumentVariables.ARG_EMPLOYEE_LIST, employeeList);
-//    }
-//
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArray(ArgumentVariables.ARG_EMPLOYEE_LIST, employeeList);
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        Log.d("OnDestoryView", "ChloeSignature");
+        Log.d("Dialog is ", getDialog()==null?"null": "notnull");
+        Log.d("getRetainInstance() ", getRetainInstance()==true?"true": "false");
+        if (getDialog() != null && getRetainInstance()) {
+            getDialog().setDismissMessage(null);
+        }
+        super.onDestroyView();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setRetainInstance(true);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-//        if(savedInstanceState!= null) {
-//            employeeList = savedInstanceState.getStringArray(ArgumentVariables.ARG_EMPLOYEE_LIST);
-//        }
+        if(savedInstanceState!= null) {
+            employeeList = savedInstanceState.getStringArray(ArgumentVariables.ARG_EMPLOYEE_LIST);
+        }
 
         int i = 0;
         employeeList = new String[employee.size()];

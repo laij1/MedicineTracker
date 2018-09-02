@@ -1,26 +1,35 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardSettingPagerAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
 import com.clinic.anhe.medicinetracker.utils.Shift;
+
+import java.util.List;
+import java.util.Map;
 
 public class DashboardSettingFragment extends Fragment {
 
     private ViewPager mDashboardSettingViewPager;
     private TabLayout mDashboardSettingTabLayout;
     private DashboardSettingPagerAdapter mDashboardSettingPagerAdapter;
+    private FloatingActionButton mDashboardSettingFab;
     private Context mContext;
+    private DashboardViewModel dashboardViewModel;
 
 
     public static DashboardSettingFragment newInstance(){
@@ -38,6 +47,9 @@ public class DashboardSettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard_setting, container, false);
 
+        ViewModelProviders.of(this).get(DashboardViewModel.class);
+
+        mDashboardSettingFab = view.findViewById(R.id.dashboard_setting_fab);
         mDashboardSettingTabLayout = (TabLayout) view.findViewById(R.id.dashboard_setting_tabLayout);
         //set up tab
         TabLayout.Tab morning = mDashboardSettingTabLayout.newTab();
@@ -92,6 +104,18 @@ public class DashboardSettingFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        mDashboardSettingFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(Map.Entry<String, List<String>> s: dashboardViewModel.getDashboardMap().entrySet()) {
+                     for(String n: s.getValue()) {
+                         Log.d(s.getKey(), n + " chloe");
+                     }
+                }
+            }
+        });
+
 
         setRetainInstance(true);
         return view;

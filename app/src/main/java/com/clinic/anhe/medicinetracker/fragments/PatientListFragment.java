@@ -75,7 +75,7 @@ public class PatientListFragment extends Fragment implements ArgumentVariables {
         mPatientsViewPager = (ViewPager) view.findViewById(R.id.patient_list_pager);
         mPatientsTabLayout.setupWithViewPager(mPatientsViewPager);
         mPatientsPagerAdapter = new PatientsPagerAdapter
-                (getChildFragmentManager(), mPatientsTabLayout.getTabCount(), mContext, shift, KIND_PATIENTLIST);
+                (getChildFragmentManager(), mPatientsTabLayout.getTabCount(), mContext, shift, KIND_PATIENTLIST, null);
         mPatientsViewPager.setAdapter(mPatientsPagerAdapter);
 
         highLightCurrentTab(0);

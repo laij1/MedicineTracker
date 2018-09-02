@@ -56,9 +56,9 @@
         android:id="@+id/shift_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/shift_radiogroup"
-        android:elevation="3dp"
-       >
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:elevation="3dp">
 
     </FrameLayout>
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.fragments.DashboardPatientsFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientListDayFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientDayFragment;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
@@ -24,6 +25,7 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     private Shift shift;
     private String kind = "";
+    private String nurseName = "";
 
 
     private int imageResId = R.drawable.ic_calender;
@@ -31,7 +33,7 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
             {" 一 三 五", " 二 四 六"};
 
 
-    public PatientsPagerAdapter(FragmentManager fm, int NumOfTabs, Context mContext, Shift shift, String kind) {
+    public PatientsPagerAdapter(FragmentManager fm, int NumOfTabs, Context mContext, Shift shift, String kind, String nurseName) {
         super(fm);
         this.numberOfTabs = NumOfTabs;
         this.mContext = mContext;
@@ -57,7 +59,7 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
-        } else {
+        } else if (kind.equals(ArgumentVariables.KIND_PATIENTLIST)) {
             switch (position) {
             case 0:
                  PatientListDayFragment patientListOddDayFragment = PatientListDayFragment.newInstance(shift, DayType.oddDay);
@@ -68,6 +70,18 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
+        } else {
+            //TODO: dashboard patients
+            switch(position) {
+                case 0:
+                    DashboardPatientsFragment dashboardPatientsOddDayFragment = DashboardPatientsFragment.newInstance(DayType.oddDay, nurseName);
+                    return dashboardPatientsOddDayFragment;
+
+                case 1:
+                    DashboardPatientsFragment dashboardPatientsEvenDayFragment = DashboardPatientsFragment.newInstance(DayType.evenDay, nurseName);
+                    return dashboardPatientsEvenDayFragment;
+            }
+            return null;
         }
     }
 

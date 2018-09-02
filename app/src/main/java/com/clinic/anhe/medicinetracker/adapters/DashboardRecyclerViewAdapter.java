@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.fragments.SelectPatientFragment;
 import com.clinic.anhe.medicinetracker.fragments.SelectPatientsDialogFragment;
@@ -25,10 +26,12 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private List<EmployeeCardViewModel> employeeList;
     private Context mContext;
     private Fragment mFragment;
+    private DashboardViewModel dashboardViewModel;
 
-    public DashboardRecyclerViewAdapter(List<EmployeeCardViewModel> employeeList, Fragment mFragment){
+    public DashboardRecyclerViewAdapter(List<EmployeeCardViewModel> employeeList, Fragment mFragment, DashboardViewModel dashboardViewModel){
         this.employeeList = employeeList;
         this.mFragment = mFragment;
+        this.dashboardViewModel = dashboardViewModel;
     }
 
 
@@ -67,8 +70,11 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                 @Override
                 public void onClick(View v) {
                     //TODO: show patient selection
+                    dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
+                    dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
 //                    Toast.makeText(mContext, "item is clicked", Toast.LENGTH_LONG).show();
-                    SelectPatientsDialogFragment fragment = new SelectPatientsDialogFragment();
+                    SelectPatientsDialogFragment fragment = SelectPatientsDialogFragment.newInstance(
+                            employeeList.get(getAdapterPosition()).getEmployeeName());
                     fragment.show(mFragment.getFragmentManager(), "selectdashboardpatients");
 
                 }
