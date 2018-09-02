@@ -20,14 +20,33 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
+import com.clinic.anhe.medicinetracker.adapters.DashboardPatientAssignViewAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
+import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
+import com.clinic.anhe.medicinetracker.networking.VolleyController;
+import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.DayType;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SelectPatientsDialogFragment extends DialogFragment {
@@ -39,12 +58,18 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     private Context mContext;
     private Shift shift;
     private String nurseName;
+    private DayType dayType;
     private DashboardViewModel dashboardViewModel;
-    private List<String> list = new ArrayList<>();
+    private static List<String> list;
+    private static DashboardPatientAssignViewAdapter dashboardPatientAssignViewAdapter;
+    private VolleyController volleyController;
 
 
-    public static SelectPatientsDialogFragment newInstance(String name) {
+
+    public static SelectPatientsDialogFragment newInstance(String name, DashboardPatientAssignViewAdapter mAdapter, List<String> patientList) {
         SelectPatientsDialogFragment fragment = new SelectPatientsDialogFragment();
+        dashboardPatientAssignViewAdapter = mAdapter;
+        list = patientList;
         Bundle args = new Bundle();
         args.putString(ArgumentVariables.ARG_NURSE_NAME, name);
         fragment.setArguments(args);
@@ -141,21 +166,6 @@ public class SelectPatientsDialogFragment extends DialogFragment {
             }
         });
 
-//        addButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dismiss();
-////                Toast.makeText(getActivity(), "confirm is clicked!", Toast.LENGTH_LONG).show();
-//            }
-//        });
-
-//        cancelButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dismiss();
-////                Toast.makeText(getActivity(), "cancel is clicked!", Toast.LENGTH_LONG).show();
-//            }
-//        });
 
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -167,19 +177,36 @@ public class SelectPatientsDialogFragment extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
-//                if(dashboardViewModel.getDashboardMap().containsKey(nurseName)) {
-//                    for(String s: dashboardViewModel.getDashboardMap().get(nurseName)){
-//                        list.add(s);
-//                    }
-//                }
-//                list.addAll(dashboardViewModel.getSelectedPatientsList());
-//                dashboardViewModel.getDashboardMap().put(nurseName,list);
-//                dashboardViewModel.getDashboardMapLiveData().setValue(dashboardViewModel.getDashboardMap());
-//                //clearup the patient list live data
-//                dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
+                list.addAll(dashboardViewModel.getSelectedPatientsList());
+                //get current day of the week
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_WEEK);
+                switch (day) {
+                    case Calendar.MONDAY:
+                    case Calendar.WEDNESDAY:
+                    case Calendar.FRIDAY:
+                        dayType = DayType.oddDay;
+                        break;
+                    case Calendar.TUESDAY:
+                    case Calendar.THURSDAY:
+                    case Calendar.SATURDAY:
+                        dayType = DayType.evenDay;
+                        break;
+                }
+                //add to database
+                addShiftRecordToDatabase(new VolleyCallBack() {
+                    @Override
+                    public void onResult(VolleyStatus status) {
+                        Toast.makeText(mContext, "設定完成", Toast.LENGTH_LONG).show();
+                        //clear data
+                        dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
+                        dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
+                        dashboardViewModel.getNurseLiveData().setValue("");
+                    }
+                });
+                dashboardPatientAssignViewAdapter.notifyDataSetChanged();
                 dismiss();
-//                Toast.makeText(getActivity(), "confirm is clicked", Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -208,6 +235,64 @@ public class SelectPatientsDialogFragment extends DialogFragment {
         assert tab != null;
         tab.setCustomView(null);
         tab.setCustomView(mPatientsPagerAdapter.getSelectedTabView(position));
+    }
+
+    private void addShiftRecordToDatabase(final VolleyCallBack volleyCallBack) {
+        //TODO: needs to modified create_by and subtotal
+        String url = "http://192.168.0.4:8080/anhe/shift/record/addlist";
+        JSONArray jsonArray = new JSONArray();
+        try {
+            for(String item : list) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("nurse", nurseName);
+                jsonObject.put("patient", item);
+                jsonObject.put("shift", shift.toString());
+                jsonObject.put("day", dayType==DayType.oddDay? "一三五":"二四六");
+                jsonArray.put(jsonObject);
+            }
+        } catch (JSONException e) {
+
+        }
+        final String requestBody = jsonArray.toString();
+        Log.d(requestBody, "");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("saved")) {
+                            volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                        } else {
+                            volleyCallBack.onResult(VolleyStatus.FAIL);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY", error.toString());
+                        volleyCallBack.onResult(VolleyStatus.FAIL);
+                    }
+                })
+        {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+
+        };
+
+        volleyController.getInstance(mContext).addToRequestQueue(stringRequest);
     }
 
 

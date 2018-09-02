@@ -78,8 +78,6 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-
-
     }
 
     private void parseEmployeeData(String url, final VolleyCallBack volleyCallBack) {
@@ -116,6 +114,9 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    public void refreshRecycleview(){
+        mAdapter.notifyDataSetChanged();
+    }
 
 }
 
