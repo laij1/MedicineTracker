@@ -149,6 +149,10 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                             }
                         }
                     }
+                    if(holder.patientAssignList.size() > 0) {
+                        holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));
+                        holder.itemView.setOnClickListener(null);
+                    }
                     holder.mAdapter.notifyDataSetChanged();
                 }
             }
