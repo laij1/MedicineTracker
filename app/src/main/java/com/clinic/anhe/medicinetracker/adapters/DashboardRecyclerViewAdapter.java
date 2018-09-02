@@ -1,5 +1,7 @@
 package com.clinic.anhe.medicinetracker.adapters;
 
+import android.arch.lifecycle.Observer;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -57,6 +59,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     }
 
 
+
     @NonNull
 
     @Override
@@ -78,8 +81,27 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         EmployeeCardViewModel current = employeeList.get(position);
         holder.mNurseName.setText(current.getEmployeeName());
 
-        prepareShiftRecordData(holder, current);
+        for(ShiftRecordModel s: dashboardViewModel.getShiftRecordListLiveData().getValue()) {
+//            Log.d("nurse is: " + s.getNurse(), "adding to patient Assign List" + s.getPatient() );
+            if(s.getNurse().equalsIgnoreCase(current.getEmployeeName())) {
+                if(!holder.patientAssignList.contains(s.getPatient())) {
+                    holder.patientAssignList.add(s.getPatient());
+                    } else {
+                    }
+                }
+            }
+            if(holder.patientAssignList.size() > 0) {
+                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));
+                holder.itemView.setOnClickListener(null);
+            }
+            holder.mAdapter.notifyDataSetChanged();
 
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
@@ -98,12 +120,12 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             super(itemView);
             mNurseName = itemView.findViewById(R.id.dashboard_nursename);
             mRecyclerView = itemView.findViewById(R.id.dashboard_patient_assign_recyclerview);
-            //list should get from shift_record
-
+            //here we need to load database to live data
             patientAssignList = new ArrayList<>();
-
+            prepareShiftRecordData();
             mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             mAdapter = new DashboardPatientAssignViewAdapter(patientAssignList);
+
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(mLayoutManager);
             Log.d("how often does view holder constructor being called", "Chloe");
@@ -124,8 +146,9 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                     }
 
                     SelectPatientsDialogFragment fragment = SelectPatientsDialogFragment.newInstance(
-                            employeeList.get(getAdapterPosition()).getEmployeeName(), mAdapter, patientAssignList);
+                            employeeList.get(getAdapterPosition()).getEmployeeName(), patientAssignList);
                     fragment.show(mFragment.getFragmentManager(), "selectdashboardpatients");
+
 
 
                 }
@@ -134,26 +157,27 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     }
 
 
-    private void prepareShiftRecordData(EmployeeViewHolder holder, EmployeeCardViewModel current) {
+    private void prepareShiftRecordData() {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String url = "http://192.168.0.4:8080/anhe/shift/record?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
                 if(status==VolleyStatus.SUCCESS) {
-                    for(ShiftRecordModel s: shiftList) {
-                        Log.d("nurse is: " + s.getNurse(), "adding to patient Assign List" + s.getPatient() );
-                        if(s.getNurse().equalsIgnoreCase(current.getEmployeeName())) {
-                            if(!holder.patientAssignList.contains(s.getPatient())) {
-                                holder.patientAssignList.add(s.getPatient());
-                            }
-                        }
-                    }
-                    if(holder.patientAssignList.size() > 0) {
-                        holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));
-                        holder.itemView.setOnClickListener(null);
-                    }
-                    holder.mAdapter.notifyDataSetChanged();
+                    dashboardViewModel.getShiftRecordListLiveData().setValue(shiftList);
+//                    for(ShiftRecordModel s: shiftList) {
+//                        Log.d("nurse is: " + s.getNurse(), "adding to patient Assign List" + s.getPatient() );
+//                        if(s.getNurse().equalsIgnoreCase(current.getEmployeeName())) {
+//                            if(!holder.patientAssignList.contains(s.getPatient())) {
+//                                holder.patientAssignList.add(s.getPatient());
+//                            }
+//                        }
+//                    }
+//                    if(holder.patientAssignList.size() > 0) {
+//                        holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));
+//                        holder.itemView.setOnClickListener(null);
+//                    }
+//                    holder.mAdapter.notifyDataSetChanged();
                 }
             }
         });

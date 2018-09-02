@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientListRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
+import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
@@ -39,6 +42,7 @@ public class DashboardFragment extends Fragment {
     private GridLayoutManager mLayoutManager;
     private DashboardRecyclerViewAdapter mAdapter;
     private List<EmployeeCardViewModel> employeeList;
+    private List<EmployeeCardViewModel> orderedEmployeeList;
     private VolleyController volleyController;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
@@ -49,6 +53,7 @@ public class DashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         dashboardViewModel = ViewModelProviders.of(getParentFragment()).get(DashboardViewModel.class);
+
         mContext = getContext();
 
         mRecyclerView = view.findViewById(R.id.dashboard_recyclerview);
@@ -59,6 +64,13 @@ public class DashboardFragment extends Fragment {
         prepareEmployeeData();
         mAdapter = new DashboardRecyclerViewAdapter(employeeList, this, dashboardViewModel);
 
+        dashboardViewModel.getShiftRecordListLiveData().observe(getParentFragment(), new Observer<List<ShiftRecordModel>>() {
+            @Override
+            public void onChanged(@Nullable List<ShiftRecordModel> shiftList) {
+
+                mAdapter.notifyDataSetChanged();
+            }
+        });
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 

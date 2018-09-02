@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,8 @@ public class DashboardViewModel extends ViewModel {
     private MutableLiveData<List<String>> selectedPatientsLiveData;
     private List<String> patientList;
     private MutableLiveData<String> nurseLiveData;
+    private MutableLiveData<List<ShiftRecordModel>> shiftRecordListLiveData;
+    private List<ShiftRecordModel> shiftRecordList;
 
 
     public DashboardViewModel(){
@@ -30,6 +33,9 @@ public class DashboardViewModel extends ViewModel {
         selectedPatientsLiveData.setValue(patientList);
 
         nurseLiveData = new MutableLiveData<>();
+        shiftRecordListLiveData = new MutableLiveData<>();
+        shiftRecordList = new ArrayList<>();
+        shiftRecordListLiveData.setValue(shiftRecordList);
 //        dashboardMap.put("test",selectedPatientsLiveData.getValue());
 //        dashboardLiveData.setValue(dashboardMap);
     }
@@ -46,6 +52,8 @@ public class DashboardViewModel extends ViewModel {
     }
 
     public MutableLiveData<List<String>> getSelectedPatientsLiveData()  { return selectedPatientsLiveData; }
+
+    public MutableLiveData<List<ShiftRecordModel>> getShiftRecordListLiveData(){ return shiftRecordListLiveData; }
 
 //    public MutableLiveData<Map<String, List<String>>> getDashboardMapLiveData() {
 //        return dashboardLiveData;

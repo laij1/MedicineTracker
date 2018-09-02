@@ -25,13 +25,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardPatientAssignViewAdapter;
+import com.clinic.anhe.medicinetracker.adapters.DashboardRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
@@ -44,10 +47,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class SelectPatientsDialogFragment extends DialogFragment {
     private ViewPager mPatientsViewPager;
@@ -61,14 +67,14 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     private DayType dayType;
     private DashboardViewModel dashboardViewModel;
     private static List<String> list;
-    private static DashboardPatientAssignViewAdapter dashboardPatientAssignViewAdapter;
     private VolleyController volleyController;
+    private List<ShiftRecordModel> shiftList;
 
 
 
-    public static SelectPatientsDialogFragment newInstance(String name, DashboardPatientAssignViewAdapter mAdapter, List<String> patientList) {
+
+    public static SelectPatientsDialogFragment newInstance(String name, List<String> patientList) {
         SelectPatientsDialogFragment fragment = new SelectPatientsDialogFragment();
-        dashboardPatientAssignViewAdapter = mAdapter;
         list = patientList;
         Bundle args = new Bundle();
         args.putString(ArgumentVariables.ARG_NURSE_NAME, name);
@@ -107,6 +113,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_dashboard_patients, container, false);
         //right here shift does not matter
         shift = Shift.morning;
+        shiftList = new ArrayList<>();
         //get livedata
         dashboardViewModel = ViewModelProviders.of(getParentFragment()).get(DashboardViewModel.class);
 
@@ -202,11 +209,13 @@ public class SelectPatientsDialogFragment extends DialogFragment {
                         dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
                         dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
                         dashboardViewModel.getNurseLiveData().setValue("");
+                        prepareShiftRecordData();
+                        dismiss();
                     }
                 });
-                dashboardPatientAssignViewAdapter.notifyDataSetChanged();
-                dismiss();
 
+//                dashboardPatientAssignViewAdapter.notifyDataSetChanged();
+//                dashboardRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
 
@@ -293,6 +302,70 @@ public class SelectPatientsDialogFragment extends DialogFragment {
         };
 
         volleyController.getInstance(mContext).addToRequestQueue(stringRequest);
+    }
+
+    private void prepareShiftRecordData( ) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String url = "http://192.168.0.4:8080/anhe/shift/record?createAt=" + date;
+        parseShiftRecordData(url, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+                if(status==VolleyStatus.SUCCESS) {
+                    dashboardViewModel.getShiftRecordListLiveData().setValue(shiftList);
+//                    for(ShiftRecordModel s: shiftList) {
+//                        Log.d("nurse is: " + s.getNurse(), "adding to patient Assign List" + s.getPatient() );
+//                        if(s.getNurse().equalsIgnoreCase(current.getEmployeeName())) {
+//                            if(!holder.patientAssignList.contains(s.getPatient())) {
+//                                holder.patientAssignList.add(s.getPatient());
+//                            }
+//                        }
+//                    }
+//                    if(holder.patientAssignList.size() > 0) {
+//                        holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));
+//                        holder.itemView.setOnClickListener(null);
+//                    }
+//                    holder.mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
+    private void parseShiftRecordData(String url, final VolleyCallBack volleyCallBack) {
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++) {
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        String nurse = object.getString("nurse");
+                                        Integer sid = object.getInt("sid");
+                                        String patient = object.getString("patient");
+                                        String shift = object.getString("shift");
+                                        String day = object.getString("day");
+                                        String createAt = object.getString("createAt");
+                                        shiftList.add(new ShiftRecordModel(sid, createAt, nurse, patient,shift, day));
+                                        Log.d("getting shift record", nurse + patient);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+
     }
 
 
