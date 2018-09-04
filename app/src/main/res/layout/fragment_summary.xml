@@ -9,6 +9,7 @@
     android:elevation="8dp">
 
 <RelativeLayout
+    android:id="@+id/summary_upperview"
     android:layout_width="match_parent"
     android:layout_height="250dp"
     android:background="@drawable/gradientbackground"
@@ -46,28 +47,16 @@
         <!--android:layout_below="@+id/summary_patientid"-->
         <!--android:elevation="5dp"-->
         <!--android:layout_height="match_parent">-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/summary_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="700dp"
-        android:layout_above="@id/summary_bottom_imageview"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="160dp"
-        android:background="@color/recyclerViewBackground"
-        android:elevation="9dp"
-        android:padding="10dp"
-        android:scrollbars="vertical" />
 
 
-    <ImageView
-        android:id="@+id/summary_bottom_imageview"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:elevation="4dp"
-        android:background="@color/colorPrimaryDark" />
+    <!--<ImageView-->
+        <!--android:id="@+id/summary_bottom_imageview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:elevation="4dp"-->
+        <!--android:background="@color/colorPrimaryDark" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/summary_fab"
@@ -84,6 +73,18 @@
         app:elevation="10dp"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|end" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/summary_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="403dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/summary_upperview"
+        android:background="@color/recyclerViewBackground"
+        android:elevation="9dp"
+        android:padding="10dp"
+        android:scrollbars="vertical" />
     <!--</FrameLayout>-->
 
 </RelativeLayout>
