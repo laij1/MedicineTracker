@@ -60,6 +60,13 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_patient_detail_cash, parent, false);
         employee = new HashMap<>();
+        String url = "http://192.168.0.4:8080/anhe/employee/all";
+        parseEmployeeData(url, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+                    notifyDataSetChanged();
+            }
+        });
         PatientCashViewHolder patientCashViewHolder = new PatientCashViewHolder(view);
         return patientCashViewHolder;
     }
@@ -69,8 +76,13 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         MedicineRecordCardViewModel current = recordList.get(position);
         holder.itemQuantity.setText(String.valueOf(current.getQuantity()));
         holder.itemSubtotal.setText(String.valueOf(current.getSubtotal()));
-        holder.itemCreateDate.setText(current.getCreateAt());
-        holder.itemCreateBy.setText(current.getCreateBy());
+        holder.itemCreateDate.setText(current.getCreateAt().toString());
+        for(Map.Entry<String, Integer> e : employee.entrySet()) {
+            if (e.getValue() == Integer.parseInt(current.getCreateBy())) {
+                holder.itemCreateBy.setText(e.getKey());
+                break;
+            }
+        }
         holder.itemName.setText(current.getMedicineName());
         holder.itemPayment.setText(current.getPayment().equalsIgnoreCase("CASH") ? "現" : "月");
     }
@@ -111,17 +123,17 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
 //                            }
 //                        }
 //                    });
-                    String url = "http://192.168.0.4:8080/anhe/employee/all";
-                    parseEmployeeData(url, new VolleyCallBack() {
-                        @Override
-                        public void onResult(VolleyStatus status) {
-                            if(status == VolleyStatus.SUCCESS) {
+//                    String url = "http://192.168.0.4:8080/anhe/employee/all";
+//                    parseEmployeeData(url, new VolleyCallBack() {
+//                        @Override
+//                        public void onResult(VolleyStatus status) {
+//                            if(status == VolleyStatus.SUCCESS) {
                                 SignatureDialogFragment signatureDialogFragment =
                                         SignatureDialogFragment.newInstance(employee, current.getRid(), getAdapterPosition());
                                 signatureDialogFragment.show( mFragement.getChildFragmentManager(),"signature");
-                            }
-                        }
-                    });
+//                            }
+//                        }
+//                    });
 
                 }
             });
@@ -182,4 +194,6 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
 
     }
+
+
 }

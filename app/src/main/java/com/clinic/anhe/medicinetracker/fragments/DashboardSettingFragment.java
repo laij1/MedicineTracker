@@ -122,22 +122,22 @@ public class DashboardSettingFragment extends Fragment {
         });
 
 
-        mDashboardSettingFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Iterator<Map.Entry<String, List<String>>> it =  dashboardViewModel.getDashboardMap().entrySet().iterator();
-//                while (it.hasNext()) {
-//                    Map.Entry<String, List<String>> pair = it.next();
-//                        Iterator<String> listIt = pair.getValue().iterator();
-//                        while (listIt.hasNext()) {
-//                            String s = listIt.next();
-//                            //                    if(s.equalsIgnoreCase(current.getPatientName())){
-//                            Log.d("setting: livedata for ",  pair.getKey() + s);
-//                        }
-//                    }
-                }
-
-        });
+//        mDashboardSettingFab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Iterator<Map.Entry<String, List<String>>> it =  dashboardViewModel.getDashboardMap().entrySet().iterator();
+////                while (it.hasNext()) {
+////                    Map.Entry<String, List<String>> pair = it.next();
+////                        Iterator<String> listIt = pair.getValue().iterator();
+////                        while (listIt.hasNext()) {
+////                            String s = listIt.next();
+////                            //                    if(s.equalsIgnoreCase(current.getPatientName())){
+////                            Log.d("setting: livedata for ",  pair.getKey() + s);
+////                        }
+////                    }
+//                }
+//
+//        });
 
 
         setRetainInstance(true);

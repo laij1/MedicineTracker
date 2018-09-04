@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Transaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -45,7 +46,9 @@ import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -53,6 +56,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ListIterator;
+import java.util.Locale;
 
 
 public class SummaryFragment  extends Fragment {
@@ -66,6 +70,8 @@ public class SummaryFragment  extends Fragment {
     private int i = -1;
     private VolleyController volleyController;
     private static VolleyStatus status= VolleyStatus.UNKNOWN;
+    private Integer nurseEid = -1;
+
 
     //TODO
     private CartViewModel cartViewModel;
@@ -93,6 +99,7 @@ public class SummaryFragment  extends Fragment {
             successDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    SummaryFragment.status = VolleyStatus.UNKNOWN;
                     sweetAlertDialog.dismiss();
                     getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
@@ -106,9 +113,25 @@ public class SummaryFragment  extends Fragment {
             failDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    SummaryFragment.status = VolleyStatus.UNKNOWN;
                     sweetAlertDialog.dismiss();
                 }
             });
+        }
+        else if(status == VolleyStatus.UNSET) {
+                 final SweetAlertDialog unsetDialog =  new SweetAlertDialog(view.getContext(), SweetAlertDialog.ERROR_TYPE);
+                 unsetDialog.setTitleText("請設定負責護士")
+                         .setConfirmText("Try Agian")
+                         .show();
+                 unsetDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                     @Override
+                     public void onClick(SweetAlertDialog sweetAlertDialog) {
+                           SummaryFragment.status = VolleyStatus.UNKNOWN;
+                           sweetAlertDialog.dismiss();
+                           getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                     }
+                 });
         }
 
         volleyController.getInstance(getContext());
@@ -167,12 +190,15 @@ public class SummaryFragment  extends Fragment {
                         pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                if(sweetAlertDialog.getTitleText().equals("Success!")) {
+                                SummaryFragment.status = VolleyStatus.UNKNOWN;
+                                if(sweetAlertDialog.getTitleText().equalsIgnoreCase("Success!")) {
                                     sweetAlertDialog.dismiss();
                                     getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                } else if (sweetAlertDialog.getTitleText().equalsIgnoreCase("Fail!")) {
+                                    sweetAlertDialog.dismiss();
                                 } else {
                                     sweetAlertDialog.dismiss();
-                                }
+                                }   getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                             }
                         });
 
@@ -180,23 +206,38 @@ public class SummaryFragment  extends Fragment {
 
                     }
                 }.start();
-
-                addRecordToDatabase(new VolleyCallBack() {
+                findNurse(new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
-                        SummaryFragment.status = status;
-                        if(status == VolleyStatus.SUCCESS) {
-                            pDialog.setTitleText("Success!")
-                                    .setConfirmText("OK")
-                                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        if(status == VolleyStatus.SUCCESS && nurseEid > 0 ) {
+                            addRecordToDatabase(new VolleyCallBack() {
+                                @Override
+                                public void onResult(VolleyStatus status) {
+                                    if(status == VolleyStatus.SUCCESS) {
+                                        SummaryFragment.status = VolleyStatus.SUCCESS;
+                                        pDialog.setTitleText("Success!")
+                                                .setConfirmText("OK")
+                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    } else {
+                                        SummaryFragment.status = VolleyStatus.FAIL;
+                                        pDialog.setTitleText("Fail!")
+                                                .setConfirmText("Try Again")
+                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                    }
+                                    timer.onFinish();
+                                }
+                            });
                         } else {
-                            pDialog.setTitleText("Fail!")
+                            //pop up an alter
+                            SummaryFragment.status = VolleyStatus.UNSET;
+                            pDialog.setTitleText("請設定負責護士")
                                     .setConfirmText("Try Again")
                                     .changeAlertType(SweetAlertDialog.ERROR_TYPE);
                         }
-                        timer.onFinish();
                     }
                 });
+
+
 
             }
         });
@@ -228,6 +269,39 @@ public class SummaryFragment  extends Fragment {
         return view;
     }
 
+    private void findNurse(final VolleyCallBack volleyCallBack) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String url = "http://192.168.0.4:8080/anhe/shiftrecord/patient?patient=" + selectedPatientViewModel.getPatient().getPatientName()
+                + "&createAt=" + date;
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++) {
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        nurseEid = object.getInt("eid");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+
+    }
+
     private void addRecordToDatabase(final VolleyCallBack volleyCallBack) {
         //TODO: needs to modified create_by and subtotal
         String url = "http://192.168.0.4:8080/anhe/record/addlist";
@@ -240,7 +314,7 @@ public class SummaryFragment  extends Fragment {
                 jsonObject.put("payment", item.isCashPayment().toString());
                 jsonObject.put("pid", selectedPatientViewModel.getPatient().getPID());
                 jsonObject.put("quantity", item.getQuantity());
-                jsonObject.put("createBy", 1);
+                jsonObject.put("createBy", nurseEid);
                 int subtotal = Integer.parseInt(item.getMedicinePrice()) * item.getQuantity();
                 jsonObject.put("subtotal", subtotal);
                 jsonArray.put(jsonObject);

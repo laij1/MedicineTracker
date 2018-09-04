@@ -64,6 +64,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     private Context mContext;
     private Shift shift;
     private String nurseName;
+    private static Integer eid;
     private DayType dayType;
     private DashboardViewModel dashboardViewModel;
     private static List<String> list;
@@ -73,11 +74,13 @@ public class SelectPatientsDialogFragment extends DialogFragment {
 
 
 
-    public static SelectPatientsDialogFragment newInstance(String name, List<String> patientList) {
+    public static SelectPatientsDialogFragment newInstance(Shift shift, String name, Integer eid, List<String> patientList) {
         SelectPatientsDialogFragment fragment = new SelectPatientsDialogFragment();
         list = patientList;
         Bundle args = new Bundle();
         args.putString(ArgumentVariables.ARG_NURSE_NAME, name);
+        args.putString(ArgumentVariables.ARG_PATIENT_SHIFT, shift.toString());
+        SelectPatientsDialogFragment.eid = eid;
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,6 +98,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ArgumentVariables.ARG_NURSE_NAME, nurseName);
+        outState.putString(ArgumentVariables.ARG_PATIENT_SHIFT, shift.toString());
     }
 
 
@@ -103,16 +107,16 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(savedInstanceState != null) {
             nurseName = savedInstanceState.getString(ArgumentVariables.ARG_NURSE_NAME);
+            shift = Shift.fromString(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_SHIFT));
         }
 
         if(nurseName == null) {
             nurseName = getArguments().getString(ArgumentVariables.ARG_NURSE_NAME);
+            shift = Shift.fromString(getArguments().getString(ArgumentVariables.ARG_PATIENT_SHIFT));
         }
 
-        Log.d(nurseName, "chloein sleect");
         View view = inflater.inflate(R.layout.fragment_dashboard_patients, container, false);
-        //right here shift does not matter
-        shift = Shift.morning;
+
         shiftList = new ArrayList<>();
         //get livedata
         dashboardViewModel = ViewModelProviders.of(getParentFragment()).get(DashboardViewModel.class);
@@ -204,7 +208,11 @@ public class SelectPatientsDialogFragment extends DialogFragment {
                 addShiftRecordToDatabase(new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
-                        Toast.makeText(mContext, "設定完成", Toast.LENGTH_LONG).show();
+                        if(status == VolleyStatus.SUCCESS) {
+                            Toast.makeText(mContext, "設定完成", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(mContext, "設定未完成", Toast.LENGTH_LONG).show();
+                        }
                         //clear data
                         dashboardViewModel.getSelectedPatientsList().removeAll(dashboardViewModel.getSelectedPatientsList());
                         dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
@@ -248,12 +256,13 @@ public class SelectPatientsDialogFragment extends DialogFragment {
 
     private void addShiftRecordToDatabase(final VolleyCallBack volleyCallBack) {
         //TODO: needs to modified create_by and subtotal
-        String url = "http://192.168.0.4:8080/anhe/shift/record/addlist";
+        String url = "http://192.168.0.4:8080/anhe/shiftrecord/addlist";
         JSONArray jsonArray = new JSONArray();
         try {
             for(String item : list) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("nurse", nurseName);
+                jsonObject.put("eid", eid);
                 jsonObject.put("patient", item);
                 jsonObject.put("shift", shift.toString());
                 jsonObject.put("day", dayType==DayType.oddDay? "一三五":"二四六");
@@ -306,7 +315,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
 
     private void prepareShiftRecordData( ) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://192.168.0.4:8080/anhe/shift/record?createAt=" + date;
+        String url = "http://192.168.0.4:8080/anhe/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

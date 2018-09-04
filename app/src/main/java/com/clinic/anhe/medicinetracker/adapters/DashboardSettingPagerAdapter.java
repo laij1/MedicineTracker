@@ -48,14 +48,14 @@ public class DashboardSettingPagerAdapter extends FragmentPagerAdapter{
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                DashboardFragment dashboardFragment = new DashboardFragment();
-                return dashboardFragment;
+                DashboardFragment morningDashboardFragment = DashboardFragment.newInstance(Shift.morning);
+                return morningDashboardFragment;
             case 1:
-                DashboardFragment dashboardFragment1 = new DashboardFragment();
-                return dashboardFragment1;
+                DashboardFragment afternoonDashboardFragment = DashboardFragment.newInstance(Shift.afternoon);
+                return afternoonDashboardFragment;
             case 2:
-                DashboardFragment dashboardFragment2 = new DashboardFragment();
-                return dashboardFragment2;
+                DashboardFragment nightDashboardFragment = DashboardFragment.newInstance(Shift.night);
+                return nightDashboardFragment;
             }
             return null;
     }

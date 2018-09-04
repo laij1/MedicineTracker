@@ -31,6 +31,7 @@ import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,12 +51,15 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private DashboardViewModel dashboardViewModel;
     private List<ShiftRecordModel> shiftList;
     private VolleyController volleyController;
+    private Shift shift;
 
-    public DashboardRecyclerViewAdapter(List<EmployeeCardViewModel> employeeList, Fragment mFragment, DashboardViewModel dashboardViewModel){
+    public DashboardRecyclerViewAdapter(Shift shift, List<EmployeeCardViewModel> employeeList, Fragment mFragment, DashboardViewModel dashboardViewModel){
+        this.shift = shift;
         this.employeeList = employeeList;
         this.mFragment = mFragment;
         this.dashboardViewModel = dashboardViewModel;
         this.shiftList = new ArrayList<>();
+
     }
 
 
@@ -83,7 +87,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
         for(ShiftRecordModel s: dashboardViewModel.getShiftRecordListLiveData().getValue()) {
 //            Log.d("nurse is: " + s.getNurse(), "adding to patient Assign List" + s.getPatient() );
-            if(s.getNurse().equalsIgnoreCase(current.getEmployeeName())) {
+            if(s.getNurse().equalsIgnoreCase(current.getEmployeeName()) && s.getShift().equalsIgnoreCase(shift.toString()) ) {
                 if(!holder.patientAssignList.contains(s.getPatient())) {
                     holder.patientAssignList.add(s.getPatient());
                     } else {
@@ -145,8 +149,9 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                         dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
                     }
 
-                    SelectPatientsDialogFragment fragment = SelectPatientsDialogFragment.newInstance(
-                            employeeList.get(getAdapterPosition()).getEmployeeName(), patientAssignList);
+                    SelectPatientsDialogFragment fragment = SelectPatientsDialogFragment.newInstance(shift,
+                            current.getEmployeeName(),
+                            current.getEid(), patientAssignList);
                     fragment.show(mFragment.getFragmentManager(), "selectdashboardpatients");
 
 
@@ -159,7 +164,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     private void prepareShiftRecordData() {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://192.168.0.4:8080/anhe/shift/record?createAt=" + date;
+        String url = "http://192.168.0.4:8080/anhe/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

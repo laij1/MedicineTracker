@@ -29,6 +29,8 @@ import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,15 +44,39 @@ public class DashboardFragment extends Fragment {
     private GridLayoutManager mLayoutManager;
     private DashboardRecyclerViewAdapter mAdapter;
     private List<EmployeeCardViewModel> employeeList;
-    private List<EmployeeCardViewModel> orderedEmployeeList;
+    //private List<EmployeeCardViewModel> orderedEmployeeList;
     private VolleyController volleyController;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
+    private Shift shift;
+
+    public static DashboardFragment newInstance(Shift s){
+        DashboardFragment fragment = new DashboardFragment();
+        Bundle args = new Bundle();
+        args.putString(ArgumentVariables.ARG_PATIENT_SHIFT, s.toString());
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //TODO: medicineType could be null....
+        outState.putString(ArgumentVariables.ARG_PATIENT_SHIFT, shift.toString());
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        if(savedInstanceState != null) {
+            shift = Shift.fromString(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_SHIFT));
+        }
+
+        if(shift == null) {
+            shift = Shift.fromString(getArguments().getString(ArgumentVariables.ARG_PATIENT_SHIFT));
+        }
 
         dashboardViewModel = ViewModelProviders.of(getParentFragment()).get(DashboardViewModel.class);
 
@@ -59,15 +85,28 @@ public class DashboardFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.dashboard_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getContext(), 1);
-
         employeeList = new ArrayList<>();
         prepareEmployeeData();
-        mAdapter = new DashboardRecyclerViewAdapter(employeeList, this, dashboardViewModel);
+        mAdapter = new DashboardRecyclerViewAdapter(shift, employeeList, this, dashboardViewModel);
 
         dashboardViewModel.getShiftRecordListLiveData().observe(getParentFragment(), new Observer<List<ShiftRecordModel>>() {
             @Override
             public void onChanged(@Nullable List<ShiftRecordModel> shiftList) {
-
+                //TODO: here we rearrange emplyeelist
+                //get all the nurses on the today's shift
+//                List<String> nurseList = new ArrayList<>();
+//                for(ShiftRecordModel s : shiftList) {
+//                       if(!nurseList.contains(s.getNurse())){
+//                           nurseList.add(s.getNurse());
+//                       }
+//                }
+//                //compare whith employeeList
+//                for(int i = 0; i < employeeList.size(); i++) {
+//                    EmployeeCardViewModel e = employeeList.get(i);
+//                    if(!nurseList.contains(e.getEmployeeName())){
+//                        employeeList.add(employeeList.remove(i));
+//                    }
+//                }
                 mAdapter.notifyDataSetChanged();
             }
         });

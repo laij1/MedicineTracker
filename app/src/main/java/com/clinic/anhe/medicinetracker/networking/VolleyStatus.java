@@ -5,7 +5,8 @@ public enum  VolleyStatus {
 
     SUCCESS("success"),
     FAIL("fail"),
-    UNKNOWN("unknown");
+    UNKNOWN("unknown"),
+    UNSET("unset");
 
     private final String name;
 
