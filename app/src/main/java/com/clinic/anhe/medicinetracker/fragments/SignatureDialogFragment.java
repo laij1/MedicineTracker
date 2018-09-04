@@ -125,8 +125,14 @@ public class SignatureDialogFragment extends DialogFragment {
                                 @Override
                                 public void onResult(VolleyStatus status) {
                                     if (status == VolleyStatus.SUCCESS) {
-                                        PatientDetailCashFragment fragment = (PatientDetailCashFragment)getParentFragment();
-                                        fragment.refreshRecyclerView(index);
+                                        if(getParentFragment() instanceof  PatientDetailCashFragment) {
+                                            PatientDetailCashFragment fragment = (PatientDetailCashFragment)getParentFragment();
+                                            fragment.refreshRecyclerView(index);
+                                        } else if ( getParentFragment() instanceof PatientDetailMonthFragment) {
+                                            PatientDetailMonthFragment fragment = (PatientDetailMonthFragment)getParentFragment();
+                                            fragment.refreshRecyclerView(index);
+                                        }
+
                                         Toast.makeText(getParentFragment().getContext(), "結帳完成",Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(getParentFragment().getContext(), "結帳未完成", Toast.LENGTH_SHORT).show();

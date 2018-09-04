@@ -72,7 +72,8 @@ public class PatientDetailFragment extends Fragment {
                                    .commit();
                         break;
                     case R.id.patient_detail_month:
-                        PatientDetailMonthFragment patientDetailMonthFragment = PatientDetailMonthFragment.newInstance();
+                        PatientDetailMonthFragment patientDetailMonthFragment = PatientDetailMonthFragment.newInstance(
+                                selectedPatientName, selectedPatientIC, selectedPatientPID);
                         transaction.replace(R.id.patient_detail_container, patientDetailMonthFragment)
                                    .commit();
                         break;
