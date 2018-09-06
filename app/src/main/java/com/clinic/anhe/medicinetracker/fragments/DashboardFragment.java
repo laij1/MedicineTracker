@@ -36,15 +36,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private DashboardRecyclerViewAdapter mAdapter;
     private List<EmployeeCardViewModel> employeeList;
-    //private List<EmployeeCardViewModel> orderedEmployeeList;
+    private List<ShiftRecordModel> shiftList;
     private VolleyController volleyController;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
@@ -86,6 +89,8 @@ public class DashboardFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getContext(), 1);
         employeeList = new ArrayList<>();
+        shiftList = new ArrayList<>();
+        prepareShiftRecordData();
         prepareEmployeeData();
         mAdapter = new DashboardRecyclerViewAdapter(shift, employeeList, this, dashboardViewModel);
 
@@ -124,7 +129,7 @@ public class DashboardFragment extends Fragment {
             public void onResult(VolleyStatus status) {
                 if(status==VolleyStatus.SUCCESS) {
                     mAdapter.notifyDataSetChanged();
-                    Log.d("refreshing employee", employeeList.get(0).getEmployeeName());
+//                    Log.d("refreshing employee", employeeList.get(0).getEmployeeName());
                 }
             }
         });
@@ -144,8 +149,76 @@ public class DashboardFragment extends Fragment {
                                         String name = object.getString("name");
                                         Integer eid = object.getInt("eid");
                                         String position = object.getString("position");
-                                        employeeList.add(new EmployeeCardViewModel(name, eid, position));
+                                        //TODO: here we rearrange employlist by whether it is assigned with patients
+                                        EmployeeCardViewModel e = new EmployeeCardViewModel(name, eid, position);
+                                        for(ShiftRecordModel s :dashboardViewModel.getShiftRecordListLiveData().getValue()) {
+                                            if(s.getNurse().equalsIgnoreCase(name) && s.getShift().equalsIgnoreCase(shift.toString())) {
+                                                employeeList.add(0,e);
+                                                break;
+                                            }
+                                        }
+                                        if(!employeeList.contains(e)) {
+                                            employeeList.add(e);
+                                        }
                                         Log.d("employeename:" , name);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                Log.d("the shift record live data is loaded: ", ""+ dashboardViewModel.getShiftRecordListLiveData().getValue().size());
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+
+    }
+
+    public void refreshRecycleview(){
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    private void prepareShiftRecordData( ) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String url = "http://192.168.0.4:8080/anhe/shiftrecord?createAt=" + date;
+        parseShiftRecordData(url, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+                if(status==VolleyStatus.SUCCESS) {
+                    dashboardViewModel.getShiftRecordListLiveData().setValue(shiftList);
+                }
+            }
+        });
+
+    }
+
+
+    private void parseShiftRecordData(String url, final VolleyCallBack volleyCallBack) {
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++) {
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        String nurse = object.getString("nurse");
+                                        Integer sid = object.getInt("sid");
+                                        String patient = object.getString("patient");
+                                        String shift = object.getString("shift");
+                                        String day = object.getString("day");
+                                        String createAt = object.getString("createAt");
+                                        shiftList.add(new ShiftRecordModel(sid, createAt, nurse, patient,shift, day));
+                                        Log.d("getting shift record", nurse + patient);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -165,9 +238,8 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    public void refreshRecycleview(){
-        mAdapter.notifyDataSetChanged();
-    }
+
+
 
 }
 

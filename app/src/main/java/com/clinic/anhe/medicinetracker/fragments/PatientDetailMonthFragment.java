@@ -71,7 +71,7 @@ public class PatientDetailMonthFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_patient_detail_cash, container, false);
+        View view = inflater.inflate(R.layout.fragment_patient_detail_month, container, false);
         if(savedInstanceState != null) {
             selectedPatientName = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME);
             selectedPatientIC = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
@@ -87,12 +87,12 @@ public class PatientDetailMonthFragment extends Fragment {
         recordList = new ArrayList<>();
 
         Log.d("selected patient in patient month detail", selectedPatientName + selectedPatientIC + selectedPatientPID);
-        mPatientName = view.findViewById(R.id.patient_detail_cash_name);
-        mPatientIC = view.findViewById(R.id.patient_detail_cash_ic);
+        mPatientName = view.findViewById(R.id.patient_detail_month_name);
+        mPatientIC = view.findViewById(R.id.patient_detail_month_ic);
         mPatientName.setText(selectedPatientName);
         mPatientIC.setText(selectedPatientIC);
 
-        mRecyclerView = view.findViewById(R.id.patient_detail_cash_recyclerview);
+        mRecyclerView = view.findViewById(R.id.patient_detail_month_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new PatientDetailCashRecyclerViewAdapter(recordList, mContext, this);

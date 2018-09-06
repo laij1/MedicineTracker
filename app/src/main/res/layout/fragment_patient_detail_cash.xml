@@ -8,6 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:elevation="3dp"
         android:background="@drawable/gradientbackground"
         android:id="@+id/patient_detail_cash_upperview"
         android:orientation="vertical">

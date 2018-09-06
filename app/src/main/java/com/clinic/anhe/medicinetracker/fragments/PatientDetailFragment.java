@@ -38,6 +38,7 @@ public class PatientDetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME, selectedPatientName);
         outState.putString(ArgumentVariables.ARG_SELECTED_PATIENT_ID, selectedPatientIC);
+        //TODO: here could be null, but why?
         outState.putInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID, selectedPatientPID);
     }
 
@@ -56,6 +57,7 @@ public class PatientDetailFragment extends Fragment {
             selectedPatientIC = getArguments().getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
             selectedPatientPID = getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
         }
+        Log.d("tring to see if we can get pid", "" + getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID));
         mBottomNavigationView = view.findViewById(R.id.patient_detail_bottom_navigation);
 
 
@@ -87,8 +89,9 @@ public class PatientDetailFragment extends Fragment {
             }
         });
 
+        //TODO: check detail cash as default when start up. the following does not work
         //check detail cash when start up
-        mBottomNavigationView.getMenu().performIdentifierAction(R.id.patient_detail_cash, 0);
+//        mBottomNavigationView.getMenu().performIdentifierAction(R.id.patient_detail_cash, 0);
 
         return view;
     }

@@ -6,22 +6,85 @@
     android:id="@+id/patient_detail_search_layout">
 
 
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/patient_deatail_search_recyclerview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:scrollbars="vertical"-->
-        <!--android:padding="4dp"-->
-        <!--android:background="@color/menuTextIconColor"/>-->
+    <RelativeLayout
+        android:id="@+id/patient_detail_search_upperview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/gradientbackground"
+        android:elevation="3dp"
+        android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/dialog_bg_color">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/patient_detail_search_startdate_header"
+                android:layout_marginStart="140dp"
+                android:src="@drawable/ic_calender" />
 
-    <!--<TextView-->
-    <!--android:id="@+id/odd_day_textView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerInParent="true"-->
-    <!--android:text="Mon Wed Fri"-->
-    <!--android:textAppearance="?android:attr/textAppearanceLarge"/>-->
+            <TextView
+                android:id="@+id/patient_detail_search_startdate_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/patient_detail_search_startdate"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="197dp"
+                android:text="開始日期"
+                android:textSize="10sp" />
+
+            <EditText
+                android:id="@+id/patient_detail_search_startdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="187dp"
+                android:text=" 2018-09-01" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/patient_detail_search_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="27dp"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:text="patient name"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/patient_detail_search_ic"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/patient_detail_search_name"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:text="patient id"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/patient_detail_search_recyclerview"
+        android:layout_below="@id/patient_detail_search_upperview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:padding="4dp"
+        android:background="@color/recyclerViewBackground"/>
+
 
 </RelativeLayout>

@@ -95,6 +95,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="98dp"
             android:text="100000"
+            android:textAlignment="viewEnd"
             android:textColor="@color/menuTextIconColor"
             android:textSize="20dp" />
 
