@@ -75,10 +75,17 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
         holder.itemName.setText(current.getMedicineName());
         holder.itemPayment.setText(current.getPayment().equalsIgnoreCase("CASH") ? "現" : "月");
         if(current.getChargeBy().equalsIgnoreCase("null")) {
-            holder.itemResult.setText("未結");
-            holder.itemResult.setBackgroundColor(mContext.getResources().getColor(R.color.checkoutButtonColor));
+            holder.itemChargeBy.setText("尚未結帳");
+            holder.itemChargeAt.setText("0000-00-00");
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.unchargeViewColor));
         } else {
-            holder.itemResult.setText("已結");
+            for(Map.Entry<String, Integer> e : employee.entrySet()) {
+                if (e.getValue() == Integer.parseInt(current.getChargeBy())) {
+                    holder.itemChargeBy.setText(e.getKey());
+                    break;
+                }
+            }
+            holder.itemChargeAt.setText(current.getChargeAt());
         }
     }
 
@@ -100,7 +107,8 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
         private TextView itemPayment;
         private TextView itemQuantity;
         private TextView itemSubtotal;
-        private TextView itemResult;
+        private TextView itemChargeBy;
+        private TextView itemChargeAt;
 
         public PatientSearchViewHolder(View itemView) {
             super(itemView);
@@ -110,7 +118,8 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
             itemPayment = itemView.findViewById(R.id.patient_detail_search_payment);
             itemQuantity = itemView.findViewById(R.id.patient_detail_search_quantity);
             itemSubtotal = itemView.findViewById(R.id.patient_detail_search_subtotal);
-            itemResult = itemView.findViewById(R.id.patient_detail_search_result);
+            itemChargeBy = itemView.findViewById(R.id.patient_detail_search_chargeby);
+            itemChargeAt = itemView.findViewById(R.id.patient_detail_search_chargedate);
         }
     }
 
