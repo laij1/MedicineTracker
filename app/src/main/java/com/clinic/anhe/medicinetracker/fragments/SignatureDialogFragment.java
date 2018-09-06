@@ -120,7 +120,7 @@ public class SignatureDialogFragment extends DialogFragment {
 
                         } else {
                             Integer eid = employee.get(employeeList[checkedItem[0]]);
-                            String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
+                            String url = "http://192.168.0.6:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
                             chargeItem(url, new VolleyCallBack() {
                                 @Override
                                 public void onResult(VolleyStatus status) {

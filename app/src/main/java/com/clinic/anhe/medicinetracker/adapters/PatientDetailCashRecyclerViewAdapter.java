@@ -60,7 +60,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_patient_detail_cash, parent, false);
         employee = new HashMap<>();
-        String url = "http://192.168.0.4:8080/anhe/employee/all";
+        String url = "http://192.168.0.6:8080/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

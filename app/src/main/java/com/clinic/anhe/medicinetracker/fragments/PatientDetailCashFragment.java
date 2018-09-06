@@ -103,7 +103,7 @@ public class PatientDetailCashFragment extends Fragment {
 
 
         //TODO: needs to get pid from parent fragment
-        url = "http://192.168.0.4:8080/anhe/record/pid/unpaid?pid="+ selectedPatientPID;
+        url = "http://192.168.0.6:8080/anhe/record/pid/unpaid?pid="+ selectedPatientPID;
         parseRecordListData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

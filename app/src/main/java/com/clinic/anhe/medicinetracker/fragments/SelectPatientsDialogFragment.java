@@ -256,7 +256,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
 
     private void addShiftRecordToDatabase(final VolleyCallBack volleyCallBack) {
         //TODO: needs to modified create_by and subtotal
-        String url = "http://192.168.0.4:8080/anhe/shiftrecord/addlist";
+        String url = "http://192.168.0.6:8080/anhe/shiftrecord/addlist";
         JSONArray jsonArray = new JSONArray();
         try {
             for(String item : list) {
@@ -315,7 +315,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
 
     private void prepareShiftRecordData( ) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://192.168.0.4:8080/anhe/shiftrecord?createAt=" + date;
+        String url = "http://192.168.0.6:8080/anhe/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

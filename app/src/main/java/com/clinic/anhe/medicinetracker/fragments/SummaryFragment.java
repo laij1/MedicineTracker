@@ -271,7 +271,7 @@ public class SummaryFragment  extends Fragment {
 
     private void findNurse(final VolleyCallBack volleyCallBack) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://192.168.0.4:8080/anhe/shiftrecord/patient?patient=" + selectedPatientViewModel.getPatient().getPatientName()
+        String url = "http://192.168.0.6:8080/anhe/shiftrecord/patient?patient=" + selectedPatientViewModel.getPatient().getPatientName()
                 + "&createAt=" + date;
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
@@ -304,7 +304,7 @@ public class SummaryFragment  extends Fragment {
 
     private void addRecordToDatabase(final VolleyCallBack volleyCallBack) {
         //TODO: needs to modified create_by and subtotal
-        String url = "http://192.168.0.4:8080/anhe/record/addlist";
+        String url = "http://192.168.0.6:8080/anhe/record/addlist";
         JSONArray jsonArray = new JSONArray();
         try {
             for(MedicineCardViewModel item : cartList) {

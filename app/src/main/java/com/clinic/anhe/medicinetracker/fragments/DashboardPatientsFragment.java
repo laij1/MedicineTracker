@@ -107,7 +107,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         patientList = new ArrayList<>();
         String url = "";
         if(dayType == DayType.evenDay) {
-            url = "http://192.168.0.4:8080/anhe/patient/day?day=二四六";
+            url = "http://192.168.0.6:8080/anhe/patient/day?day=二四六";
             parsePatientList(url, new VolleyCallBack() {
                 @Override
                 public void onResult(VolleyStatus status) {
@@ -117,7 +117,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
                 }
             });
         } else {
-            url = "http://192.168.0.4:8080/anhe/patient/day?day=一三五";
+            url = "http://192.168.0.6:8080/anhe/patient/day?day=一三五";
             parsePatientList(url, new VolleyCallBack() {
                 @Override
                 public void onResult(VolleyStatus status) {

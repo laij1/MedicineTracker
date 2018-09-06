@@ -123,7 +123,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void prepareEmployeeData() {
-        String url = "http://192.168.0.4:8080/anhe/employee/all";
+        String url = "http://192.168.0.6:8080/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -188,7 +188,7 @@ public class DashboardFragment extends Fragment {
 
     private void prepareShiftRecordData( ) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://192.168.0.4:8080/anhe/shiftrecord?createAt=" + date;
+        String url = "http://192.168.0.6:8080/anhe/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

@@ -99,7 +99,7 @@ public class MedicineSimpleFragment extends Fragment {
     }
 
     private void prepareMedicineData() {
-        String url = "http://192.168.0.4:8080/anhe/medicine?category=" + medicineType.toString();
+        String url = "http://192.168.0.6:8080/anhe/medicine?category=" + medicineType.toString();
                parseMedicineList(url, new VolleyCallBack() {
                    @Override
                    public void onResult(VolleyStatus status) {
