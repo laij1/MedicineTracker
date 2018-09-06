@@ -80,7 +80,8 @@ public class PatientDetailFragment extends Fragment {
                                    .commit();
                         break;
                     case R.id.patient_detail_search:
-                        PatientDetailSearchFragment patientDetailSearchFragment = PatientDetailSearchFragment.newInstance();
+                        PatientDetailSearchFragment patientDetailSearchFragment = PatientDetailSearchFragment.newInstance(
+                                selectedPatientName, selectedPatientIC, selectedPatientPID);
                         transaction.replace(R.id.patient_detail_container, patientDetailSearchFragment)
                                    .commit();
                         break;
