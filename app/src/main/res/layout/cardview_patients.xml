@@ -19,9 +19,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="15dp"
-            android:layout_alignBottom="@+id/patients_name"
+            android:layout_alignBottom="@id/patients_name"
             android:backgroundTint="@android:color/white"
-            android:tint="#87CEEB" />
+            />
 
         <TextView
             android:id="@+id/patients_name"

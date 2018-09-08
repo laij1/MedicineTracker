@@ -1,6 +1,7 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +16,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -31,6 +36,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedEmployeeViewModel;
+import com.clinic.anhe.medicinetracker.adapters.SignatureRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
@@ -52,10 +59,18 @@ public class SignatureDialogFragment extends DialogFragment {
     private Context mContext;
     private static Integer rid;
     private static  int index;
-    private AlertDialog dialog;
     private GlobalVariable globalVariable;
     private String ip;
     private String port;
+
+
+    //TODO:
+    private TextView mConfirmButton;
+    private TextView mCancelButton;
+    private RecyclerView mRecyclerView;
+    private GridLayoutManager mLayoutManager;
+    private SignatureRecyclerViewAdapter mAdapter;
+
 
     public static SignatureDialogFragment newInstance(Map<String, Integer> employeeMap, Integer recordID, int i) {
 //        Bundle args = new Bundle();
@@ -75,9 +90,9 @@ public class SignatureDialogFragment extends DialogFragment {
 
     @Override
     public void onDestroyView() {
-        Log.d("OnDestoryView", "ChloeSignature");
-        Log.d("Dialog is ", getDialog()==null?"null": "notnull");
-        Log.d("getRetainInstance() ", getRetainInstance()==true?"true": "false");
+//        Log.d("OnDestoryView", "ChloeSignature");
+//        Log.d("Dialog is ", getDialog()==null?"null": "notnull");
+//        Log.d("getRetainInstance() ", getRetainInstance()==true?"true": "false");
         if (getDialog() != null && getRetainInstance()) {
             getDialog().setDismissMessage(null);
         }
@@ -87,17 +102,16 @@ public class SignatureDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setRetainInstance(true);
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
+        View view = inflater.inflate(R.layout.fragment_signature, container, false);
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        if(savedInstanceState!= null) {
+        if(savedInstanceState != null) {
             employeeList = savedInstanceState.getStringArray(ArgumentVariables.ARG_EMPLOYEE_LIST);
         }
+
+        mContext = this.getContext();
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
 
         int i = 0;
         employeeList = new String[employee.size()];
@@ -106,27 +120,27 @@ public class SignatureDialogFragment extends DialogFragment {
             i++;
         }
 
-        mContext = this.getContext();
-        globalVariable = GlobalVariable.getInstance();
-        ip = globalVariable.getIpaddress();
-        port = globalVariable.getPort();
+        SelectedEmployeeViewModel selectedEmployeeViewModel = ViewModelProviders.of(this).get(SelectedEmployeeViewModel.class);
 
-        Log.d("on create dialog", "employeelist" + employeeList[0] );
+        mConfirmButton = view.findViewById(R.id.signature_confirmbutton);
+        mCancelButton = view.findViewById(R.id.signature_cancelbutton);
+        mRecyclerView = view.findViewById(R.id.signature_recyclerview);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new GridLayoutManager(getContext(), 3);
+        mAdapter = new SignatureRecyclerViewAdapter(employee, employeeList, selectedEmployeeViewModel);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
 
-        final int[] checkedItem = {-1};
-        dialog = builder.setTitle("請簽名")
-                .setItems(employeeList, null)
-                .setPositiveButton("簽名", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //TODO: can't get the item clicked position
-                        if(checkedItem[0] == -1) {
-                            Toast.makeText(getActivity(), "請簽名再結帳",Toast.LENGTH_LONG).show();
+        mConfirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(selectedEmployeeViewModel.getSelectedEmployee().getValue().getEid()== -1) {
+                    Toast.makeText(getActivity(), "請簽名再結帳",Toast.LENGTH_LONG).show();
+                }
+                else {
 
-                        } else {
-                            Integer eid = employee.get(employeeList[checkedItem[0]]);
+                    Integer eid = selectedEmployeeViewModel.getSelectedEmployee().getValue().getEid();
                             String url = "http://" + ip + ":" + port + "/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
                             chargeItem(url, new VolleyCallBack() {
                                 @Override
@@ -141,44 +155,127 @@ public class SignatureDialogFragment extends DialogFragment {
                                         }
 
                                         Toast.makeText(getParentFragment().getContext(), "結帳完成",Toast.LENGTH_SHORT).show();
+                                        dismiss();
                                     } else {
                                         Toast.makeText(getParentFragment().getContext(), "結帳未完成", Toast.LENGTH_SHORT).show();
+                                        dismiss();
                                     }
                                 }
                             });
-                        }
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dismiss();
-                    }
-                })
-                .create();
 
-        // add this listener after dialog creation to stop auto dismiss on selection
-        AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(checkedItem[0] != -1) {
-                        parent.getChildAt(checkedItem[0]).setBackgroundColor(getResources().getColor(R.color.dialog_bg_color));
-                    }
-                    checkedItem[0] = position;
-                    view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                }
             }
-        };
-        dialog.getListView().setOnItemClickListener(listener);
+        });
 
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_round);
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+
+            }
+        });
+
+
+
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().getWindow().setBackgroundDrawableResource(R.drawable.dialog_round);
 
         }
 
-        return dialog;
+        setRetainInstance(true);
+        return view;
     }
+
+//    @NonNull
+//    @Override
+//    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+//        if(savedInstanceState!= null) {
+//            employeeList = savedInstanceState.getStringArray(ArgumentVariables.ARG_EMPLOYEE_LIST);
+//        }
+//
+//        int i = 0;
+//        employeeList = new String[employee.size()];
+//        for(Map.Entry<String, Integer> entry : employee.entrySet()) {
+//            employeeList[i] = entry.getKey();
+//            i++;
+//        }
+//
+//        mContext = this.getContext();
+//        globalVariable = GlobalVariable.getInstance();
+//        ip = globalVariable.getIpaddress();
+//        port = globalVariable.getPort();
+//
+//        Log.d("on create dialog", "employeelist" + employeeList[0] );
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//
+//        final int[] checkedItem = {-1};
+//        dialog = builder.setTitle("請簽名")
+//                .setItems(employeeList, null)
+//                .setPositiveButton("簽名", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //TODO: can't get the item clicked position
+//                        if(checkedItem[0] == -1) {
+//                            Toast.makeText(getActivity(), "請簽名再結帳",Toast.LENGTH_LONG).show();
+//
+//                        } else {
+//                            Integer eid = employee.get(employeeList[checkedItem[0]]);
+//                            String url = "http://" + ip + ":" + port + "/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
+//                            chargeItem(url, new VolleyCallBack() {
+//                                @Override
+//                                public void onResult(VolleyStatus status) {
+//                                    if (status == VolleyStatus.SUCCESS) {
+//                                        if(getParentFragment() instanceof  PatientDetailCashFragment) {
+//                                            PatientDetailCashFragment fragment = (PatientDetailCashFragment)getParentFragment();
+//                                            fragment.refreshRecyclerView(index);
+//                                        } else if ( getParentFragment() instanceof PatientDetailMonthFragment) {
+//                                            PatientDetailMonthFragment fragment = (PatientDetailMonthFragment)getParentFragment();
+//                                            fragment.refreshRecyclerView(index);
+//                                        }
+//
+//                                        Toast.makeText(getParentFragment().getContext(), "結帳完成",Toast.LENGTH_SHORT).show();
+//                                    } else {
+//                                        Toast.makeText(getParentFragment().getContext(), "結帳未完成", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    }
+//                })
+//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dismiss();
+//                    }
+//                })
+//                .create();
+//
+//        // add this listener after dialog creation to stop auto dismiss on selection
+//        AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    if(checkedItem[0] != -1) {
+//                        parent.getChildAt(checkedItem[0]).setBackgroundColor(getResources().getColor(R.color.dialog_bg_color));
+//                    }
+//                    checkedItem[0] = position;
+//                    view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+//            }
+//        };
+//        dialog.getListView().setOnItemClickListener(listener);
+//
+//        if (dialog.getWindow() != null) {
+//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//            dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_round);
+//
+//        }
+//
+//        return dialog;
+//    }
 
     private void chargeItem(String url, final VolleyCallBack volleyCallBack) {
         StringRequest stringRequest =

@@ -7,10 +7,12 @@ public interface ArgumentVariables {
     public static final String ARG_MEDICINE_TYPE = "medicine type";
     public static final String ARG_DAY_TYPE = "day type";
     public static final String ARG_SELECTED_PATIENT_NAME = "selected patient name";
-    public static final String ARG_SELECTED_PATIENT_ID= "selected patient id";
+    public static final String ARG_SELECTED_PATIENT_ID = "selected patient id";
     public static final String ARG_SELECTED_PATIENT_PID = "selected patient pid";
     public static final String ARG_EMPLOYEE_LIST = "employee list";
     public static final String ARG_NURSE_NAME = "dashboard nurse name";
+    public static final String ARG_PATIENT_DETAIL_SEARCH_STARTDATE = "startDate";
+    public static final String ARG_PATIENT_DETAIL_SEARCH_ENDDATE= "endDate";
 
     //for pager to recognize what kind of fragment to new
     public static final String KIND_PATIENTS = "patients";

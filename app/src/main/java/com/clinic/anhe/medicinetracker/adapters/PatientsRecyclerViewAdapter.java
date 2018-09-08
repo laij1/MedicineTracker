@@ -74,8 +74,10 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
                 public void onClick(View v) {
 //                    lastCheckedPosition = getAdapterPosition();
                     //TODO:
-                    selectedPatientViewModel.getPatientLiveData().setValue(patientList.get(getAdapterPosition()));
-                    notifyDataSetChanged();
+                    if(getAdapterPosition()!= -1) {
+                        selectedPatientViewModel.getPatientLiveData().setValue(patientList.get(getAdapterPosition()));
+                        notifyDataSetChanged();
+                    }
                 }
             });
         }

@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.PatientDetailViewModel;
 import com.clinic.anhe.medicinetracker.fragments.PatientDetailSearchFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter<PatientDetailSearchRecyclerViewAdapter.PatientSearchViewHolder>{
-    private List<MedicineRecordCardViewModel> recordList;
+//    private List<MedicineRecordCardViewModel> recordList;
     private Context mContext;
     private Map<String,Integer> employee;
     private String[] employeeList;
@@ -41,10 +42,11 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
     private GlobalVariable globalVariable;
     private String ip;
     private String port;
+    private PatientDetailViewModel patientDetailViewModel;
 
 
-    public PatientDetailSearchRecyclerViewAdapter(List<MedicineRecordCardViewModel> recordList) {
-        this.recordList = recordList;
+    public PatientDetailSearchRecyclerViewAdapter(PatientDetailViewModel patientDetailViewModel) {
+        this.patientDetailViewModel = patientDetailViewModel;
     }
     @NonNull
     @Override
@@ -71,7 +73,7 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(@NonNull PatientDetailSearchRecyclerViewAdapter.PatientSearchViewHolder holder, int position) {
-        MedicineRecordCardViewModel current = recordList.get(position);
+        MedicineRecordCardViewModel current = patientDetailViewModel.getSearchListLiveData().getValue().get(position);
         holder.itemQuantity.setText(String.valueOf(current.getQuantity()));
         holder.itemSubtotal.setText(String.valueOf(current.getSubtotal()));
         holder.itemCreateDate.setText(current.getCreateAt().toString());
@@ -100,7 +102,7 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public int getItemCount() {
-        return recordList.size();
+        return patientDetailViewModel.getSearchListLiveData().getValue().size();
     }
 
     @Override
