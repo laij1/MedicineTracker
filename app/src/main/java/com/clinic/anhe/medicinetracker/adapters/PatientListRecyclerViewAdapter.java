@@ -58,6 +58,11 @@ public class PatientListRecyclerViewAdapter extends RecyclerView.Adapter<Patient
         return patientList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     public class PatientsListViewHolder extends RecyclerView.ViewHolder {
         public TextView patientName;
         public TextView patientId;

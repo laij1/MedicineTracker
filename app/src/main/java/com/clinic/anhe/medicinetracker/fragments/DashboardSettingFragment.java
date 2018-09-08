@@ -31,7 +31,6 @@ public class DashboardSettingFragment extends Fragment {
     private ViewPager mDashboardSettingViewPager;
     private TabLayout mDashboardSettingTabLayout;
     private DashboardSettingPagerAdapter mDashboardSettingPagerAdapter;
-    private FloatingActionButton mDashboardSettingFab;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
 
@@ -65,7 +64,7 @@ public class DashboardSettingFragment extends Fragment {
 //        });
 
 
-        mDashboardSettingFab = view.findViewById(R.id.dashboard_setting_fab);
+
         mDashboardSettingTabLayout = (TabLayout) view.findViewById(R.id.dashboard_setting_tabLayout);
         //set up tab
         TabLayout.Tab morning = mDashboardSettingTabLayout.newTab();
