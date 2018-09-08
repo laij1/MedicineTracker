@@ -27,6 +27,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.DayType;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import org.json.JSONArray;
@@ -48,6 +49,9 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
         private DayType dayType;
         private static SelectedPatientViewModel selectedPatientViewModel;
         private VolleyController volleyController;
+        private GlobalVariable globalVariable;
+        private String ip;
+        private String port;
 
 
         public static PatientDayFragment newInstance(Shift shift, DayType dayType) {
@@ -73,6 +77,9 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
 
             View view  = inflater.inflate(R.layout.fragment_patient_day, container, false);
             mContext = view.getContext();
+            globalVariable = GlobalVariable.getInstance();
+            ip = globalVariable.getIpaddress();
+            port = globalVariable.getPort();
 
             if(savedInstanceState != null) {
                 shift = shift.fromString(savedInstanceState.getString(ARG_PATIENT_SHIFT));
@@ -117,7 +124,8 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
         if(dayType == DayType.evenDay) {
             switch(shift) {
                 case morning:
-                    url = "http://192.168.0.6:8080/anhe/patient?day=二四六&shift=早班";
+                    url = "http://" + ip +
+                            ":" + port + "/anhe/patient?day=二四六&shift=早班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {
@@ -128,7 +136,8 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
                     });
                     break;
                 case afternoon:
-                    url = "http://192.168.0.6:8080/anhe/patient?day=二四六&shift=中班";
+                    url = "http://" + ip +
+                            ":" + port + "/anhe/patient?day=二四六&shift=中班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {
@@ -139,7 +148,8 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
                     });
                     break;
                 case night:
-                    url = "http://192.168.0.6:8080/anhe/patient?day=二四六&shift=晚班";
+                    url = "http://" + ip +
+                            ":" + port + "/anhe/patient?day=二四六&shift=晚班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {
@@ -153,7 +163,8 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
         } else {
             switch(shift) {
                 case morning:
-                    url = "http://192.168.0.6:8080/anhe/patient?day=一三五&shift=早班";
+                    url = "http://" + ip +
+                            ":" + port + "/anhe/patient?day=一三五&shift=早班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {
@@ -164,7 +175,8 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
                     });
                     break;
                 case afternoon:
-                    url = "http://192.168.0.6:8080/anhe/patient?day=一三五&shift=中班";
+                    url = "http://" + ip +
+                            ":" + port + "/anhe/patient?day=一三五&shift=中班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {
@@ -175,7 +187,8 @@ public class PatientDayFragment extends Fragment implements ArgumentVariables {
                     });
                     break;
                 case night:
-                    url = "http://192.168.0.6:8080/anhe/patient?day=一三五&shift=晚班";
+                    url = "http://" + ip +
+                            ":" + port + "/anhe/patient?day=一三五&shift=晚班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {

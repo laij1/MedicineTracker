@@ -22,6 +22,7 @@ import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +38,9 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
     private Map<String,Integer> employee;
     private String[] employeeList;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
 
 
     public PatientDetailSearchRecyclerViewAdapter(List<MedicineRecordCardViewModel> recordList) {
@@ -49,7 +53,12 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
                 .inflate(R.layout.cardview_patient_detail_search, parent, false);
         mContext = view.getContext();
         employee = new HashMap<>();
-        String url = "http://192.168.0.6:8080/anhe/employee/all";
+
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
+
+        String url = "http://" + ip + ":" + port + "/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

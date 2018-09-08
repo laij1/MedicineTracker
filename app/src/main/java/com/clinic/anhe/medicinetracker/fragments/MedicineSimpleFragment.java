@@ -28,6 +28,7 @@ import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 
@@ -46,6 +47,9 @@ public class MedicineSimpleFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private List<MedicineCardViewModel> medicineList;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
     private Context mContext;
 
     public static MedicineSimpleFragment newInstance(MedicineType medicineType) {
@@ -71,6 +75,10 @@ public class MedicineSimpleFragment extends Fragment {
         View view  = inflater.inflate(R.layout.fragment_medicine_simple, container, false);
 
         mContext = view.getContext();
+
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
 
         if(savedInstanceState != null) {
             medicineType = medicineType.fromString(savedInstanceState.getString(ArgumentVariables.ARG_MEDICINE_TYPE));
@@ -99,7 +107,7 @@ public class MedicineSimpleFragment extends Fragment {
     }
 
     private void prepareMedicineData() {
-        String url = "http://192.168.0.6:8080/anhe/medicine?category=" + medicineType.toString();
+        String url = "http://" + ip + ":" + port + "/anhe/medicine?category=" + medicineType.toString();
                parseMedicineList(url, new VolleyCallBack() {
                    @Override
                    public void onResult(VolleyStatus status) {

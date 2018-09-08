@@ -44,6 +44,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.text.SimpleDateFormat;
@@ -69,6 +70,10 @@ public class SummaryFragment  extends Fragment {
     private FloatingActionButton summaryFab;
     private int i = -1;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
+
     private static VolleyStatus status= VolleyStatus.UNKNOWN;
     private Integer nurseEid = -1;
 
@@ -90,6 +95,9 @@ public class SummaryFragment  extends Fragment {
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_summary, container, false);
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
 
         if(status == VolleyStatus.SUCCESS) {
             final SweetAlertDialog successDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.SUCCESS_TYPE);
@@ -271,7 +279,8 @@ public class SummaryFragment  extends Fragment {
 
     private void findNurse(final VolleyCallBack volleyCallBack) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://192.168.0.6:8080/anhe/shiftrecord/patient?patient=" + selectedPatientViewModel.getPatient().getPatientName()
+        String url = "http://" + ip +
+                ":" + port + "/anhe/shiftrecord/patient?patient=" + selectedPatientViewModel.getPatient().getPatientName()
                 + "&createAt=" + date;
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
@@ -304,7 +313,8 @@ public class SummaryFragment  extends Fragment {
 
     private void addRecordToDatabase(final VolleyCallBack volleyCallBack) {
         //TODO: needs to modified create_by and subtotal
-        String url = "http://192.168.0.6:8080/anhe/record/addlist";
+        String url = "http://" + ip +
+                ":" + port + "/anhe/record/addlist";
         JSONArray jsonArray = new JSONArray();
         try {
             for(MedicineCardViewModel item : cartList) {

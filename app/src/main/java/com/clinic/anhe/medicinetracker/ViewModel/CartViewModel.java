@@ -17,6 +17,7 @@ import java.util.List;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 
 import org.json.JSONArray;
@@ -50,6 +51,8 @@ public class CartViewModel extends ViewModel {
     //for quantity alert Dialog
     private MutableLiveData<Boolean> quantityAlert;
 
+    private GlobalVariable globalVariable;
+
 
     public CartViewModel(){
         initMedicineList();
@@ -75,7 +78,9 @@ public class CartViewModel extends ViewModel {
         bandaidLiveData = new MutableLiveData<>();
         bandaidList = new ArrayList<>();
 
-        String url = "http://192.168.0.6:8080/anhe/medicine/all/";
+
+        String url = "http://"+ globalVariable.getInstance().getIpaddress() +":" +
+                globalVariable.getInstance().getPort() + "/anhe/medicine/all/";
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {

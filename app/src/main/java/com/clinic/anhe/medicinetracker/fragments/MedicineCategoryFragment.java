@@ -26,6 +26,7 @@ import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +45,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
     private CounterFab mCounterfab;
     private CartViewModel cartViewModel;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
 
 
     public static MedicineCategoryFragment newInstance(){
@@ -67,6 +69,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
 
         mContext = getContext();
         volleyController.getInstance(mContext);
+//        globalVariable.getInstance(getActivity().getApplicationContext());
 
         //set up view model
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);

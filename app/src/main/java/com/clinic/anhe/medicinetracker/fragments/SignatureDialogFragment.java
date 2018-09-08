@@ -36,6 +36,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
 import org.json.JSONArray;
@@ -52,6 +53,9 @@ public class SignatureDialogFragment extends DialogFragment {
     private static Integer rid;
     private static  int index;
     private AlertDialog dialog;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
 
     public static SignatureDialogFragment newInstance(Map<String, Integer> employeeMap, Integer recordID, int i) {
 //        Bundle args = new Bundle();
@@ -103,6 +107,9 @@ public class SignatureDialogFragment extends DialogFragment {
         }
 
         mContext = this.getContext();
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
 
         Log.d("on create dialog", "employeelist" + employeeList[0] );
 
@@ -120,7 +127,7 @@ public class SignatureDialogFragment extends DialogFragment {
 
                         } else {
                             Integer eid = employee.get(employeeList[checkedItem[0]]);
-                            String url = "http://192.168.0.6:8080/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
+                            String url = "http://" + ip + ":" + port + "/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
                             chargeItem(url, new VolleyCallBack() {
                                 @Override
                                 public void onResult(VolleyStatus status) {

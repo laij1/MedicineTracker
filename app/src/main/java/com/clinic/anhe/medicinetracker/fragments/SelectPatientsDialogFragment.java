@@ -40,6 +40,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.DayType;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import org.json.JSONArray;
@@ -69,6 +70,9 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     private DashboardViewModel dashboardViewModel;
     private static List<String> list;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
     private List<ShiftRecordModel> shiftList;
 
 
@@ -134,6 +138,10 @@ public class SelectPatientsDialogFragment extends DialogFragment {
         mPatientsTabLayout.addTab(EvenDays);
 
         mContext = getContext();
+
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
 
         mPatientsTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -256,7 +264,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
 
     private void addShiftRecordToDatabase(final VolleyCallBack volleyCallBack) {
         //TODO: needs to modified create_by and subtotal
-        String url = "http://192.168.0.6:8080/anhe/shiftrecord/addlist";
+        String url = "http://" + ip + ":" + port + "/anhe/shiftrecord/addlist";
         JSONArray jsonArray = new JSONArray();
         try {
             for(String item : list) {
@@ -315,7 +323,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
 
     private void prepareShiftRecordData( ) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://192.168.0.6:8080/anhe/shiftrecord?createAt=" + date;
+        String url = "http://" + ip + ":" + port + "/anhe/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

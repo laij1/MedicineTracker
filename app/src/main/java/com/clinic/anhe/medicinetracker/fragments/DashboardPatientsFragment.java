@@ -26,6 +26,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.DayType;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 
 
 import org.json.JSONArray;
@@ -44,6 +45,9 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
 //    private Shift shift;
     private DayType dayType;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
     private String nurseName;
@@ -73,6 +77,9 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_patient_list_day, container, false);
         mContext = getContext();
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
 
         if(savedInstanceState != null) {
             dayType = dayType.fromString(savedInstanceState.getString(ARG_DAY_TYPE));
@@ -107,7 +114,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         patientList = new ArrayList<>();
         String url = "";
         if(dayType == DayType.evenDay) {
-            url = "http://192.168.0.6:8080/anhe/patient/day?day=二四六";
+            url = "http://" + ip + ":" + port + "/anhe/patient/day?day=二四六";
             parsePatientList(url, new VolleyCallBack() {
                 @Override
                 public void onResult(VolleyStatus status) {
@@ -117,7 +124,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
                 }
             });
         } else {
-            url = "http://192.168.0.6:8080/anhe/patient/day?day=一三五";
+            url = "http://" + ip + ":" + port + "/anhe/patient/day?day=一三五";
             parsePatientList(url, new VolleyCallBack() {
                 @Override
                 public void onResult(VolleyStatus status) {

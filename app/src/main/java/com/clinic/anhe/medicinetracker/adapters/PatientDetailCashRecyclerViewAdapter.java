@@ -22,6 +22,8 @@ import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -38,10 +40,14 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
 
     private List<MedicineRecordCardViewModel> recordList;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
     private Context mContext;
     private Fragment mFragement;
     private Map<String,Integer> employee;
     private String[] employeeList;
+
 
     public PatientDetailCashRecyclerViewAdapter(List<MedicineRecordCardViewModel> recordList, Context mContext, Fragment fragment) {
         this.recordList = recordList;
@@ -59,8 +65,11 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
     public PatientDetailCashRecyclerViewAdapter.PatientCashViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_patient_detail_cash, parent, false);
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
         employee = new HashMap<>();
-        String url = "http://192.168.0.6:8080/anhe/employee/all";
+        String url = "http://" + ip + ":" + port + "/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

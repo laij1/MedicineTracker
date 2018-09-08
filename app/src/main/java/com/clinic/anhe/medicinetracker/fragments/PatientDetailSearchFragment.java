@@ -24,6 +24,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 
 
 import org.json.JSONArray;
@@ -40,6 +41,9 @@ public class PatientDetailSearchFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private List<MedicineRecordCardViewModel> recordList;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
     private Context mContext;
     private String selectedPatientName;
     private String selectedPatientIC;
@@ -85,6 +89,10 @@ public class PatientDetailSearchFragment extends Fragment {
         }
         mContext = view.getContext();
 
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
+
         recordList = new ArrayList<>();
 
         Log.d("selected patient in patient month detail", selectedPatientName + selectedPatientIC + selectedPatientPID);
@@ -100,7 +108,7 @@ public class PatientDetailSearchFragment extends Fragment {
 
 
         //TODO: needs to get pid from parent fragment
-        url = "http://192.168.0.6:8080/anhe/record/createdate?pid=" + selectedPatientPID
+        url = "http://" + ip + ":" + port + "/anhe/record/createdate?pid=" + selectedPatientPID
                 + "&start=2018-09-01";
         parseRecordListData(url, new VolleyCallBack() {
             @Override

@@ -30,6 +30,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import org.json.JSONArray;
@@ -49,6 +50,9 @@ public class DashboardFragment extends Fragment {
     private List<EmployeeCardViewModel> employeeList;
     private List<ShiftRecordModel> shiftList;
     private VolleyController volleyController;
+    private GlobalVariable globalVariable;
+    private String ip;
+    private String port;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
     private Shift shift;
@@ -84,6 +88,10 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel = ViewModelProviders.of(getParentFragment()).get(DashboardViewModel.class);
 
         mContext = getContext();
+
+        globalVariable = GlobalVariable.getInstance();
+        ip = globalVariable.getIpaddress();
+        port = globalVariable.getPort();
 
         mRecyclerView = view.findViewById(R.id.dashboard_recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -123,7 +131,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void prepareEmployeeData() {
-        String url = "http://192.168.0.6:8080/anhe/employee/all";
+        String url = "http://" + ip + ":" + port + "/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -188,7 +196,7 @@ public class DashboardFragment extends Fragment {
 
     private void prepareShiftRecordData( ) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://192.168.0.6:8080/anhe/shiftrecord?createAt=" + date;
+        String url = "http://" + ip + ":" + port + "/anhe/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
