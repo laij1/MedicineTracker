@@ -2,6 +2,7 @@ package com.clinic.anhe.medicinetracker.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
@@ -29,6 +31,7 @@ public class SelectPatientFragment extends Fragment {
     private RadioGroup mRadioGroup;
     private RadioButton mCheckedRadioButton;
     private View view;
+    private Context mContext;
     private FloatingActionButton mFloatingActionButton;
     private SelectedPatientViewModel selectedPatientViewModel;
 
@@ -48,6 +51,8 @@ public class SelectPatientFragment extends Fragment {
 //        ArrayList<String> cartList = getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST);
 
         view = inflater.inflate(R.layout.fragment_select_patients, container, false);
+
+        mContext = view.getContext();
 
         selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
         mRadioGroup = view.findViewById(R.id.shift_radiogroup);
@@ -70,25 +75,29 @@ public class SelectPatientFragment extends Fragment {
             public void onClick(View v) {
               //Log.d("I got the patient name", PatientDayFragment.selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
                 //selectedPatientViewModel = ViewModelProviders.of(getChildFragmentManager().findFragmentByTag(ArgumentVariables.TAG_SELECT_PATIENT_FRAGMENT)).get(SelectedPatientViewModel.class);
-                selectedPatientViewModel.getPatientLiveData().observe(getActivity(), new Observer<PatientsCardViewModel>() {
-                    @Override
-                    public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
-                        patientName = selectedPatientViewModel.getPatientLiveData().getValue().getPatientName();
-                        paitientId = selectedPatientViewModel.getPatientLiveData().getValue().getPatientIC();
-                        Log.d("I have the selected patient in selectpatientfragment", patientsCardViewModel.getPatientName());
-                    }
-                });
+//                selectedPatientViewModel.getPatientLiveData().observe(getActivity(), new Observer<PatientsCardViewModel>() {
+////                    @Override
+////                    public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+////                        patientName = selectedPatientViewModel.getPatientLiveData().getValue().getPatientName();
+////                        paitientId = selectedPatientViewModel.getPatientLiveData().getValue().getPatientIC();
+////                        Log.d("I have the selected patient in selectpatientfragment", patientsCardViewModel.getPatientName());
+////                    }
+////                });
+                if(selectedPatientViewModel.getPatientLiveData().getValue().getPID()== -1) {
+                    Toast.makeText(mContext,"請選擇病患",Toast.LENGTH_SHORT ).show();
+                } else {
               //TODO:
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                SummaryFragment summaryFragment = SummaryFragment.newInstance();
-                Bundle args = new Bundle();
-//                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST));
-                args.putString("patientName", patientName);
-                args.putString("patientId", paitientId);
-                summaryFragment.setArguments(args);
-                transaction.replace(R.id.select_patient_layout, summaryFragment, "summary")
-                           .addToBackStack("summary")
-                           .commit();
+                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                    SummaryFragment summaryFragment = SummaryFragment.newInstance();
+//                    Bundle args = new Bundle();
+//    //                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, getArguments().getStringArrayList(ArgumentVariables.ARG_CARTLIST));
+//                    args.putString("patientName", patientName);
+////                    args.putString("patientId", paitientId);
+//                    summaryFragment.setArguments(args);
+                    transaction.replace(R.id.select_patient_layout, summaryFragment, "summary")
+                               .addToBackStack("summary")
+                               .commit();
+                }
             }
         });
         //setRetainInstance does not work
