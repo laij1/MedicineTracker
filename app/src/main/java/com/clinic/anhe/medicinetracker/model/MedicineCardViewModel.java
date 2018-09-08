@@ -1,5 +1,7 @@
 package com.clinic.anhe.medicinetracker.model;
 
+import android.util.Log;
+
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
 public class MedicineCardViewModel {
@@ -40,7 +42,18 @@ public class MedicineCardViewModel {
     public int getQuantity() { return quantity; }
 
     public void setQuantity(int i) {
-        quantity = i;
+        Log.d("quantity at cartviewmodel", i + "");
+        if(medicinName.equalsIgnoreCase("Carnitine(原)")) {
+            int r = i / 10;
+            if(i < 10) {
+                quantity = i;
+            } else {
+                int mod = i % 10;
+                quantity = (r * 10) + (mod + (2 * r));
+            }
+        } else {
+            quantity = i;
+        }
     }
 
     public void setCashPayment(boolean cash) {
@@ -102,7 +115,17 @@ public class MedicineCardViewModel {
     }
 
     public void calculateSubtotal() {
-        //TODO: here we need to calculate 買ㄧ送醫
-        subtotal = Integer.parseInt(medicinePrice) * quantity;
+        //TODO: here we need to calculate 買ㄧ送二
+        if(medicinName.equalsIgnoreCase("Carnitine(原)")) {
+         int r = quantity / 10;
+            if(quantity < 10) {
+                subtotal = quantity * Integer.parseInt(medicinePrice);
+            }else {
+                int mod = quantity % 10;
+                subtotal = ((r * 10) + (mod - (2 * r))) * Integer.parseInt(medicinePrice);
+            }
+        } else {
+            subtotal = Integer.parseInt(medicinePrice) * quantity;
+        }
     }
 }

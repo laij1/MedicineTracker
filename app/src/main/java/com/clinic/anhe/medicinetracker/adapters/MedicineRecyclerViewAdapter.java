@@ -291,6 +291,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 //                        List<MedicineCardViewModel> list = cartViewModel.getMedicineList();
 //                        list.get(position).addToCart();
 //                        cartViewModel.getMedicineLiveData().setValue(list);
+
                             cartViewModel.addToCart(position, medicineType);
                             //Log.d("" + item.getMedicinName(), "cash payment: "+ item.isCashPayment());
                             // counterFab.increase();

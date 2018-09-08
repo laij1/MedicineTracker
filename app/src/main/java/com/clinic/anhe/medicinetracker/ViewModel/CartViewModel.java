@@ -200,26 +200,31 @@ public class CartViewModel extends ViewModel {
 //    }
 
 
+
     public void addToCart(int position, MedicineType medicineType) {
         MedicineCardViewModel item = null;
         switch(medicineType) {
             case dialysis:
                 item = getDialysisList().get(position);
+                item.calculateSubtotal();
                 item.addToCart();
                 dialysisLiveData.postValue(dialysisList);
                 break;
             case edible:
                 item = getEdibleList().get(position);
+                item.calculateSubtotal();
                 item.addToCart();
                 edibleLiveData.postValue(edibleList);
                 break;
             case needle:
                 item = getNeedleList().get(position);
+                item.calculateSubtotal();
                 item.addToCart();
                 needleLiveData.postValue(needleList);
                 break;
             case bandaid:
                 item = getBandaidList().get(position);
+                item.calculateSubtotal();
                 item.addToCart();
                 bandaidLiveData.postValue(bandaidList);
                 break;
@@ -298,21 +303,25 @@ public class CartViewModel extends ViewModel {
             case dialysis:
                 item = getDialysisList().get(position);
                 item.setQuantity(quantity);
+                item.calculateSubtotal();
                 dialysisLiveData.postValue(dialysisList);
                 break;
             case edible:
                 item = getEdibleList().get(position);
                 item.setQuantity(quantity);
+                item.calculateSubtotal();
                 edibleLiveData.postValue(edibleList);
                 break;
             case needle:
                 item = getNeedleList().get(position);
                 item.setQuantity(quantity);
+                item.calculateSubtotal();
                 needleLiveData.postValue(needleList);
                 break;
             case bandaid:
                 item = getBandaidList().get(position);
                 item.setQuantity(quantity);
+                item.calculateSubtotal();
                 bandaidLiveData.postValue(bandaidList);
                 break;
         }

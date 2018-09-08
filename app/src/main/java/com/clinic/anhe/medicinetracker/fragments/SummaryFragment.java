@@ -68,11 +68,13 @@ public class SummaryFragment  extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private SummaryRecyclerViewAdapter mAdapter;
     private FloatingActionButton summaryFab;
+    private TextView mTotal;
     private int i = -1;
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
     private String ip;
     private String port;
+    private int total = 0;
 
     private static VolleyStatus status= VolleyStatus.UNKNOWN;
     private Integer nurseEid = -1;
@@ -129,7 +131,7 @@ public class SummaryFragment  extends Fragment {
         else if(status == VolleyStatus.UNSET) {
                  final SweetAlertDialog unsetDialog =  new SweetAlertDialog(view.getContext(), SweetAlertDialog.ERROR_TYPE);
                  unsetDialog.setTitleText("請設定負責護士")
-                         .setConfirmText("Try Agian")
+                         .setConfirmText("Try Again")
                          .show();
                  unsetDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                      @Override
@@ -152,6 +154,7 @@ public class SummaryFragment  extends Fragment {
         patientName = view.findViewById(R.id.summary_patientname);
         patientId = view.findViewById(R.id.summary_patientid);
         summaryFab = view.findViewById(R.id.summary_fab);
+        mTotal = view.findViewById(R.id.summary_total);
 
         patientId.setText(selectedPatientViewModel.getPatient().getPatientIC());
         patientName.setText(selectedPatientViewModel.getPatient().getPatientName());
@@ -268,6 +271,15 @@ public class SummaryFragment  extends Fragment {
         medicineList = cartViewModel.getBandaidList();
         addToCartList(medicineList);
 
+        //TODO:calculate total
+        total = 0;
+        for(MedicineCardViewModel item : cartList) {
+            Log.d("now total is: " + total, "item subtotal: " + item.getSubtotal());
+            total += item.getSubtotal();
+        }
+
+        mTotal.setText(String.valueOf(total));
+
         mAdapter = new SummaryRecyclerViewAdapter(cartList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -325,7 +337,7 @@ public class SummaryFragment  extends Fragment {
                 jsonObject.put("pid", selectedPatientViewModel.getPatient().getPID());
                 jsonObject.put("quantity", item.getQuantity());
                 jsonObject.put("createBy", nurseEid);
-                int subtotal = Integer.parseInt(item.getMedicinePrice()) * item.getQuantity();
+                int subtotal = item.getSubtotal();
                 jsonObject.put("subtotal", subtotal);
                 jsonArray.put(jsonObject);
             }
