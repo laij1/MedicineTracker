@@ -133,103 +133,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //for expandableListview
-//        expandableList = (ExpandableListView) findViewById(R.id.nav_expandable_list);
-
-//        prepareListData();
-       // mMenuAdapter = new NavigationDrawerAdapter(this, listDataHeader, listDataChild, expandableList);
-
-        // setting list adapter
-//        expandableList.setAdapter(mMenuAdapter);
-//
-//
-//        //Listen for GroupMenu Click and SubMenu Click
-//        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-//            @Override
-//            public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
-//                //TODO:1. add @drawer:selector
-//                //TODO:2. add android:background="@drawable/selector to list_submenu
-//                //TODO:3. view.setSelected
-//                //TODO:4.(optional??) expandableList.setChoiceMode(ExpandableListView.CHOICE_MODE_SINGLE);
-//               // view.setSelected(true);
-//
-//                //TODO: should we hightlight the clicked item?
-////                TextView textView = view.findViewById(R.id.sub_menu_title);
-////                textView.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
-//
-//                //TODO: add fragements here
-//                //TODO: see if we can use only one patientFragement and update data when switch case
-//                //fragment transaction has to be in the click method and start everytime you have a tranaction
-//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                switch (childPosition) {
-//                    case 0:
-//                        PatientsFragment morningFragment = PatientsFragment.newInstance(Shift.morning);
-//                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                                .replace(R.id.main_fragment_container, morningFragment).commit();
-//                        break;
-//                    case 1:
-//                        PatientsFragment afternoonFragment = PatientsFragment.newInstance(Shift.afternoon);
-//                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                                .replace(R.id.main_fragment_container, afternoonFragment).commit();
-//                        break;
-//                    case 2:
-//                        PatientsFragment nightFragment = PatientsFragment.newInstance(Shift.night);
-//                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                                .replace(R.id.main_fragment_container, nightFragment).commit();
-//                        break;
-//                    default:
-//                        break;
-//                }
-//
-//                //close drawerlayout
-//                mDrawerlayout.closeDrawers();
-//
-//                return true;
-//            }
-//        });
-//
-//        expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView expandableListView, View view, int packedPosition, long l) {
-//                //TODO: here we insert the fragments
-//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                switch(packedPosition) {
-//                    case 0:
-//                        break;
-//                    case 1:
-//                        MedicineFragment medicineFragment = MedicineFragment.newInstance();
-//                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                                .replace(R.id.main_fragment_container, medicineFragment)
-//                                .addToBackStack("medicine").commit();
-//                        break;
-////                    case 2:
-////                        break;
-//                }
-//
-//                if(packedPosition != 0) {
-//                    mDrawerlayout.closeDrawers();
-//                }
-//                return false;
-//
-//            }
-//        });
-//
-//        expandableList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-//            int previousItem = -1;
-//            @Override
-//            public void onGroupExpand(int groupPosition) {
-//                if (groupPosition != previousItem)
-//                    expandableList.collapseGroup(previousItem);
-//                previousItem = groupPosition;
-//            }
-//        });
 
         //this part of code doesn't work when we use expandableListView here
         NavigationView navigationView = findViewById(R.id.nav_view);
-//        //TODO: is it necessary to check if naviagationView is not null
-//        if (navigationView != null) {
-//            setupDrawerContent(navigationView);
-//        }
+
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {

@@ -40,7 +40,6 @@ public class MedicineManageFragment extends Fragment {
     private Context mContext;
     private ViewPager mMedicineManageViewPager;
     private MedicineManagePagerAdapter mMedicineManagePagerAdapter;
-    private CounterFab mCounterfab;
    // private static List<MedicineCardViewModel> medicineList;
 
 
@@ -63,7 +62,6 @@ public class MedicineManageFragment extends Fragment {
         View view  = inflater.inflate(R.layout.fragment_medicine_manage, container, false);
 
         mMedicineManageTabLayout = (TabLayout) view.findViewById(R.id.medicine_manage_tabLayout);
-        mCounterfab = view.findViewById(R.id.medicine_manage_fab);
 
         //set up tab
         TabLayout.Tab dialysis = mMedicineManageTabLayout.newTab();
@@ -122,17 +120,17 @@ public class MedicineManageFragment extends Fragment {
             }
         });
 
-        mCounterfab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //new fragment for add medicine
-                //pop a dialog
-                AddMedicineDialogFragment addMedicineDialogFragment = new AddMedicineDialogFragment();
-                addMedicineDialogFragment.show(getChildFragmentManager(), "addmedicine");
-
-
-            }
-        });
+//        mCounterfab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //new fragment for add medicine
+//                //pop a dialog
+//                AddMedicineDialogFragment addMedicineDialogFragment = new AddMedicineDialogFragment();
+//                addMedicineDialogFragment.show(getChildFragmentManager(), "addmedicine");
+//
+//
+//            }
+//        });
 
         setRetainInstance(true);
         return view;

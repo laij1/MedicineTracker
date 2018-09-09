@@ -14,7 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
-import com.clinic.anhe.medicinetracker.ViewModel.CashFlowViewModel;
+import com.clinic.anhe.medicinetracker.ViewModel.MedicineDetailViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<CashflowTodayRecyclerViewAdapter.CashflowTodayViewHolder> {
+public class MedicineDetailRecyclerViewAdapter extends RecyclerView.Adapter<MedicineDetailRecyclerViewAdapter.MedicineDetailViewHolder>{
 
     private Context mContext;
     private Map<String,Integer> employee;
@@ -37,18 +37,16 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
     private GlobalVariable globalVariable;
     private String ip;
     private String port;
-    private CashFlowViewModel cashFlowViewModel;
-    private String type;
+    private MedicineDetailViewModel medicineDetailViewModel;
 
+    public MedicineDetailRecyclerViewAdapter(MedicineDetailViewModel medicineDetailViewModel) {
+        this.medicineDetailViewModel = medicineDetailViewModel;
 
-    public CashflowTodayRecyclerViewAdapter(CashFlowViewModel cashFlowViewModel, String type) {
-        this.cashFlowViewModel = cashFlowViewModel;
-        this.type = type;
     }
 
     @NonNull
     @Override
-    public CashflowTodayViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MedicineDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_cashflow, parent, false);
 
@@ -67,25 +65,14 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
                 notifyDataSetChanged();
             }
         });
-        CashflowTodayViewHolder cashflowTodayViewHolder = new CashflowTodayViewHolder(view);
-        return cashflowTodayViewHolder;
+        MedicineDetailViewHolder medicineDetailViewHolder = new MedicineDetailViewHolder(view);
+        return medicineDetailViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CashflowTodayViewHolder holder, int position) {
-        MedicineRecordCardViewModel current = null;
-//                = patientDetailViewModel.getSearchListLiveData().getValue().get(position);
-        switch (type) {
-            case "today":
-                current = cashFlowViewModel.getTodayListLiveData().getValue().get(position);
-                break;
-            case "uncharged":
-                current = cashFlowViewModel.getUnchargedListLiveData().getValue().get(position);
-                break;
-            case "search":
-                current = cashFlowViewModel.getSearchListLiveData().getValue().get(position);
-                break;
-        }
+    public void onBindViewHolder(@NonNull MedicineDetailViewHolder holder, int position) {
+
+        MedicineRecordCardViewModel current = medicineDetailViewModel.getMedicineListLiveData().getValue().get(position);
         holder.itemQuantity.setText(String.valueOf(current.getQuantity()));
         holder.itemSubtotal.setText(String.valueOf(current.getSubtotal()));
         holder.itemCreateDate.setText(current.getCreateAt().toString());
@@ -113,7 +100,7 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
         }
 
         //get patient name
-        for(Map.Entry<Integer, String> entry : cashFlowViewModel.getPatientMapLiveData().getValue().entrySet()) {
+        for(Map.Entry<Integer, String> entry : medicineDetailViewModel.getPatientMapLiveData().getValue().entrySet()) {
             if (entry.getKey().intValue() == current.getPid().intValue()) {
                 holder.patientName.setText(entry.getValue());
                 break;
@@ -124,15 +111,7 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
 
     @Override
     public int getItemCount() {
-        switch(type) {
-            case "today":
-                return cashFlowViewModel.getTodayListLiveData().getValue().size();
-            case "uncharged":
-                return cashFlowViewModel.getUnchargedListLiveData().getValue().size();
-            case "search":
-                return cashFlowViewModel.getSearchListLiveData().getValue().size();
-        }
-        return 0;
+        return medicineDetailViewModel.getMedicineListLiveData().getValue().size();
     }
 
     @Override
@@ -140,7 +119,7 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
         return position;
     }
 
-    public class CashflowTodayViewHolder extends RecyclerView.ViewHolder {
+    public class MedicineDetailViewHolder extends RecyclerView.ViewHolder {
         private TextView itemCreateDate;
         private TextView itemCreateBy;
         private TextView itemName;
@@ -151,7 +130,7 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
         private TextView itemChargeBy;
         private TextView itemChargeAt;
 
-        public CashflowTodayViewHolder(View itemView) {
+        public MedicineDetailViewHolder(View itemView) {
             super(itemView);
             itemCreateDate = itemView.findViewById(R.id.cashflow_createdate);
             itemCreateBy = itemView.findViewById(R.id.cashflow_createby);

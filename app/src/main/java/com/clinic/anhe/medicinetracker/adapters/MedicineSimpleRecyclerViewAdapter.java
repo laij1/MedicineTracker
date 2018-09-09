@@ -2,6 +2,8 @@ package com.clinic.anhe.medicinetracker.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.fragments.MedicineDetailFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 
@@ -21,11 +24,12 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
     private MedicineType medicineType;
     private Context mContext;
     private List<MedicineCardViewModel> medicineList;
-//    private List<MedicineCardViewModel> currentList;
+    private Fragment mFragment;
 
-    public MedicineSimpleRecyclerViewAdapter( MedicineType medicineType, List<MedicineCardViewModel> medicineList) {
+    public MedicineSimpleRecyclerViewAdapter( MedicineType medicineType, List<MedicineCardViewModel> medicineList, Fragment frag) {
         this.medicineType = medicineType;
         this.medicineList = medicineList;
+        this.mFragment = frag;
 //        currentList = new ArrayList<>();
 //        for(MedicineCardViewModel m : medicineList) {
 //            if(medicineType.toString().equals(m.getMedicineCategory())) {
@@ -66,7 +70,11 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,"clicking " + name.getText(), Toast.LENGTH_LONG ).show();
+                    MedicineDetailFragment medicineDetailFragment = MedicineDetailFragment.newInstance(name.getText().toString());
+                    FragmentTransaction transaction = mFragment.getFragmentManager().beginTransaction();
+
+                    transaction.replace(R.id.medicine_manage_layout,medicineDetailFragment).commit();
+
                 }
             });
         }

@@ -3,17 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/cashflow_search_layout">
+    android:id="@+id/medicine_detail_layout"
+    android:clickable="true">
 
 
     <RelativeLayout
-        android:id="@+id/cashflow_search_upperview"
+        android:id="@+id/medicine_detail_upperview"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/gradientbackground"
-        android:elevation="3dp"
+        android:elevation="10dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -21,8 +22,9 @@
             android:layout_height="65dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/dialog_round">
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/dialog_round"
+            >
 
             <ImageView
                 android:layout_width="30dp"
@@ -34,11 +36,11 @@
                 android:tint="@color/menuTextIconColor" />
 
             <TextView
-                android:id="@+id/cashflow_search_startdate_header"
+                android:id="@+id/medicine_detail_startdate_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/cashflow_search_startdate"
-                android:layout_alignStart="@id/cashflow_search_startdate"
+                android:layout_above="@id/medicine_detail_startdate"
+                android:layout_alignStart="@id/medicine_detail_startdate"
                 android:layout_marginLeft="28dp"
                 android:layout_marginRight="28dp"
                 android:text="開始日期"
@@ -46,24 +48,24 @@
                 android:textSize="10dp" />
 
             <TextView
-                android:id="@+id/cashflow_search_startdate"
+                android:id="@+id/medicine_detail_startdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?attr/editTextBackground"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="215dp"
-                android:background="?attr/editTextBackground"
                 android:text=" 2018-09-01"
-                android:textColor="@color/menuTextIconColor"
                 android:textSize="18dp"
+                android:textColor="@color/menuTextIconColor"
                 android:tint="@color/menuTextIconColor" />
 
             <TextView
-                android:id="@+id/cashflow_search_endtdate_header"
+                android:id="@+id/medicine_detail_endtdate_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/cashflow_search_enddate"
-                android:layout_alignStart="@id/cashflow_search_enddate"
+                android:layout_above="@id/medicine_detail_enddate"
+                android:layout_alignStart="@id/medicine_detail_enddate"
                 android:layout_marginLeft="28dp"
                 android:layout_marginRight="28dp"
                 android:text="結束日期"
@@ -71,20 +73,20 @@
                 android:textSize="10sp" />
 
             <TextView
-                android:id="@+id/cashflow_search_enddate"
+                android:id="@+id/medicine_detail_enddate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?attr/editTextBackground"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="245dp"
-                android:background="?attr/editTextBackground"
                 android:text=" 2018-09-04"
-                android:textColor="@color/menuTextIconColor"
                 android:textSize="18dp"
+                android:textColor="@color/menuTextIconColor"
                 android:tint="@color/menuTextIconColor" />
 
             <ImageView
-                android:id="@+id/cashflow_search_button"
+                android:id="@+id/medicine_detail_button"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
@@ -97,7 +99,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/cashflow_search_display"
+            android:id="@+id/medicine_detail_display"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
@@ -105,17 +107,19 @@
             android:layout_marginTop="37dp"
             android:elevation="6dp"
             android:gravity="center"
-            android:text="today's date"
+            android:text="medicine name"
             android:textSize="30dp" />
+
+
 
 
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/cashflow_search_recyclerview"
+        android:id="@+id/medicine_detail_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/cashflow_search_upperview"
+        android:layout_below="@id/medicine_detail_upperview"
         android:background="@color/recyclerViewBackground"
         android:padding="4dp"
         android:scrollbars="vertical" />

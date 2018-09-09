@@ -6,35 +6,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/medicine_manage_layout">
 
-    <ImageView
-        android:id="@+id/medicine_manage_bottom_imageview"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorPrimaryDark" />
-
-    <com.clinic.anhe.medicinetracker.utils.CounterFab
-        android:id="@+id/medicine_manage_fab"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="@color/colorAccent"
-        android:tint="@android:color/white"
-        app:elevation="2dp"
-        app:fabSize="normal"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_add" />
 
 
     <android.support.design.widget.TabLayout
         android:id="@+id/medicine_manage_tabLayout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="2dp"
         android:fontFamily="Roboto-Medium"
         app:tabMaxWidth="0dp"
         app:tabGravity="fill"
@@ -51,7 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/medicine_manage_tabLayout"
-        android:layout_above="@id/medicine_manage_bottom_imageview"
         app:layout_constraintTop_toBottomOf="@+id/medicine_manage_tabLayout">
 
     </android.support.v4.view.ViewPager>

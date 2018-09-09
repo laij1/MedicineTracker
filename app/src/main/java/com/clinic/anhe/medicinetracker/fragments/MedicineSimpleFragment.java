@@ -96,7 +96,7 @@ public class MedicineSimpleFragment extends Fragment {
         //mLayoutManager = new LinearLayoutManager(getContext());
          mLayoutManager = new GridLayoutManager(getContext(), 2);
 
-        mAdapter = new MedicineSimpleRecyclerViewAdapter(medicineType, medicineList);
+        mAdapter = new MedicineSimpleRecyclerViewAdapter(medicineType, medicineList, this);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

@@ -21,8 +21,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.CashFlowViewModel;
+import com.clinic.anhe.medicinetracker.ViewModel.MedicineDetailViewModel;
 import com.clinic.anhe.medicinetracker.adapters.CashflowTodayRecyclerViewAdapter;
-import com.clinic.anhe.medicinetracker.adapters.PatientDetailSearchRecyclerViewAdapter;
+import com.clinic.anhe.medicinetracker.adapters.MedicineDetailRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
@@ -38,14 +39,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public class CashflowSearchFragment extends Fragment {
+public class MedicineDetailFragment extends Fragment {
+
     private RecyclerView mRecyclerView;
-    private CashflowTodayRecyclerViewAdapter mAdapter;
+    private MedicineDetailRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<MedicineRecordCardViewModel> recordList;
+    private Map<Integer, String> patientMap;
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
     private String ip;
@@ -57,28 +62,40 @@ public class CashflowSearchFragment extends Fragment {
     private TextView mSelectEndDate;
     private ImageView mStartSearch;
     String url = "";
-    private CashFlowViewModel cashFlowViewModel;
+    private String medicineName;
+    private MedicineDetailViewModel medicineDetailViewModel;
 
-    public static CashflowSearchFragment newInstance() {
-        CashflowSearchFragment fragment = new CashflowSearchFragment();
+    public static MedicineDetailFragment newInstance(String medicineName) {
+        MedicineDetailFragment fragment = new MedicineDetailFragment();
+        Bundle args = new Bundle();
+        args.putString(ArgumentVariables.ARG_SELECTED_MEDICINE_NAME, medicineName);
+        fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_STARTDATE, mSelectStartDate.getText().toString());
         outState.putString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_ENDDATE, mSelectEndDate.getText().toString());
+        outState.putString(ArgumentVariables.ARG_SELECTED_MEDICINE_NAME, medicineName);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cashflow_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_medicine_detail, container, false);
+        if(savedInstanceState != null) {
+            medicineName = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_MEDICINE_NAME);
+        }
 
-        cashFlowViewModel = ViewModelProviders.of(getParentFragment()).get(CashFlowViewModel.class);
-
+        if(medicineName == null) {
+            medicineName = getArguments().getString(ArgumentVariables.ARG_SELECTED_MEDICINE_NAME);
+        }
         mContext = view.getContext();
+
+        medicineDetailViewModel = ViewModelProviders.of(this).get(MedicineDetailViewModel.class);
 
         globalVariable = GlobalVariable.getInstance();
         ip = globalVariable.getIpaddress();
@@ -86,17 +103,12 @@ public class CashflowSearchFragment extends Fragment {
 
         recordList = new ArrayList<>();
 
-        mDisplay = view.findViewById(R.id.cashflow_search_display);
-        //TODO: get current day and display
-        Calendar c = Calendar.getInstance();
-        String today = "" + c.get(Calendar.YEAR) + "年"
-                + c.get(Calendar.MONTH) + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" ;
-
-        mDisplay.setText(today);
+        mDisplay = view.findViewById(R.id.medicine_detail_display);
+        mDisplay.setText(medicineName);
 
         //here for the search
-        mSelectStartDate = view.findViewById(R.id.cashflow_search_startdate);
-        mSelectEndDate = view.findViewById(R.id.cashflow_search_enddate);
+        mSelectStartDate = view.findViewById(R.id.medicine_detail_startdate);
+        mSelectEndDate = view.findViewById(R.id.medicine_detail_enddate);
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         String defaultDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
@@ -109,14 +121,14 @@ public class CashflowSearchFragment extends Fragment {
             mSelectStartDate.setText(defaultDate);
             mSelectEndDate.setText(defaultDate);
         }
-        mStartSearch = view.findViewById(R.id.cashflow_search_button);
+        mStartSearch = view.findViewById(R.id.medicine_detail_button);
 
         mSelectStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(mContext, "select start date", Toast.LENGTH_LONG ).show();
                 StartDatePickerDialogFragment startDate = StartDatePickerDialogFragment.newInstance(
-                        CashflowSearchFragment.this, mContext);
+                        MedicineDetailFragment.this, mContext);
                 startDate.show(getFragmentManager(),"startdate");
             }
         });
@@ -126,7 +138,7 @@ public class CashflowSearchFragment extends Fragment {
             public void onClick(View v) {
 //                Toast.makeText(mContext, "select end date", Toast.LENGTH_LONG ).show();
                 EndDatePickerDialogFragment endDate = EndDatePickerDialogFragment.newInstance(
-                        CashflowSearchFragment.this, mContext);
+                        MedicineDetailFragment.this, mContext);
                 endDate.show(getFragmentManager(), "enddate");
             }
         });
@@ -134,13 +146,12 @@ public class CashflowSearchFragment extends Fragment {
         mStartSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(mContext, "start search....", Toast.LENGTH_LONG ).show();
-                url = "http://" + ip + ":" + port + "/anhe/record/charged/rangedate?start=" +
-                                       mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
+                url = "http://" + ip + ":" + port + "/anhe/record/medname/rangedate?medname="+ medicineName +"&start=" +
+                        mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
                 parseRecordListData(url, new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
-                        cashFlowViewModel.getSearchListLiveData().setValue(recordList);
+                        medicineDetailViewModel.getMedicineListLiveData().setValue(recordList);
                         mAdapter.notifyDataSetChanged();
                     }
                 });
@@ -148,10 +159,21 @@ public class CashflowSearchFragment extends Fragment {
         });
 
 
-        mRecyclerView = view.findViewById(R.id.cashflow_search_recyclerview);
+        mRecyclerView = view.findViewById(R.id.medicine_detail_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new CashflowTodayRecyclerViewAdapter(cashFlowViewModel, "search");
+        mAdapter = new MedicineDetailRecyclerViewAdapter(medicineDetailViewModel);
+        //TODO: livedata
+        patientMap = new HashMap<>();
+        url = "http://" + ip +
+                ":" + port + "/anhe/patient/all";
+        populatePatientMap(url, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+                medicineDetailViewModel.getPatientMapLiveData().setValue(patientMap);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -210,6 +232,42 @@ public class CashflowSearchFragment extends Fragment {
 
     public void setEndDateTextView(String endDate) {
         mSelectEndDate.setText(endDate);
+    }
+
+    public void populatePatientMap(String url, final VolleyCallBack volleyCallBack) {
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++){
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        Integer pid = object.getInt("pid");
+                                        String name = object.getString("name");
+//                                        String shift = object.getString("shift");
+//                                        String ic = object.getString("ic");
+//                                        String day = object.getString("day");
+//
+                                        patientMap.put(new Integer(pid), name);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.d("getting patient data from database", "CashFlowViewModel");
+                                    volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
     }
 
 }
