@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
@@ -62,6 +63,12 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
         public MedicineSimpleViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.medicine_simple_name);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext,"clicking " + name.getText(), Toast.LENGTH_LONG ).show();
+                }
+            });
         }
     }
 }

@@ -6,22 +6,85 @@
     android:id="@+id/cashflow_today_layout">
 
 
+    <RelativeLayout
+        android:id="@+id/cashflow_today_upperview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/gradientbackground"
+        android:elevation="3dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="700dp"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="23dp"
+            android:background="@drawable/dialog_round">
+
+
+            <ImageView
+                android:id="@+id/cashflow_today_revenuesign"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="240dp"
+                android:src="@drawable/ic_price"
+                android:tint="@color/menuTextIconColor" />
+
+            <TextView
+                android:id="@+id/cashflow_today_revenuetitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/cashflow_today_revenuesign"
+                android:paddingLeft="15dp"
+                android:text="今日總收入："
+                android:textColor="@color/menuTextIconColor"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/cashflow_today_revenue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/cashflow_today_revenuetitle"
+                android:paddingStart="15dp"
+                android:text="1000000000"
+                android:textColor="@color/menuTextIconColor"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/cashflow_today_display"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="37dp"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:text="today's date"
+            android:textSize="30dp" />
+
+
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cashflow_today_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
+        android:layout_below="@id/cashflow_today_upperview"
+        android:background="@color/recyclerViewBackground"
         android:padding="4dp"
-        android:background="@color/colorPrimaryDark"/>
+        android:scrollbars="vertical" />
 
-
-
-    <!--<TextView-->
-    <!--android:id="@+id/odd_day_textView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerInParent="true"-->
-    <!--android:text="Mon Wed Fri"-->
-    <!--android:textAppearance="?android:attr/textAppearanceLarge"/>-->
 
 </RelativeLayout>
