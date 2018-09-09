@@ -55,7 +55,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/cashflow_uncharged_title"
                 android:paddingStart="15dp"
-                android:text="1000000000"
+                android:text="0"
                 android:textColor="@color/menuTextIconColor"
                 android:textSize="23dp"
                 android:textStyle="bold" />
