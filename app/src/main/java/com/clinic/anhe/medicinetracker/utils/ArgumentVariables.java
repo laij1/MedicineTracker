@@ -21,6 +21,12 @@ public interface ArgumentVariables {
     public static final String KIND_DASHBOARD_PATIENTS = "dashboardpatients";
 
 
-    public static final String TAG_MEDICINE_CATEGORY_FRAGMENT = "medicinecategoryfragment";
-    public static final String TAG_SELECT_PATIENT_FRAGMENT = "selectpatientfragment";
+    public static final String TAG_MEDICINE_CATEGORY_FRAGMENT = "medicinecategory";
+    public static final String TAG_SELECT_PATIENT_FRAGMENT = "selectpatient";
+    public static final String TAG_DASHBOARD_FRAGMENT = "dashboard";
+    public static final String TAG_MORNING_FRAGMENT = "morning";
+    public static final String TAG_AFTERNOON_FRAGMENT = "afternoon";
+    public static final String TAG_NIGHT_FRAGMENT = "night";
+    public static final String TAG_MEDICINE_MANAGE_FRAGMENT= "medicinemanage";
+    public static final String TAG_MEDICINE_DETAIL_FRAGMENT ="medicinedetail";
 }

@@ -22,6 +22,7 @@
         android:layout_gravity="start"
         app:itemTextColor="@color/menuTextIconColor"
         app:itemTextAppearance="@style/NavDrawerTextStyle"
+        android:checkableBehavior="single"
         app:menu="@menu/nav_menu">
         <!--<RelativeLayout-->
             <!--android:layout_width="match_parent"-->

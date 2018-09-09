@@ -58,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
 //    List<GroupMenuModel> listDataHeader;
 //    HashMap<GroupMenuModel, List<GroupMenuModel>> listDataChild;
 
-    private String currentFragment = "patient_morning";
+//    private String currentFragment = "patient_morning";
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("currentFragment",currentFragment );
+//        outState.putString("currentFragment",currentFragment );
     }
 
     @Override
@@ -83,20 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        //TODO: there is a bug in this part of the code, maybe the following post is the solution
-        //TODO: https://stackoverflow.com/questions/28133600/set-initial-fragment-on-startup/34856256#34856256
-//        if(savedInstanceState != null) {
-//            switch(savedInstanceState.getString("currentFragment")) {
-//                case "medicine_category":
-//                    getFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                    break;
-//
-//            }
-//        } else {
-//            PatientsFragment fragment = PatientsFragment.newInstance(Shift.morning);
-//            transaction.replace(R.id.main_fragment_container, fragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-//                    .commit();
-//        }
 
         mMenuDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_menu_animatable);
         mBackDrawable = (AnimatedVectorDrawable) getDrawable(R.drawable.ic_back_animatable);
@@ -142,10 +128,18 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        // set item as selected to persist highlight
                         item.setChecked(true);
                         //fragment transaction has to be in the click method and start everytime you have a tranaction
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        //remove all the prev fragments
+                        int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
+                        for (int i = 0; i < backStackCount; i++) {
+                        // Get the back stack fragment id.
+                            getSupportFragmentManager().popBackStack(
+                                    getSupportFragmentManager().getBackStackEntryAt(i).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                             Log.d("removing fragments",i+"");
+                        } /* end of for */
+
                         switch(item.getItemId()) {
                             //dashboard menu
                             case R.id.menu_medicine:
@@ -160,33 +154,43 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.menu_home:
                                 DashboardSettingFragment dashboardSettingFragment = DashboardSettingFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                        .replace(R.id.main_fragment_container, dashboardSettingFragment).commit();
+                                        .replace(R.id.main_fragment_container, dashboardSettingFragment)
+                                        .addToBackStack(ArgumentVariables.TAG_DASHBOARD_FRAGMENT)
+                                        .commit();
                                 break;
                             //patient menu
                             case R.id.menu_morning:
 //                                currentFragment = "patient_morning";
                                 PatientListFragment morningFragment = PatientListFragment.newInstance(Shift.morning);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                           .replace(R.id.main_fragment_container, morningFragment).commit();
+                                           .replace(R.id.main_fragment_container, morningFragment)
+                                           .addToBackStack(ArgumentVariables.TAG_MORNING_FRAGMENT)
+                                           .commit();
                                 break;
                             case R.id.menu_afternoon:
 //                                currentFragment = "patient_afternoon";
                                 PatientListFragment afternoonFragment = PatientListFragment.newInstance(Shift.afternoon);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                           .replace(R.id.main_fragment_container, afternoonFragment).commit();
+                                           .replace(R.id.main_fragment_container, afternoonFragment)
+                                           .addToBackStack(ArgumentVariables.TAG_AFTERNOON_FRAGMENT)
+                                           .commit();
                                 break;
                             case R.id.menu_night:
 //                                currentFragment = "patient_night";
                                 PatientListFragment nightFragment = PatientListFragment.newInstance(Shift.night);
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                           .replace(R.id.main_fragment_container, nightFragment).commit();
+                                           .replace(R.id.main_fragment_container, nightFragment)
+                                           .addToBackStack(ArgumentVariables.TAG_NIGHT_FRAGMENT)
+                                           .commit();
                                 break;
                             case R.id.menu_record:
 //                                currentFragment= "medicine_manage";
                                 medicineList = new ArrayList<>();
                                 MedicineManageFragment medicineManageFragment = MedicineManageFragment.newInstance();
                                 getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                        .replace(R.id.main_fragment_container, medicineManageFragment).commit();
+                                        .replace(R.id.main_fragment_container, medicineManageFragment)
+                                        .addToBackStack(ArgumentVariables.TAG_MEDICINE_MANAGE_FRAGMENT)
+                                        .commit();
 
                                 //populateMedicineList();
                                 break;
@@ -206,17 +210,18 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-
+        //TODO:set start up main fragment
+        if(savedInstanceState == null) {
+            navigationView.getMenu().performIdentifierAction(R.id.menu_home, 0);
+            navigationView.getMenu().findItem(R.id.menu_home).setChecked(false);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                menuIconClick();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+//        Log.d("on option" + item.getItemId(), "Chloe");
+        menuIconClick();
+        return true;
     }
 
 

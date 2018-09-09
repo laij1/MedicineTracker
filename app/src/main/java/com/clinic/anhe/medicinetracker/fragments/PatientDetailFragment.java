@@ -92,8 +92,9 @@ public class PatientDetailFragment extends Fragment {
 
         //TODO: check detail cash as default when start up. the following does not work
         //check detail cash when start up
-//        mBottomNavigationView.getMenu().performIdentifierAction(R.id.patient_detail_cash, 0);
-
+        if(savedInstanceState == null) {
+            mBottomNavigationView.getMenu().performIdentifierAction(R.id.patient_detail_cash, 0);
+        }
         return view;
     }
 }

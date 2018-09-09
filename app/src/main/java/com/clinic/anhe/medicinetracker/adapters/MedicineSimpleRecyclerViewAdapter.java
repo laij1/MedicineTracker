@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.fragments.MedicineDetailFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 
 import java.util.ArrayList;
@@ -73,7 +74,9 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
                     MedicineDetailFragment medicineDetailFragment = MedicineDetailFragment.newInstance(name.getText().toString());
                     FragmentTransaction transaction = mFragment.getFragmentManager().beginTransaction();
 
-                    transaction.replace(R.id.medicine_manage_layout,medicineDetailFragment).commit();
+                    transaction.replace(R.id.medicine_manage_layout,medicineDetailFragment)
+                            .addToBackStack(ArgumentVariables.TAG_MEDICINE_DETAIL_FRAGMENT)
+                            .commit();
 
                 }
             });
