@@ -105,7 +105,7 @@
             android:layout_marginTop="37dp"
             android:elevation="6dp"
             android:gravity="center"
-            android:text="patient name"
+            android:text="today's date"
             android:textSize="30dp" />
 
 

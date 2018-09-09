@@ -37,7 +37,7 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
 //    private List<MedicineRecordCardViewModel> recordList;
     private Context mContext;
     private Map<String,Integer> employee;
-    private String[] employeeList;
+//    private String[] employeeList;
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
     private String ip;
@@ -141,7 +141,7 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
                             @Override
                             public void onResponse(JSONArray response) {
                                 for(int i = 0; i < response.length(); i++) {
-                                    employeeList = new String[response.length()];
+//                                    employeeList = new String[response.length()];
                                     JSONObject object = null;
                                     try {
                                         object = response.getJSONObject(i);

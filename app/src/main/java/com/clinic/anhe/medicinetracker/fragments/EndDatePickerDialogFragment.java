@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
@@ -13,12 +14,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+
 public class EndDatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private static Context mContext;
-    private static PatientDetailSearchFragment mFrag;
+    private static Fragment mFrag;
 
-    public static EndDatePickerDialogFragment newInstance(PatientDetailSearchFragment frag, Context c){
+    public static EndDatePickerDialogFragment newInstance(Fragment frag, Context c){
         mContext = c;
         mFrag = frag;
         EndDatePickerDialogFragment fragment = new EndDatePickerDialogFragment();
@@ -41,6 +43,11 @@ public class EndDatePickerDialogFragment extends DialogFragment implements DateP
         cal.set(year, month, dayOfMonth);
         Date date = cal.getTime();
         String endDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
-        mFrag.setEndDateTextView(endDate);
+        if(mFrag instanceof PatientDetailSearchFragment) {
+            ((PatientDetailSearchFragment)mFrag).setEndDateTextView(endDate);
+        } else if (mFrag instanceof CashflowSearchFragment) {
+            ((CashflowSearchFragment)mFrag).setEndDateTextView(endDate);
+
+        }
     }
 }

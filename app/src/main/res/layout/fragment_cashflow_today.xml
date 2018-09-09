@@ -44,7 +44,7 @@
                 android:paddingLeft="15dp"
                 android:text="今日總收入："
                 android:textColor="@color/menuTextIconColor"
-                android:textSize="18dp"
+                android:textSize="23dp"
                 android:textStyle="bold" />
 
 
@@ -57,7 +57,7 @@
                 android:paddingStart="15dp"
                 android:text="1000000000"
                 android:textColor="@color/menuTextIconColor"
-                android:textSize="18dp"
+                android:textSize="23dp"
                 android:textStyle="bold" />
 
         </RelativeLayout>

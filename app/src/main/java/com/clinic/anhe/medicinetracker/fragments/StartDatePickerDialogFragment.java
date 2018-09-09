@@ -16,9 +16,9 @@ import java.util.Locale;
 
 public class StartDatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private static Context mContext;
-    private static PatientDetailSearchFragment mFrag;
+    private static Fragment mFrag;
 
-    public static StartDatePickerDialogFragment newInstance(PatientDetailSearchFragment frag, Context c){
+    public static StartDatePickerDialogFragment newInstance(Fragment frag, Context c){
        mContext = c;
        mFrag = frag;
        StartDatePickerDialogFragment fragment = new StartDatePickerDialogFragment();
@@ -41,6 +41,10 @@ public class StartDatePickerDialogFragment extends DialogFragment implements Dat
         cal.set(year, month, dayOfMonth);
         Date date = cal.getTime();
         String startDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
-            mFrag.setStartDateTextView(startDate);
+        if(mFrag instanceof PatientDetailSearchFragment) {
+            ((PatientDetailSearchFragment)mFrag).setStartDateTextView(startDate);
+        } else if (mFrag instanceof CashflowSearchFragment) {
+            ((CashflowSearchFragment)mFrag).setStartDateTextView(startDate);
+        }
     }
 }

@@ -44,7 +44,7 @@
                 android:paddingLeft="15dp"
                 android:text="總未收款金額："
                 android:textColor="@color/menuTextIconColor"
-                android:textSize="18dp"
+                android:textSize="23dp"
                 android:textStyle="bold" />
 
 
@@ -57,13 +57,13 @@
                 android:paddingStart="15dp"
                 android:text="1000000000"
                 android:textColor="@color/menuTextIconColor"
-                android:textSize="18dp"
+                android:textSize="23dp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/cashflow_today_display"
+            android:id="@+id/cashflow_uncharged_display"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
@@ -78,7 +78,7 @@
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/cashflow_today_recyclerview"
+        android:id="@+id/cashflow_uncharged_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/cashflow_today_upperview"
