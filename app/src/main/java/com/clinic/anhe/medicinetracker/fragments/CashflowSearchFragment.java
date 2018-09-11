@@ -137,6 +137,7 @@ public class CashflowSearchFragment extends Fragment {
 //                Toast.makeText(mContext, "start search....", Toast.LENGTH_LONG ).show();
                 url = "http://" + ip + ":" + port + "/anhe/record/charged/rangedate?start=" +
                                        mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
+                refreshRecyclerView();
                 parseRecordListData(url, new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
@@ -156,6 +157,13 @@ public class CashflowSearchFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    public void refreshRecyclerView() {
+        recordList.removeAll(recordList);
+        cashFlowViewModel.getSearchListLiveData().setValue(recordList);
+        mAdapter.notifyDataSetChanged();
+
     }
 
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {

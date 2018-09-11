@@ -148,6 +148,7 @@ public class MedicineDetailFragment extends Fragment {
             public void onClick(View v) {
                 url = "http://" + ip + ":" + port + "/anhe/record/medname/rangedate?medname="+ medicineName +"&start=" +
                         mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
+                refreshRecyclerView();
                 parseRecordListData(url, new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
@@ -178,6 +179,13 @@ public class MedicineDetailFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    public void refreshRecyclerView() {
+        recordList.removeAll(recordList);
+        medicineDetailViewModel.getMedicineListLiveData().setValue(recordList);
+        mAdapter.notifyDataSetChanged();
+
     }
 
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {

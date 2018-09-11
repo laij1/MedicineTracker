@@ -162,6 +162,7 @@ public class PatientDetailSearchFragment extends Fragment{
         mStartSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                refreshRecyclerView();
 //                Toast.makeText(mContext, "start search....", Toast.LENGTH_LONG ).show();
                 url = "http://" + ip + ":" + port + "/anhe/record/pid/rangedate?pid=" + selectedPatientPID
                         + "&start=" + mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
@@ -238,10 +239,10 @@ public class PatientDetailSearchFragment extends Fragment{
         volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
     }
 
-    public void refreshRecyclerView(int index) {
-        recordList.remove(index);
+    public void refreshRecyclerView() {
+        recordList.removeAll(recordList);
+        patientDetailViewModel.getSearchListLiveData().setValue(recordList);
         mAdapter.notifyDataSetChanged();
-
 
     }
 
