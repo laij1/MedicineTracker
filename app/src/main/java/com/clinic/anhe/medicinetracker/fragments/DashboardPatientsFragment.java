@@ -114,7 +114,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         patientList = new ArrayList<>();
         String url = "";
         if(dayType == DayType.evenDay) {
-            url = "http://" + ip + ":" + port + "/anhe/patient/day?day=二四六";
+            url = "http://" + ip + ":" + port + "/services/anhe/patient/day?day=二四六";
             parsePatientList(url, new VolleyCallBack() {
                 @Override
                 public void onResult(VolleyStatus status) {
@@ -124,7 +124,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
                 }
             });
         } else {
-            url = "http://" + ip + ":" + port + "/anhe/patient/day?day=一三五";
+            url = "http://" + ip + ":" + port + "/services/anhe/patient/day?day=一三五";
             parsePatientList(url, new VolleyCallBack() {
                 @Override
                 public void onResult(VolleyStatus status) {

@@ -57,7 +57,7 @@ public class CashflowFragment extends Fragment {
         //TODO: livedata
         patientMap = new HashMap<>();
         String url = url = "http://" + globalVariable.getInstance().getIpaddress() +
-                ":" + globalVariable.getInstance().getPort() + "/anhe/patient/all";
+                ":" + globalVariable.getInstance().getPort() + "/services/anhe/patient/all";
         populatePatientMap(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

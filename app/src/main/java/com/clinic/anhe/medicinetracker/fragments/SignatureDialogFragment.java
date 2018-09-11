@@ -141,7 +141,7 @@ public class SignatureDialogFragment extends DialogFragment {
                 else {
 
                     Integer eid = selectedEmployeeViewModel.getSelectedEmployee().getValue().getEid();
-                            String url = "http://" + ip + ":" + port + "/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
+                            String url = "http://" + ip + ":" + port + "/services/anhe/record/update?rid=" + rid + "&chargeBy=" + eid;
                             chargeItem(url, new VolleyCallBack() {
                                 @Override
                                 public void onResult(VolleyStatus status) {

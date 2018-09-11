@@ -97,7 +97,7 @@ public class CashflowTodayFragment extends Fragment {
         Date date = cal.getTime();
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
 
-        url = "http://" + ip + ":" + port + "/anhe/record/chargedate?start=" + todayDate;
+        url = "http://" + ip + ":" + port + "/services/anhe/record/chargedate?start=" + todayDate;
         parseRecordListData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

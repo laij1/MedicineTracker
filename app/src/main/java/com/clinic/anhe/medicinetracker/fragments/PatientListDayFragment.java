@@ -110,7 +110,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
         switch(shift) {
             case morning:
                 url = "http://" + ip +
-                        ":" + port + "/anhe/patient?day=二四六&shift=早班";
+                        ":" + port + "/services/anhe/patient?day=二四六&shift=早班";
                 parsePatientList(url, new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
@@ -122,7 +122,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
                 break;
             case afternoon:
                 url = "http://" + ip +
-                        ":" + port  + "/anhe/patient?day=二四六&shift=中班";
+                        ":" + port  + "/services/anhe/patient?day=二四六&shift=中班";
                 parsePatientList(url, new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
@@ -134,7 +134,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
                 break;
             case night:
                 url = "http://" + ip +
-                        ":" + port + "/anhe/patient?day=二四六&shift=晚班";
+                        ":" + port + "/services/anhe/patient?day=二四六&shift=晚班";
                 parsePatientList(url, new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
@@ -149,7 +149,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
             switch(shift) {
                 case morning:
                     url = "http://" + ip +
-                            ":" + port +  "/anhe/patient?day=一三五&shift=早班";
+                            ":" + port +  "/services/anhe/patient?day=一三五&shift=早班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {
@@ -161,7 +161,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
                     break;
                 case afternoon:
                     url = "http://" + ip +
-                            ":" + port +  "/anhe/patient?day=一三五&shift=中班";
+                            ":" + port +  "/services/anhe/patient?day=一三五&shift=中班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {
@@ -173,7 +173,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
                     break;
                 case night:
                     url = "http://" + ip +
-                            ":" + port + "/anhe/patient?day=一三五&shift=晚班";
+                            ":" + port + "/services/anhe/patient?day=一三五&shift=晚班";
                     parsePatientList(url, new VolleyCallBack() {
                         @Override
                         public void onResult(VolleyStatus status) {

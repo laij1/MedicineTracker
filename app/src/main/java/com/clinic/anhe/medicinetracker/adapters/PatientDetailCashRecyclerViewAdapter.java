@@ -69,7 +69,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         ip = globalVariable.getIpaddress();
         port = globalVariable.getPort();
         employee = new HashMap<>();
-        String url = "http://" + ip + ":" + port + "/anhe/employee/all";
+        String url = "http://" + ip + ":" + port + "/services/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

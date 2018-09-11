@@ -164,7 +164,7 @@ public class PatientDetailSearchFragment extends Fragment{
             public void onClick(View v) {
                 refreshRecyclerView();
 //                Toast.makeText(mContext, "start search....", Toast.LENGTH_LONG ).show();
-                url = "http://" + ip + ":" + port + "/anhe/record/pid/rangedate?pid=" + selectedPatientPID
+                url = "http://" + ip + ":" + port + "/services/anhe/record/pid/rangedate?pid=" + selectedPatientPID
                         + "&start=" + mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
                 parseRecordListData(url, new VolleyCallBack() {
                     @Override

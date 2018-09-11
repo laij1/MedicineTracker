@@ -80,7 +80,7 @@ public class CartViewModel extends ViewModel {
 
 
         String url = "http://"+ globalVariable.getInstance().getIpaddress() +":" +
-                globalVariable.getInstance().getPort() + "/anhe/medicine/all/";
+                globalVariable.getInstance().getPort() + "/services/anhe/medicine/all/";
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {

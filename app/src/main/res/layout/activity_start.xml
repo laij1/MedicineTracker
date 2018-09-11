@@ -72,6 +72,19 @@
             android:textSize="25dp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/connect_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="42dp"
+            android:layout_marginEnd="117dp"
+            android:text="連線狀態"
+            android:textColor="@color/menuTextIconColor"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/connect"
             android:layout_width="wrap_content"
