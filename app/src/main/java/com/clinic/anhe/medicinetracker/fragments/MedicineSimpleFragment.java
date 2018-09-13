@@ -107,7 +107,7 @@ public class MedicineSimpleFragment extends Fragment {
     }
 
     private void prepareMedicineData() {
-        String url = "http://" + ip + ":" + port + "/services/anhe/medicine?category=" + medicineType.toString();
+        String url = "http://" + ip + ":" + port + "/anhe/medicine?category=" + medicineType.toString();
                parseMedicineList(url, new VolleyCallBack() {
                    @Override
                    public void onResult(VolleyStatus status) {

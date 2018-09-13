@@ -51,7 +51,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String url = "http://" + mIpaddress.getText().toString() + ":"
-                        + mPort.getText().toString() + "/services/anhe/employee/all";
+                        + mPort.getText().toString() + "/anhe/employee/all";
                 parseEmployeeData(url, new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
@@ -89,7 +89,7 @@ public class StartActivity extends AppCompatActivity {
 
     private void prepareEmployeeData() {
         String url = "http://" + mIpaddress.getText().toString() + ":"
-                + mPort.getText().toString() + "/services/anhe/employee/all";
+                + mPort.getText().toString() + "/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

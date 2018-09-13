@@ -1,6 +1,7 @@
 package com.clinic.anhe.medicinetracker.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -93,8 +94,9 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         holder.medicineName.setText(current.getMedicinName());
         holder.medicinePrice.setText(current.getMedicinePrice());
         holder.medicineDose.setText(current.getMedicineDose());
-        holder.fluidSlider.setBubbleText( "" + current.getQuantity());
-        holder.fluidSlider.setPosition(current.getSliderPosition());
+        holder.quantityNumber.setText("" +current.getQuantity());
+//        holder.fluidSlider.setBubbleText( "" + current.getQuantity());
+//        holder.fluidSlider.setPosition(current.getSliderPosition());
 
         //TODO: if item in the cart, we need the ui to be ic_check
        boolean isAddtoCart = current.getIsAddToCart();
@@ -156,10 +158,12 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         TextView medicineDose;
         ImageButton imageButton;
         RadioGroup paymentRadioGroup;
-//        RadioButton checkedRadioButton;
         RadioButton cashRadioButton;
         RadioButton creditRadioButton;
-        FluidSlider fluidSlider;
+        ImageButton quantityAdd;
+        ImageButton quantityMinus;
+        TextView quantityNumber;
+//        FluidSlider fluidSlider;
         ImageView imageView;
 
 //        AnimatedVectorDrawable mAddDrawable;
@@ -176,47 +180,78 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
             paymentRadioGroup = itemView.findViewById(R.id.payment_radiogroup);
             cashRadioButton = itemView.findViewById(R.id.cash_radiobutton);
             creditRadioButton = itemView.findViewById(R.id.credit_radiobutton);
-            fluidSlider = itemView.findViewById(R.id.medicine_fluidslider);
+//            fluidSlider = itemView.findViewById(R.id.medicine_fluidslider);
             imageView = itemView.findViewById(R.id.medicine_price_sign);
+            quantityAdd = itemView.findViewById(R.id.medicine_quantity_add);
+            quantityMinus = itemView.findViewById(R.id.medicine_quantity_minus);
+            quantityNumber = itemView.findViewById(R.id.medicine_quantity_number);
 
-
-
-            fluidSlider.setPosition(0);
-            fluidSlider.setEndText(String.valueOf(max));
-            fluidSlider.setStartText(String.valueOf(min));
-            fluidSlider.setPositionListener(new Function1<Float, Unit>() {
+            quantityAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public Unit invoke(Float pos) {
-                   // int position = getAdapterPosition();
-                    sliderQuantity = String.valueOf((int) (min + total * pos));
-                    Log.d("setPositionListener :" + sliderQuantity, "CHLOE");
-                    //cartViewModel.setQuantity(position, medicineType, Integer.valueOf(value).intValue());
-                    fluidSlider.setBubbleText(String.valueOf(sliderQuantity));
-
-                    return Unit.INSTANCE;
-                }
-            });
-
-            fluidSlider.setBeginTrackingListener(new Function0<Unit>() {
-                @Override
-                public Unit invoke() {
-                    Log.d("begintrackingListener", "CHLOE");
-                    return Unit.INSTANCE;
-                }
-            });
-
-            fluidSlider.setEndTrackingListener(new Function0<Unit>() {
-                @Override
-                public Unit invoke() {
-                    //we need livedata to save fluidSlider's position
+                public void onClick(View v) {
+                    int quantity = Integer.parseInt(quantityNumber.getText().toString());
+                    quantity++;
                     int position = getAdapterPosition();
-                    Log.d("endtrackingListener: " + sliderQuantity + " position is: " + position, "CHLOE"+ fluidSlider.getPosition() );
-                    cartViewModel.setQuantity(position, medicineType, Integer.valueOf(sliderQuantity).intValue());
-                    cartViewModel.setSliderPosition(position, medicineType, fluidSlider.getPosition());
+                    cartViewModel.setQuantity(position, medicineType, quantity);
+                    quantityNumber.setText("" + quantity);
+                    notifyDataSetChanged();
 
-                    return Unit.INSTANCE;
+
                 }
             });
+//            if(Integer.parseInt(quantityNumber.getText().toString()) > 0) {
+                quantityMinus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int quantity = Integer.parseInt(quantityNumber.getText().toString());
+                        if(quantity > 0) {
+                            quantity--;
+                            int position = getAdapterPosition();
+                            cartViewModel.setQuantity(position, medicineType, quantity);
+                            quantityNumber.setText("" + quantity);
+                            notifyDataSetChanged();
+                        }
+                    }
+                });
+//            } else {
+//                quantityMinus.setOnClickListener(null);
+//            }
+//            fluidSlider.setPosition(0);
+//            fluidSlider.setEndText(String.valueOf(max));
+//            fluidSlider.setStartText(String.valueOf(min));
+//            fluidSlider.setPositionListener(new Function1<Float, Unit>() {
+//                @Override
+//                public Unit invoke(Float pos) {
+//                   // int position = getAdapterPosition();
+//                    sliderQuantity = String.valueOf((int) (min + total * pos));
+//                    Log.d("setPositionListener :" + sliderQuantity, "CHLOE");
+//                    //cartViewModel.setQuantity(position, medicineType, Integer.valueOf(value).intValue());
+//                    fluidSlider.setBubbleText(String.valueOf(sliderQuantity));
+//
+//                    return Unit.INSTANCE;
+//                }
+//            });
+//
+//            fluidSlider.setBeginTrackingListener(new Function0<Unit>() {
+//                @Override
+//                public Unit invoke() {
+//                    Log.d("begintrackingListener", "CHLOE");
+//                    return Unit.INSTANCE;
+//                }
+//            });
+//
+//            fluidSlider.setEndTrackingListener(new Function0<Unit>() {
+//                @Override
+//                public Unit invoke() {
+//                    //we need livedata to save fluidSlider's position
+//                    int position = getAdapterPosition();
+//                    Log.d("endtrackingListener: " + sliderQuantity + " position is: " + position, "CHLOE"+ fluidSlider.getPosition() );
+//                    cartViewModel.setQuantity(position, medicineType, Integer.valueOf(sliderQuantity).intValue());
+//                    cartViewModel.setSliderPosition(position, medicineType, fluidSlider.getPosition());
+//
+//                    return Unit.INSTANCE;
+//                }
+//            });
 
 //
 //

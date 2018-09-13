@@ -34,11 +34,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_alignBottom="@+id/medicine_add_button"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="61dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/medicine_add_button"
             android:gravity="center_vertical"
-            android:paddingTop="4dp"
+            android:paddingTop="10dp"
             android:text="Line one"
             android:textSize="30dp"
             android:textStyle="bold" />
@@ -49,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/medicine_name"
-            android:layout_marginBottom="39dp"
+            android:layout_marginBottom="60dp"
             android:paddingTop="3dp"
             android:src="@drawable/ic_price"
             android:tint="@color/menuTextIconColor" />
@@ -75,35 +74,67 @@
 
         <ImageButton
             android:id="@+id/medicine_add_button"
-            android:layout_width="54dp"
-            android:layout_height="50dp"
+            android:layout_width="64dp"
+            android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:backgroundTint="@android:color/white"
-            android:minHeight="50dp"
-            android:minWidth="54dp"
+            android:minHeight="64dp"
+            android:minWidth="60dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_add"
-            android:tint="#87CEEB" />
+            android:tint="#87CEEB"
+            />
 
-        <com.ramotion.fluidslider.FluidSlider
-            android:id="@+id/medicine_fluidslider"
-            android:layout_width="254dp"
+        <!--<com.ramotion.fluidslider.FluidSlider-->
+            <!--android:id="@+id/medicine_fluidslider"-->
+            <!--android:layout_width="254dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginEnd="26dp"-->
+            <!--app:bar_color="@color/colorPrimaryDark"-->
+            <!--app:duration="@android:integer/config_mediumAnimTime"-->
+            <!--app:size="small" />-->
+
+        <ImageButton
+            android:id="@+id/medicine_quantity_add"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignTop="@id/medicine_quantity_minus"
+            android:layout_toEndOf="@id/medicine_quantity_number"
+            android:background="@drawable/ic_add"
+            android:backgroundTint="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/medicine_quantity_number"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="26dp"
-            app:bar_color="@color/colorPrimaryDark"
-            app:duration="@android:integer/config_mediumAnimTime"
-            app:size="small" />
+            android:layout_alignTop="@+id/medicine_quantity_minus"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toEndOf="@+id/medicine_quantity_minus"
+            android:text="0"
+            android:textColor="@color/menuTextIconColor"
+            android:textSize="25dp" />
+
+        <ImageButton
+            android:id="@+id/medicine_quantity_minus"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignTop="@+id/payment_radiogroup"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@id/payment_radiogroup"
+            android:background="@drawable/ic_remove"
+            android:backgroundTint="@color/colorPrimaryDark" />
 
         <RadioGroup
             android:id="@+id/payment_radiogroup"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/medicine_price_sign"
-            android:layout_marginEnd="318dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/medicine_name"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
             <RadioButton

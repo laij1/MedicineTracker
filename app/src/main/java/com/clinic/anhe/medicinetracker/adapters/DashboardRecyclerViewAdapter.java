@@ -171,7 +171,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     private void prepareShiftRecordData() {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://" + ip + ":" + port + "/services/anhe/shiftrecord?createAt=" + date;
+        String url = "http://" + ip + ":" + port + "/anhe/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

@@ -32,7 +32,7 @@ public class MedicineFragment extends Fragment {
     private CartViewModel cartViewModel;
     private RecyclerView mRecyclerView;
     private MedicineRecyclerViewAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private GridLayoutManager mLayoutManager;
     private static CounterFab mCounterFab;
     private MedicineType medicineType;
    // private List<MedicineCardViewModel> list;
@@ -100,7 +100,7 @@ public class MedicineFragment extends Fragment {
        // prepareMedicineData();
         mRecyclerView = view.findViewById(R.id.medicine_recyclerview);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new GridLayoutManager(getContext(), 2);
       //  mLayoutManager = new GridLayoutManager(getContext(), 2);
 //        mCounterFab = view.findViewById(R.id.medicine_fab);
 
