@@ -75,7 +75,7 @@ public class SummaryFragment  extends Fragment {
     private String ip;
     private String port;
     private int total = 0;
-
+    private String cartSelectedPatientName;
     private static VolleyStatus status= VolleyStatus.UNKNOWN;
     private Integer nurseEid = -1;
 
@@ -86,11 +86,18 @@ public class SummaryFragment  extends Fragment {
     private List<MedicineCardViewModel> cartList;
 
     //TODO
-    private SelectedPatientViewModel selectedPatientViewModel;
+//    private SelectedPatientViewModel selectedPatientViewModel;
+    private PatientsCardViewModel p;
 
     public static SummaryFragment newInstance(){
        SummaryFragment fragment = new SummaryFragment();
         return fragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME, cartSelectedPatientName);
     }
 
     @Nullable
@@ -100,6 +107,15 @@ public class SummaryFragment  extends Fragment {
         globalVariable = GlobalVariable.getInstance();
         ip = globalVariable.getIpaddress();
         port = globalVariable.getPort();
+
+        if(savedInstanceState!=null) {
+            cartSelectedPatientName = savedInstanceState.getString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME);
+        }
+        if(cartSelectedPatientName == null) {
+            cartSelectedPatientName = getArguments().getString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME);
+        }
+
+
 
         if(status == VolleyStatus.SUCCESS) {
             final SweetAlertDialog successDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.SUCCESS_TYPE);
@@ -147,8 +163,8 @@ public class SummaryFragment  extends Fragment {
         volleyController.getInstance(getContext());
        // mQueue = Volley.newRequestQueue(getContext());
 
-        cartViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(CartViewModel.class);
-        selectedPatientViewModel = ViewModelProviders.of(getParentFragment()).get(SelectedPatientViewModel.class);
+        cartViewModel = ViewModelProviders.of(getActivity().getSupportFragmentManager().findFragmentByTag(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)).get(CartViewModel.class);
+        //selectedPatientViewModel = ViewModelProviders.of(getActivity().getSupportFragmentManager().findFragmentByTag(ArgumentVariables.TAG_DASHBOARD_FRAGMENT)).get(SelectedPatientViewModel.class);
 
 
         patientName = view.findViewById(R.id.summary_patientname);
@@ -156,8 +172,8 @@ public class SummaryFragment  extends Fragment {
         summaryFab = view.findViewById(R.id.summary_fab);
         mTotal = view.findViewById(R.id.summary_total);
 
-        patientId.setText(selectedPatientViewModel.getPatient().getPatientIC());
-        patientName.setText(selectedPatientViewModel.getPatient().getPatientName());
+        patientId.setText(cartViewModel.getCartSelectedPatientLiveData().getValue().getPatientIC());
+        patientName.setText(cartViewModel.getCartSelectedPatientLiveData().getValue().getPatientName());
 
         summaryFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,6 +220,14 @@ public class SummaryFragment  extends Fragment {
                                 SummaryFragment.status = VolleyStatus.UNKNOWN;
                                 if(sweetAlertDialog.getTitleText().equalsIgnoreCase("Success!")) {
                                     sweetAlertDialog.dismiss();
+//                                    int backStackCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+//                                    for (int i = 0; i < backStackCount; i++) {
+//                                        // Get the back stack fragment id.
+//                                        getActivity().getSupportFragmentManager().popBackStack(
+//                                                getActivity().getSupportFragmentManager().getBackStackEntryAt(i).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                                        Log.d("removing fragments",i+"");
+//                                    } /* end of for */
+//                                    getActivity().getSupportFragmentManager().popBackStack();
                                     getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                                 } else if (sweetAlertDialog.getTitleText().equalsIgnoreCase("Fail!")) {
                                     sweetAlertDialog.dismiss();
@@ -292,7 +316,7 @@ public class SummaryFragment  extends Fragment {
     private void findNurse(final VolleyCallBack volleyCallBack) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String url = "http://" + ip +
-                ":" + port + "/anhe/shiftrecord/patient?patient=" + selectedPatientViewModel.getPatient().getPatientName()
+                ":" + port + "/anhe/shiftrecord/patient?patient=" + cartSelectedPatientName
                 + "&createAt=" + date;
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
@@ -334,7 +358,7 @@ public class SummaryFragment  extends Fragment {
                 jsonObject.put("mid", item.getMedicineId());
                 jsonObject.put("medicineName", item.getMedicinName());
                 jsonObject.put("payment", item.isCashPayment().toString());
-                jsonObject.put("pid", selectedPatientViewModel.getPatient().getPID());
+                jsonObject.put("pid", cartViewModel.getCartSelectedPatientLiveData().getValue().getPID());
                 jsonObject.put("quantity", item.getQuantity());
                 jsonObject.put("createBy", nurseEid);
                 int subtotal = item.getSubtotal();
@@ -384,6 +408,45 @@ public class SummaryFragment  extends Fragment {
         };
 
         volleyController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    private void findPatient(String name, final VolleyCallBack volleyCallBack) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String url = "http://" + ip +
+                ":" + port + "/anhe/patient/name?name=" + name;
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++) {
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        Integer pid = object.getInt("pid");
+                                        String name = object.getString("name");
+                                        String shift = object.getString("shift");
+                                        String ic = object.getString("ic");
+                                        String day = object.getString("day");
+                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+
     }
 
 

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardSettingPagerAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
@@ -33,6 +34,7 @@ public class DashboardSettingFragment extends Fragment {
     private DashboardSettingPagerAdapter mDashboardSettingPagerAdapter;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
+    private SelectedPatientViewModel selectedPatientViewModel;
 
 
     public static DashboardSettingFragment newInstance(){
@@ -51,6 +53,7 @@ public class DashboardSettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard_setting, container, false);
 
         ViewModelProviders.of(this).get(DashboardViewModel.class);
+        ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
 //        dashboardViewModel.getDashboardMapLiveData().observe(this, new Observer<Map<String, List<String>>>() {
 //            @Override
 //            public void onChanged(@Nullable Map<String, List<String>> map) {

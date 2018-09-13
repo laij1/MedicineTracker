@@ -50,16 +50,17 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(kind.equals(ArgumentVariables.KIND_PATIENTS)) {
-        switch (position) {
-            case 0:
-                PatientDayFragment oddDayFragment = PatientDayFragment.newInstance(shift, DayType.oddDay);
-                return oddDayFragment;
-            case 1:
-                PatientDayFragment evenDayFragment = PatientDayFragment.newInstance(shift, DayType.evenDay);
-                return evenDayFragment;
-            default:
-                return null;
-        }
+//        switch (position) {
+//            case 0:
+//                PatientDayFragment oddDayFragment = PatientDayFragment.newInstance(shift, DayType.oddDay);
+//                return oddDayFragment;
+//            case 1:
+//                PatientDayFragment evenDayFragment = PatientDayFragment.newInstance(shift, DayType.evenDay);
+//                return evenDayFragment;
+//            default:
+//                return null;
+//        }
+            return null;
         } else if (kind.equals(ArgumentVariables.KIND_PATIENTLIST)) {
             switch (position) {
             case 0:

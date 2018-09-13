@@ -33,7 +33,7 @@ public class SelectPatientFragment extends Fragment {
     private View view;
     private Context mContext;
     private FloatingActionButton mFloatingActionButton;
-    private SelectedPatientViewModel selectedPatientViewModel;
+//    private SelectedPatientViewModel selectedPatientViewModel;
 
     String patientName = "";
     String paitientId = "";
@@ -54,7 +54,7 @@ public class SelectPatientFragment extends Fragment {
 
         mContext = view.getContext();
 
-        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
+//        selectedPatientViewModel = ViewModelProviders.of(this).get(SelectedPatientViewModel.class);
         mRadioGroup = view.findViewById(R.id.shift_radiogroup);
         mFloatingActionButton = view.findViewById(R.id.patients_fab);
 
@@ -83,9 +83,9 @@ public class SelectPatientFragment extends Fragment {
 ////                        Log.d("I have the selected patient in selectpatientfragment", patientsCardViewModel.getPatientName());
 ////                    }
 ////                });
-                if(selectedPatientViewModel.getPatientLiveData().getValue().getPID()== -1) {
-                    Toast.makeText(mContext,"請選擇病患",Toast.LENGTH_SHORT ).show();
-                } else {
+//                if(selectedPatientViewModel.getPatientLiveData().getValue().getPID()== -1) {
+//                    Toast.makeText(mContext,"請選擇病患",Toast.LENGTH_SHORT ).show();
+//                } else {
               //TODO:
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     SummaryFragment summaryFragment = SummaryFragment.newInstance();
@@ -97,7 +97,7 @@ public class SelectPatientFragment extends Fragment {
                     transaction.replace(R.id.select_patient_layout, summaryFragment, "summary")
                                .addToBackStack("summary")
                                .commit();
-                }
+//                }
             }
         });
         //setRetainInstance does not work

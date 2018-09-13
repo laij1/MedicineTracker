@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientListRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
@@ -55,6 +56,7 @@ public class DashboardFragment extends Fragment {
     private String port;
     private Context mContext;
     private DashboardViewModel dashboardViewModel;
+    private SelectedPatientViewModel selectedPatientViewModel;
     private Shift shift;
 
     public static DashboardFragment newInstance(Shift s){
@@ -86,6 +88,14 @@ public class DashboardFragment extends Fragment {
         }
 
         dashboardViewModel = ViewModelProviders.of(getParentFragment()).get(DashboardViewModel.class);
+        selectedPatientViewModel = ViewModelProviders.of(getParentFragment()).get(SelectedPatientViewModel.class);
+
+        selectedPatientViewModel.getPatientLiveData().observe(getParentFragment(), new Observer<PatientsCardViewModel>() {
+            @Override
+            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+                Log.d("Wee","CHLOE");
+            }
+        });
 
         mContext = getContext();
 
@@ -100,7 +110,7 @@ public class DashboardFragment extends Fragment {
         shiftList = new ArrayList<>();
         prepareShiftRecordData();
         prepareEmployeeData();
-        mAdapter = new DashboardRecyclerViewAdapter(shift, employeeList, this, dashboardViewModel);
+        mAdapter = new DashboardRecyclerViewAdapter(shift, employeeList, this, dashboardViewModel,selectedPatientViewModel);
 
         dashboardViewModel.getShiftRecordListLiveData().observe(getParentFragment(), new Observer<List<ShiftRecordModel>>() {
             @Override

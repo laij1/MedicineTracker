@@ -22,9 +22,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.adapters.MedicineCategoryPagerAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
+import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 
@@ -32,8 +37,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class MedicineCategoryFragment extends Fragment implements View.OnKeyListener{
@@ -46,6 +54,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
     private CartViewModel cartViewModel;
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
+    private String cartSelectedPatientName;
 
 
     public static MedicineCategoryFragment newInstance(){
@@ -53,12 +62,12 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         return fragment;
     }
 
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        view.setFocusableInTouchMode(true);
-//        view.requestFocus();
-        view.setOnKeyListener(this);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //TODO: medicineType could be null....
+        outState.putString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME, cartSelectedPatientName);
     }
 
 
@@ -69,11 +78,23 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
 
         mContext = getContext();
         volleyController.getInstance(mContext);
+        if(savedInstanceState != null) {
+            cartSelectedPatientName = savedInstanceState.getString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME);
+        }
+        if(cartSelectedPatientName == null) {
+            cartSelectedPatientName = getArguments().getString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME);
+        }
+        findPatient(cartSelectedPatientName, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+
+            }
+        });
 //        globalVariable.getInstance(getActivity().getApplicationContext());
 
         //set up view model
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-
+        Log.d(getParentFragment()== null ?"null": "not null", "parent frag"+ cartSelectedPatientName);
 //        //TODO:get medicinelist from the database
 //        category = "dialysis";
 //        String url = "http://192.168.0.9:8080/anhe/medicine/all?category" + category;
@@ -202,10 +223,12 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
                 //cannot use getSupportFragmentManger(), it is for calling from activity, use getChildFragmentManager
                 //https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
                // FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
-               FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+               FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                SelectPatientFragment selectPatientFragment = SelectPatientFragment.newInstance();
-//                Bundle args = new Bundle();
+                SummaryFragment summaryFragment = SummaryFragment.newInstance();
+                Bundle args = new Bundle();
+                args.putString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME, cartSelectedPatientName);
+                summaryFragment.setArguments(args);
 //                ArrayList<String> cartlist = new ArrayList<>();
 //                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
 //                    if(item.getIsAddToCart() == true) {
@@ -214,8 +237,8 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
 //                }
 //                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
 //                selectPatientFragment.setArguments(args);
-                transaction.replace(R.id.medicine_category_layout, selectPatientFragment)
-                        .addToBackStack("selectp")
+                transaction.replace(R.id.medicine_category_layout, summaryFragment)
+                        .addToBackStack("summary")
                         .commit();
             }
         });
@@ -251,6 +274,45 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         }
 
         return false;
+    }
+
+    private void findPatient(String name, final VolleyCallBack volleyCallBack) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String url = "http://" + globalVariable.getInstance().getIpaddress() +
+                ":" + globalVariable.getInstance().getPort() + "/anhe/patient/name?name=" + name;
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++) {
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        Integer pid = object.getInt("pid");
+                                        String name = object.getString("name");
+                                        String shift = object.getString("shift");
+                                        String ic = object.getString("ic");
+                                        String day = object.getString("day");
+                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        cartViewModel.getCartSelectedPatientLiveData().setValue(p);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+
     }
 
 }

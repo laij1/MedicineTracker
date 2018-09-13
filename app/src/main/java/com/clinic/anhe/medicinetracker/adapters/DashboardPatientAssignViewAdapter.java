@@ -1,25 +1,57 @@
 package com.clinic.anhe.medicinetracker.adapters;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
+import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
+import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
+import com.clinic.anhe.medicinetracker.networking.VolleyController;
+import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<DashboardPatientAssignViewAdapter.PatientAssignViewHolder> {
 
     private List<String> patientList;
     private Context mContext;
+    private Fragment mFragment;
+    private SelectedPatientViewModel selectedPatientViewModel;
+    private VolleyController volleyController;
+    private String ip;
+    private String port;
+    private String url;
 
-    public DashboardPatientAssignViewAdapter(List<String> list) {
+    public DashboardPatientAssignViewAdapter(List<String> list, Fragment mFragment, SelectedPatientViewModel s) {
         this.patientList = list;
+        this.mFragment = mFragment;
+        this.selectedPatientViewModel = s;
 
     }
 
@@ -29,6 +61,9 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_dashboard_patient, parent, false);
         mContext = view.getContext();
+        ip = GlobalVariable.getInstance().getIpaddress();
+        port = GlobalVariable.getInstance().getPort();
+
         DashboardPatientAssignViewAdapter.PatientAssignViewHolder patientAssignViewHolder = new DashboardPatientAssignViewAdapter.PatientAssignViewHolder(view);
         return patientAssignViewHolder;
     }
@@ -45,10 +80,75 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
     }
 
     public class PatientAssignViewHolder  extends RecyclerView.ViewHolder{
-        TextView mPatientName;
+         public TextView mPatientName;
         public PatientAssignViewHolder(View itemView) {
             super(itemView);
             mPatientName = itemView.findViewById(R.id.dashbaord_patientname);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, patientList.get(getAdapterPosition()), Toast.LENGTH_LONG).show();
+                    //TODO: here goes to medicine catergory
+                    findPatient(patientList.get(getAdapterPosition()), new VolleyCallBack() {
+                        @Override
+                        public void onResult(VolleyStatus status) {
+                            FragmentTransaction transaction = mFragment.getActivity().getSupportFragmentManager().beginTransaction();
+//                                    mFragment.getParentFragment().getChildFragmentManager().beginTransaction();
+
+                            MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
+                            Bundle args = new Bundle();
+                            args.putString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME, patientList.get(getAdapterPosition()));
+                            medicineCategoryFragment.setArguments(args);
+                            transaction.replace(R.id.dashboard_setting_layout, medicineCategoryFragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                                    .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                                    .commit();
+
+
+                        }
+                    });
+
+                }
+            });
         }
+    }
+
+    private void findPatient(String name, final VolleyCallBack volleyCallBack) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        url = "http://" + ip +
+                ":" + port + "/anhe/patient/name?name=" + name;
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++) {
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        Integer pid = object.getInt("pid");
+                                        String name = object.getString("name");
+                                        String shift = object.getString("shift");
+                                        String ic = object.getString("ic");
+                                        String day = object.getString("day");
+                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        selectedPatientViewModel.getPatientLiveData().setValue(p);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+
     }
 }

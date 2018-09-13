@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
@@ -41,6 +42,8 @@ public class CartViewModel extends ViewModel {
 
     private MutableLiveData<List<MedicineCardViewModel>> bandaidLiveData;
     List<MedicineCardViewModel> bandaidList;
+
+    private MutableLiveData<PatientsCardViewModel> cartSelectedPatientLiveData;
 
     //for fluidslider
     private MutableLiveData<Integer> count;
@@ -77,6 +80,10 @@ public class CartViewModel extends ViewModel {
 
         bandaidLiveData = new MutableLiveData<>();
         bandaidList = new ArrayList<>();
+
+        cartSelectedPatientLiveData = new MutableLiveData<>();
+        PatientsCardViewModel p = new PatientsCardViewModel(-1, "","","", "");
+        cartSelectedPatientLiveData.postValue(p);
 
 
         String url = "http://"+ globalVariable.getInstance().getIpaddress() +":" +
@@ -153,6 +160,10 @@ public class CartViewModel extends ViewModel {
 
     public MutableLiveData<List<MedicineCardViewModel>> getBandaidLiveData() {
         return bandaidLiveData;
+    }
+
+    public MutableLiveData<PatientsCardViewModel> getCartSelectedPatientLiveData() {
+        return cartSelectedPatientLiveData;
     }
 
     public MutableLiveData getCountLiveData() {

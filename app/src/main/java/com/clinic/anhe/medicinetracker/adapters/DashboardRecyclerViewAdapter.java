@@ -50,6 +50,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private Context mContext;
     private Fragment mFragment;
     private DashboardViewModel dashboardViewModel;
+    private SelectedPatientViewModel selectedPatientViewModel;
     private List<ShiftRecordModel> shiftList;
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
@@ -57,11 +58,13 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private String port;
     private Shift shift;
 
-    public DashboardRecyclerViewAdapter(Shift shift, List<EmployeeCardViewModel> employeeList, Fragment mFragment, DashboardViewModel dashboardViewModel){
+    public DashboardRecyclerViewAdapter(Shift shift, List<EmployeeCardViewModel> employeeList,
+                                        Fragment mFragment, DashboardViewModel dashboardViewModel, SelectedPatientViewModel s){
         this.shift = shift;
         this.employeeList = employeeList;
         this.mFragment = mFragment;
         this.dashboardViewModel = dashboardViewModel;
+        this.selectedPatientViewModel = s;
         this.shiftList = new ArrayList<>();
 
     }
@@ -135,12 +138,11 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             patientAssignList = new ArrayList<>();
             prepareShiftRecordData();
             mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-            mAdapter = new DashboardPatientAssignViewAdapter(patientAssignList);
+            mAdapter = new DashboardPatientAssignViewAdapter(patientAssignList, mFragment, selectedPatientViewModel);
 
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(mLayoutManager);
             Log.d("how often does view holder constructor being called", "Chloe");
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

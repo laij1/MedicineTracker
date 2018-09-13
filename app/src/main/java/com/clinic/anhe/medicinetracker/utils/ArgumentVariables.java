@@ -14,6 +14,7 @@ public interface ArgumentVariables {
     public static final String ARG_PATIENT_DETAIL_SEARCH_STARTDATE = "startDate";
     public static final String ARG_PATIENT_DETAIL_SEARCH_ENDDATE= "endDate";
     public static final String ARG_SELECTED_MEDICINE_NAME ="selected medicine name";
+    public static final String ARG_CART_SELECTED_PATIENT_NAME="cart selected patient name";
 
     //for pager to recognize what kind of fragment to new
     public static final String KIND_PATIENTS = "patients";
