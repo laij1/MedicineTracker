@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,9 +83,52 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
 
     public class PatientAssignViewHolder  extends RecyclerView.ViewHolder{
          public TextView mPatientName;
+         private ImageButton mdeleteButton;
+
         public PatientAssignViewHolder(View itemView) {
             super(itemView);
-            mPatientName = itemView.findViewById(R.id.dashbaord_patientname);
+            mPatientName = itemView.findViewById(R.id.dashboard_patientname);
+            mdeleteButton = itemView.findViewById(R.id.dashboard_delete);
+
+            //TODO: allow for deletion
+            mdeleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final SweetAlertDialog deleteAlert = new SweetAlertDialog(mContext, SweetAlertDialog.NORMAL_TYPE);
+                    deleteAlert.setTitleText("確定刪除" + mPatientName.getText().toString() +"嗎?");
+                    deleteAlert.setConfirmText("確定");
+                    deleteAlert.setCancelText("取消");
+                    deleteAlert.show();
+
+                    deleteAlert.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            deletePatient(mPatientName.getText().toString(), new VolleyCallBack() {
+                            @Override
+                                public void onResult(VolleyStatus status) {
+                                    if(status == VolleyStatus.SUCCESS) {
+                                        patientList.remove(mPatientName.getText().toString());
+                                        Toast.makeText(mContext, "刪除成功", Toast.LENGTH_SHORT).show();
+                                        notifyDataSetChanged();
+                                    } else {
+                                        Toast.makeText(mContext, "刪除失敗", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            deleteAlert.dismiss();
+                        }
+                    });
+                    deleteAlert.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                deleteAlert.dismiss();
+                        }
+                    });
+
+//
+                }
+            });
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -113,7 +158,7 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
     }
 
     private void findPatient(String name, final VolleyCallBack volleyCallBack) {
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         url = "http://" + ip +
                 ":" + port + "/anhe/patient/name?name=" + name;
         JsonArrayRequest jsonArrayRequest =
@@ -137,6 +182,31 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
                                         e.printStackTrace();
                                     }
                                 }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+
+    }
+
+    private void deletePatient(String name, final VolleyCallBack volleyCallBack) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        url = "http://" + ip +
+                ":" + port + "/anhe/shiftrecord/delete?patient=" + name + "&createAt=" + date;
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+//
                                 volleyCallBack.onResult(VolleyStatus.SUCCESS);
                             }
                         },
