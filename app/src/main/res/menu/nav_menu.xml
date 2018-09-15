@@ -14,12 +14,6 @@
                         android:icon="@drawable/ic_home"
                         android:title="今日值班"
                         />
-
-                    <item
-                        android:id="@+id/menu_medicine"
-                        android:icon="@drawable/ic_medicine"
-                        android:title="藥品總覽" />
-
                 </group>
             </menu>
         </item>

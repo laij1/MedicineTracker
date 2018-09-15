@@ -21,6 +21,7 @@ import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardSettingPagerAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientsPagerAdapter;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import java.util.Iterator;
@@ -51,6 +52,9 @@ public class DashboardSettingFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard_setting, container, false);
+
+        //set up volley for dashboardViewModel
+        VolleyController.getInstance(mContext);
 
         ViewModelProviders.of(this).get(DashboardViewModel.class);
         ViewModelProviders.of(this).get(SelectedPatientViewModel.class);

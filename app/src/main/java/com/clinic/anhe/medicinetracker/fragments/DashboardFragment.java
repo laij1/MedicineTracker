@@ -46,7 +46,7 @@ import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
     private RecyclerView mRecyclerView;
-    private GridLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private DashboardRecyclerViewAdapter mAdapter;
     private List<EmployeeCardViewModel> employeeList;
     private List<ShiftRecordModel> shiftList;
@@ -105,7 +105,7 @@ public class DashboardFragment extends Fragment {
 
         mRecyclerView = view.findViewById(R.id.dashboard_recyclerview);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(getContext(), 1);
+        mLayoutManager = new LinearLayoutManager(getContext());
         employeeList = new ArrayList<>();
         shiftList = new ArrayList<>();
         prepareShiftRecordData();
@@ -115,6 +115,8 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel.getShiftRecordListLiveData().observe(getParentFragment(), new Observer<List<ShiftRecordModel>>() {
             @Override
             public void onChanged(@Nullable List<ShiftRecordModel> shiftList) {
+//                dashboardViewModel.getShiftRecordListLiveData().setValue(dashboardViewModel.getShiftRecordList());
+
                 //TODO: here we rearrange emplyeelist
                 //get all the nurses on the today's shift
 //                List<String> nurseList = new ArrayList<>();

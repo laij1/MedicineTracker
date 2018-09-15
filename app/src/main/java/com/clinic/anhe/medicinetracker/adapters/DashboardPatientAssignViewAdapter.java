@@ -19,10 +19,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
@@ -45,15 +47,21 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
     private Context mContext;
     private Fragment mFragment;
     private SelectedPatientViewModel selectedPatientViewModel;
+    private DashboardRecyclerViewAdapter parentAdapter;
+    private DashboardViewModel dashboardViewModel;
+    private ShiftRecordModel deletedShiftRecord;
     private VolleyController volleyController;
     private String ip;
     private String port;
     private String url;
 
-    public DashboardPatientAssignViewAdapter(List<String> list, Fragment mFragment, SelectedPatientViewModel s) {
+    public DashboardPatientAssignViewAdapter(List<String> list, Fragment mFragment, SelectedPatientViewModel s,
+                                             DashboardViewModel d, DashboardRecyclerViewAdapter parent) {
         this.patientList = list;
         this.mFragment = mFragment;
         this.selectedPatientViewModel = s;
+        this.dashboardViewModel = d;
+        this.parentAdapter = parent;
 
     }
 
@@ -80,6 +88,12 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
     public int getItemCount() {
         return patientList.size();
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     public class PatientAssignViewHolder  extends RecyclerView.ViewHolder{
          public TextView mPatientName;
@@ -108,6 +122,7 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
                                 public void onResult(VolleyStatus status) {
                                     if(status == VolleyStatus.SUCCESS) {
                                         patientList.remove(mPatientName.getText().toString());
+//                                        dashboardViewModel.getShiftRecordListLiveData().getValue().remove(deletedShiftRecord);
                                         Toast.makeText(mContext, "刪除成功", Toast.LENGTH_SHORT).show();
                                         notifyDataSetChanged();
                                     } else {
@@ -115,6 +130,7 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
                                     }
                                 }
                             });
+                            //dashboardViewModel.getShiftRecordListLiveData().setValue(dashboardViewModel.getShiftRecordListLiveData().getValue());
                             deleteAlert.dismiss();
                         }
                     });
@@ -125,7 +141,17 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
                         }
                     });
 
-//
+//              //TODO: update dash livedata
+                    if(deletedShiftRecord != null) {
+                        List<ShiftRecordModel> list = dashboardViewModel.getShiftRecordList();
+                        list.remove(deletedShiftRecord);
+                        dashboardViewModel.getShiftRecordListLiveData().postValue(list);
+                        for(ShiftRecordModel s :dashboardViewModel.getShiftRecordList()) {
+                            Log.d("after deleting patient ", s.getPatient() );
+                        }
+                        parentAdapter.notifyDataSetChanged();
+
+                    }
                 }
             });
 
@@ -206,9 +232,30 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
-//
+                                for(int i = 0; i < response.length(); i++){
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        String nurse = object.getString("nurse");
+                                        Integer sid = object.getInt("sid");
+                                        String patient = object.getString("patient");
+                                        String shift = object.getString("shift");
+                                        String day = object.getString("day");
+                                        String createAt = object.getString("createAt");
+                                        deletedShiftRecord = new ShiftRecordModel(sid, createAt, nurse, patient,shift, day);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+//                                if(deletedShiftRecord != null) {
+//                                   List<ShiftRecordModel> temp = dashboardViewModel.getShiftRecordList();
+//                                   temp.remove(deletedShiftRecord);
+//                                   dashboardViewModel.getShiftRecordListLiveData().setValue(temp);
+//                                }
                                 volleyCallBack.onResult(VolleyStatus.SUCCESS);
-                            }
+
+                        }
+
                         },
                         new Response.ErrorListener() {
                             @Override
@@ -221,4 +268,5 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
         volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
 
     }
+
 }

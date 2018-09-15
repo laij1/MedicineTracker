@@ -14,6 +14,7 @@ import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,16 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
             }
         }
 
+        holder.imageButton.setEnabled(true);
+        for(ShiftRecordModel s : dashboardViewModel.getShiftRecordList()) {
+            if(s.getPatient().equalsIgnoreCase(current.getPatientName())) {
+                holder.imageButton.setEnabled(false);
+            }
+//            else {
+//                holder.imageButton.setEnabled(true);
+//            }
+        }
+
     }
 
 
@@ -68,6 +79,12 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
     public int getItemCount() {
         return patientList.size();
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     public class PatientsViewHolder extends RecyclerView.ViewHolder {
         public TextView patientName;

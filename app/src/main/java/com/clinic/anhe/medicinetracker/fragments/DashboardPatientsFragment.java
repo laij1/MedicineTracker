@@ -1,8 +1,10 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +23,7 @@ import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardPatientRecyclerViewAdapter;
 
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
@@ -74,6 +77,8 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
                              Bundle savedInstanceState) {
 
         dashboardViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(DashboardViewModel.class);
+
+
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_patient_list_day, container, false);
         mContext = getContext();
@@ -100,14 +105,19 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getContext(), 3);
         //here we need to filter
-        mAdapter = new DashboardPatientRecyclerViewAdapter(patientList, dashboardViewModel,nurseName);
+        mAdapter = new DashboardPatientRecyclerViewAdapter(patientList, dashboardViewModel, nurseName);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        refreshRecyclerview();
 
         setRetainInstance(true);
         return view;
 
+    }
+
+    public void refreshRecyclerview() {
+        mAdapter.notifyDataSetChanged();
     }
 
     private void preparePatientData() {
@@ -155,9 +165,18 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
                                         String ic = object.getString("ic");
                                         String day = object.getString("day");
 //                                        Log.d("patient jason object" , name + pid + shift + day + ic);
-
-                                        patientList.add(new PatientsCardViewModel(pid, name, ic, shift, day));
-
+                                        //TODO: get ride of the ones that assigned
+                                        boolean add = false;
+                                        for(ShiftRecordModel s : dashboardViewModel.getShiftRecordListLiveData().getValue()) {
+                                            if(s.getPatient().equalsIgnoreCase(name)) {
+                                               add = true;
+                                               break;
+                                            }
+                                        }
+//                                        if(!add) {
+                                            patientList.add(new PatientsCardViewModel(pid, name, ic, shift, day));
+//                                        }
+//
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

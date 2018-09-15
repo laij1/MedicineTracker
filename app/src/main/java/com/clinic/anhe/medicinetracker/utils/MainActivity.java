@@ -142,15 +142,15 @@ public class MainActivity extends AppCompatActivity {
 
                         switch(item.getItemId()) {
                             //dashboard menu
-                            case R.id.menu_medicine:
-//                                currentFragment = "medicine_category";
-                                //MedicineFragment medicineFragment = MedicineFragment.newInstance();
-                                MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
-                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                        .replace(R.id.main_fragment_container, medicineCategoryFragment,ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-                                        .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
-                                        .commit();
-                                break;
+//                            case R.id.menu_medicine:
+////                                currentFragment = "medicine_category";
+//                                //MedicineFragment medicineFragment = MedicineFragment.newInstance();
+//                                MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
+//                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+//                                        .replace(R.id.main_fragment_container, medicineCategoryFragment,ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+//                                        .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+//                                        .commit();
+//                                break;
                             case R.id.menu_home:
                                 DashboardSettingFragment dashboardSettingFragment = DashboardSettingFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)

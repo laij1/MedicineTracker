@@ -68,7 +68,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     private static Integer eid;
     private DayType dayType;
     private DashboardViewModel dashboardViewModel;
-    private static List<String> list;
+//    private static List<String> list;
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
     private String ip;
@@ -78,9 +78,10 @@ public class SelectPatientsDialogFragment extends DialogFragment {
 
 
 
-    public static SelectPatientsDialogFragment newInstance(Shift shift, String name, Integer eid, List<String> patientList) {
+    public static SelectPatientsDialogFragment newInstance(Shift shift, String name, Integer eid) {
         SelectPatientsDialogFragment fragment = new SelectPatientsDialogFragment();
-        list = patientList;
+        //TODO:there is a bug here, cannot add the patient list everytinme, there will be dups
+//        list = patientList;
         Bundle args = new Bundle();
         args.putString(ArgumentVariables.ARG_NURSE_NAME, name);
         args.putString(ArgumentVariables.ARG_PATIENT_SHIFT, shift.toString());
@@ -196,7 +197,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                list.addAll(dashboardViewModel.getSelectedPatientsList());
+//                list.addAll(dashboardViewModel.getSelectedPatientsList());
                 //get current day of the week
                 Calendar calendar = Calendar.getInstance();
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -267,7 +268,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
         String url = "http://" + ip + ":" + port + "/anhe/shiftrecord/addlist";
         JSONArray jsonArray = new JSONArray();
         try {
-            for(String item : list) {
+            for(String item : dashboardViewModel.getSelectedPatientsLiveData().getValue()) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("nurse", nurseName);
                 jsonObject.put("eid", eid);
@@ -364,8 +365,12 @@ public class SelectPatientsDialogFragment extends DialogFragment {
                                         String shift = object.getString("shift");
                                         String day = object.getString("day");
                                         String createAt = object.getString("createAt");
-                                        shiftList.add(new ShiftRecordModel(sid, createAt, nurse, patient,shift, day));
-                                        Log.d("getting shift record", nurse + patient);
+                                        ShiftRecordModel s = new ShiftRecordModel(sid, createAt, nurse, patient,shift, day);
+                                        if(!shiftList.contains(s)) {
+                                            Log.d("getting shift record", nurse + patient);
+                                            shiftList.add(s);
+                                        }
+
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

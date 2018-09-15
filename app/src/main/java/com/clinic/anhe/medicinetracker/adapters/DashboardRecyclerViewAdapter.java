@@ -96,7 +96,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         holder.mNurseName.setText(current.getEmployeeName());
 
         for(ShiftRecordModel s: dashboardViewModel.getShiftRecordListLiveData().getValue()) {
-//            Log.d("nurse is: " + s.getNurse(), "adding to patient Assign List" + s.getPatient() );
+            Log.d("nurse is: " + s.getNurse(), "  patient Assign List" + s.getPatient() );
             if(s.getNurse().equalsIgnoreCase(current.getEmployeeName()) && s.getShift().equalsIgnoreCase(shift.toString()) ) {
                 if(!holder.patientAssignList.contains(s.getPatient())) {
                     holder.patientAssignList.add(s.getPatient());
@@ -104,9 +104,11 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                     }
                 }
             }
+
+
             if(holder.patientAssignList.size() > 0) {
                 holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));
-                holder.itemView.setOnClickListener(null);
+//                holder.itemView.setOnClickListener(null);
             }
             holder.mAdapter.notifyDataSetChanged();
 
@@ -136,17 +138,21 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             mRecyclerView = itemView.findViewById(R.id.dashboard_patient_assign_recyclerview);
             //here we need to load database to live data
             patientAssignList = new ArrayList<>();
-            prepareShiftRecordData();
+//            prepareShiftRecordData();
             mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-            mAdapter = new DashboardPatientAssignViewAdapter(patientAssignList, mFragment, selectedPatientViewModel);
+            mAdapter = new DashboardPatientAssignViewAdapter(patientAssignList, mFragment,
+                    selectedPatientViewModel, dashboardViewModel, DashboardRecyclerViewAdapter.this);
 
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(mLayoutManager);
             Log.d("how often does view holder constructor being called", "Chloe");
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    prepareShiftRecordData();
+
                     EmployeeCardViewModel current = employeeList.get(getAdapterPosition());
                     // if the livedata nurse is the same as the ui, show patient list live data
                     if(current.getEmployeeName()
@@ -160,13 +166,17 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
                     SelectPatientsDialogFragment fragment = SelectPatientsDialogFragment.newInstance(shift,
                             current.getEmployeeName(),
-                            current.getEid(), patientAssignList);
+                            current.getEid());
                     fragment.show(mFragment.getFragmentManager(), "selectdashboardpatients");
 
 
 
                 }
             });
+        }
+
+        public void  refreshRecyclerView(){
+            mAdapter.notifyDataSetChanged();
         }
     }
 
