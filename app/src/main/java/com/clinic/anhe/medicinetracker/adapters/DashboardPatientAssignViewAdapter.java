@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -122,14 +123,37 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
                                 public void onResult(VolleyStatus status) {
                                     if(status == VolleyStatus.SUCCESS) {
                                         patientList.remove(mPatientName.getText().toString());
+                                        notifyDataSetChanged();
+                                        //TODO: update dash livedata
+                                        if(deletedShiftRecord != null) {
+                                            List<ShiftRecordModel> list = dashboardViewModel.getShiftRecordList();
+                                            List<ShiftRecordModel> currentShiftList = dashboardViewModel.getShiftRecordList();
+//                                            list.remove(deletedShiftRecord);
+                                            Iterator<ShiftRecordModel> iter = currentShiftList.iterator();
+                                            while (iter.hasNext()) {
+                                               // String str = iter.next();
+                                                ShiftRecordModel item = iter.next();
+                                                if (item.getPatient().equalsIgnoreCase(deletedShiftRecord.getPatient())) {
+                                                    iter.remove();
+                                                }
+                                            }
+                                            dashboardViewModel.getShiftRecordListLiveData().setValue(currentShiftList);
+                                            for(ShiftRecordModel s :dashboardViewModel.getShiftRecordList()) {
+
+                                                Log.d("after deleting patient ", s.getPatient() );
+                                            }
+                                            parentAdapter.notifyDataSetChanged();
+
+                                        }
 //                                        dashboardViewModel.getShiftRecordListLiveData().getValue().remove(deletedShiftRecord);
                                         Toast.makeText(mContext, "刪除成功", Toast.LENGTH_SHORT).show();
-                                        notifyDataSetChanged();
+
                                     } else {
                                         Toast.makeText(mContext, "刪除失敗", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
+
                             //dashboardViewModel.getShiftRecordListLiveData().setValue(dashboardViewModel.getShiftRecordListLiveData().getValue());
                             deleteAlert.dismiss();
                         }
@@ -141,17 +165,7 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
                         }
                     });
 
-//              //TODO: update dash livedata
-                    if(deletedShiftRecord != null) {
-                        List<ShiftRecordModel> list = dashboardViewModel.getShiftRecordList();
-                        list.remove(deletedShiftRecord);
-                        dashboardViewModel.getShiftRecordListLiveData().postValue(list);
-                        for(ShiftRecordModel s :dashboardViewModel.getShiftRecordList()) {
-                            Log.d("after deleting patient ", s.getPatient() );
-                        }
-                        parentAdapter.notifyDataSetChanged();
-
-                    }
+//
                 }
             });
 
