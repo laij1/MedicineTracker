@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MedicineDetailRecyclerViewAdapter extends RecyclerView.Adapter<MedicineDetailRecyclerViewAdapter.MedicineDetailViewHolder>{
+public class MedicineDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter<MedicineDetailSearchRecyclerViewAdapter.MedicineDetailViewHolder>{
 
     private Context mContext;
     private Map<String,Integer> employee;
@@ -39,7 +39,7 @@ public class MedicineDetailRecyclerViewAdapter extends RecyclerView.Adapter<Medi
     private String port;
     private MedicineDetailViewModel medicineDetailViewModel;
 
-    public MedicineDetailRecyclerViewAdapter(MedicineDetailViewModel medicineDetailViewModel) {
+    public MedicineDetailSearchRecyclerViewAdapter(MedicineDetailViewModel medicineDetailViewModel) {
         this.medicineDetailViewModel = medicineDetailViewModel;
 
     }

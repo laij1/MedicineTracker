@@ -9,15 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.clinic.anhe.medicinetracker.R;
-import com.clinic.anhe.medicinetracker.fragments.MedicineDetailFragment;
+import com.clinic.anhe.medicinetracker.fragments.MedicineDetailSearchFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<MedicineSimpleRecyclerViewAdapter.MedicineSimpleViewHolder> {
@@ -71,10 +69,10 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MedicineDetailFragment medicineDetailFragment = MedicineDetailFragment.newInstance(name.getText().toString());
+                    MedicineDetailSearchFragment medicineDetailSearchFragment = MedicineDetailSearchFragment.newInstance(name.getText().toString());
                     FragmentTransaction transaction = mFragment.getFragmentManager().beginTransaction();
 
-                    transaction.replace(R.id.medicine_manage_layout,medicineDetailFragment)
+                    transaction.replace(R.id.medicine_manage_layout, medicineDetailSearchFragment)
                             .addToBackStack(ArgumentVariables.TAG_MEDICINE_DETAIL_FRAGMENT)
                             .commit();
 

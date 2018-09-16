@@ -20,10 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
-import com.clinic.anhe.medicinetracker.ViewModel.CashFlowViewModel;
 import com.clinic.anhe.medicinetracker.ViewModel.MedicineDetailViewModel;
-import com.clinic.anhe.medicinetracker.adapters.CashflowTodayRecyclerViewAdapter;
-import com.clinic.anhe.medicinetracker.adapters.MedicineDetailRecyclerViewAdapter;
+import com.clinic.anhe.medicinetracker.adapters.MedicineDetailSearchRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
@@ -44,10 +42,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class MedicineDetailFragment extends Fragment {
+public class MedicineDetailSearchFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private MedicineDetailRecyclerViewAdapter mAdapter;
+    private MedicineDetailSearchRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<MedicineRecordCardViewModel> recordList;
     private Map<Integer, String> patientMap;
@@ -65,8 +63,8 @@ public class MedicineDetailFragment extends Fragment {
     private String medicineName;
     private MedicineDetailViewModel medicineDetailViewModel;
 
-    public static MedicineDetailFragment newInstance(String medicineName) {
-        MedicineDetailFragment fragment = new MedicineDetailFragment();
+    public static MedicineDetailSearchFragment newInstance(String medicineName) {
+        MedicineDetailSearchFragment fragment = new MedicineDetailSearchFragment();
         Bundle args = new Bundle();
         args.putString(ArgumentVariables.ARG_SELECTED_MEDICINE_NAME, medicineName);
         fragment.setArguments(args);
@@ -85,7 +83,7 @@ public class MedicineDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_medicine_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_medicine_detail_search, container, false);
         if(savedInstanceState != null) {
             medicineName = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_MEDICINE_NAME);
         }
@@ -103,12 +101,12 @@ public class MedicineDetailFragment extends Fragment {
 
         recordList = new ArrayList<>();
 
-        mDisplay = view.findViewById(R.id.medicine_detail_display);
+        mDisplay = view.findViewById(R.id.medicine_detail_search_display);
         mDisplay.setText(medicineName);
 
         //here for the search
-        mSelectStartDate = view.findViewById(R.id.medicine_detail_startdate);
-        mSelectEndDate = view.findViewById(R.id.medicine_detail_enddate);
+        mSelectStartDate = view.findViewById(R.id.medicine_detail_search_startdate);
+        mSelectEndDate = view.findViewById(R.id.medicine_detail_search_enddate);
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         String defaultDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
@@ -121,14 +119,14 @@ public class MedicineDetailFragment extends Fragment {
             mSelectStartDate.setText(defaultDate);
             mSelectEndDate.setText(defaultDate);
         }
-        mStartSearch = view.findViewById(R.id.medicine_detail_button);
+        mStartSearch = view.findViewById(R.id.medicine_detail_search_button);
 
         mSelectStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(mContext, "select start date", Toast.LENGTH_LONG ).show();
                 StartDatePickerDialogFragment startDate = StartDatePickerDialogFragment.newInstance(
-                        MedicineDetailFragment.this, mContext);
+                        MedicineDetailSearchFragment.this, mContext);
                 startDate.show(getFragmentManager(),"startdate");
             }
         });
@@ -138,7 +136,7 @@ public class MedicineDetailFragment extends Fragment {
             public void onClick(View v) {
 //                Toast.makeText(mContext, "select end date", Toast.LENGTH_LONG ).show();
                 EndDatePickerDialogFragment endDate = EndDatePickerDialogFragment.newInstance(
-                        MedicineDetailFragment.this, mContext);
+                        MedicineDetailSearchFragment.this, mContext);
                 endDate.show(getFragmentManager(), "enddate");
             }
         });
@@ -160,10 +158,10 @@ public class MedicineDetailFragment extends Fragment {
         });
 
 
-        mRecyclerView = view.findViewById(R.id.medicine_detail_recyclerview);
+        mRecyclerView = view.findViewById(R.id.medicine_detail_search_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new MedicineDetailRecyclerViewAdapter(medicineDetailViewModel);
+        mAdapter = new MedicineDetailSearchRecyclerViewAdapter(medicineDetailViewModel);
         //TODO: livedata
         patientMap = new HashMap<>();
         url = "http://" + ip +
