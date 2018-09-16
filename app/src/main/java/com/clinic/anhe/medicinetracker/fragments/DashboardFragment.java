@@ -90,12 +90,12 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel = ViewModelProviders.of(getParentFragment()).get(DashboardViewModel.class);
         selectedPatientViewModel = ViewModelProviders.of(getParentFragment()).get(SelectedPatientViewModel.class);
 
-        selectedPatientViewModel.getPatientLiveData().observe(getParentFragment(), new Observer<PatientsCardViewModel>() {
-            @Override
-            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
-                Log.d("Wee","CHLOE");
-            }
-        });
+//        selectedPatientViewModel.getPatientLiveData().observe(getParentFragment(), new Observer<PatientsCardViewModel>() {
+//            @Override
+//            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
+//                Log.d("Wee","CHLOE");
+//            }
+//        });
 
         mContext = getContext();
 

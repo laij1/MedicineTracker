@@ -109,6 +109,8 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             if(holder.patientAssignList.size() > 0) {
                 holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));
 //                holder.itemView.setOnClickListener(null);
+            } else {
+                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.dialog_bg_color));
             }
             holder.mAdapter.notifyDataSetChanged();
 
