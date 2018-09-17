@@ -220,14 +220,7 @@ public class SummaryFragment  extends Fragment {
                                 SummaryFragment.status = VolleyStatus.UNKNOWN;
                                 if(sweetAlertDialog.getTitleText().equalsIgnoreCase("Success!")) {
                                     sweetAlertDialog.dismiss();
-//                                    int backStackCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
-//                                    for (int i = 0; i < backStackCount; i++) {
-//                                        // Get the back stack fragment id.
-//                                        getActivity().getSupportFragmentManager().popBackStack(
-//                                                getActivity().getSupportFragmentManager().getBackStackEntryAt(i).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                                        Log.d("removing fragments",i+"");
-//                                    } /* end of for */
-//                                    getActivity().getSupportFragmentManager().popBackStack();
+//
                                     getActivity().getSupportFragmentManager().popBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                                 } else if (sweetAlertDialog.getTitleText().equalsIgnoreCase("Fail!")) {
                                     sweetAlertDialog.dismiss();
@@ -262,6 +255,7 @@ public class SummaryFragment  extends Fragment {
                                     timer.onFinish();
                                 }
                             });
+
                         } else {
                             //pop up an alter
                             SummaryFragment.status = VolleyStatus.UNSET;

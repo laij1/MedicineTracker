@@ -8,10 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
-import com.clinic.anhe.medicinetracker.fragments.MedicineDetailSearchFragment;
+import com.clinic.anhe.medicinetracker.fragments.AddInventoryDialogFragment;
+import com.clinic.anhe.medicinetracker.fragments.MedicineDetailFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
@@ -62,17 +64,34 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
     public class MedicineSimpleViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
+        private Button addStock;
 
         public MedicineSimpleViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.medicine_simple_name);
+            addStock = itemView.findViewById(R.id.medicine_simple_add_inventory);
+
+            addStock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MedicineCardViewModel current = medicineList.get(getAdapterPosition());
+                    //TODO: sending medicine.mid and medicine.name to addinventoryDialog
+                    AddInventoryDialogFragment addInventoryDialogFragment =
+                            AddInventoryDialogFragment.newInstance(current.getMedicinName(), current.getMedicineId(), current.getMedicineStock());
+                    addInventoryDialogFragment.show(mFragment.getFragmentManager(), "addStock");
+
+                }
+            });
+
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MedicineDetailSearchFragment medicineDetailSearchFragment = MedicineDetailSearchFragment.newInstance(name.getText().toString());
+                    MedicineDetailFragment medicineDetailFragment = MedicineDetailFragment.newInstance(name.getText().toString());
                     FragmentTransaction transaction = mFragment.getFragmentManager().beginTransaction();
 
-                    transaction.replace(R.id.medicine_manage_layout, medicineDetailSearchFragment)
+                    transaction.replace(R.id.medicine_manage_layout, medicineDetailFragment)
                             .addToBackStack(ArgumentVariables.TAG_MEDICINE_DETAIL_FRAGMENT)
                             .commit();
 
