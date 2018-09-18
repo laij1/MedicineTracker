@@ -3,6 +3,7 @@ package com.clinic.anhe.medicinetracker.ViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.clinic.anhe.medicinetracker.model.InventoryCardViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ public class MedicineDetailViewModel extends ViewModel {
     private MutableLiveData<List<MedicineRecordCardViewModel>> medicineListLiveData;
     private List<MedicineRecordCardViewModel> medicineList;
 
+//    private MutableLiveData<List<InventoryCardViewModel>> inventoryListLiveData;
+//    private List<InventoryCardViewModel> inventoryList;
+
     private MutableLiveData<Map<Integer, String>> patientMapLiveData;
     private Map<Integer,String> patientMap;
 
@@ -22,6 +26,10 @@ public class MedicineDetailViewModel extends ViewModel {
         medicineListLiveData = new MutableLiveData<>();
         medicineList = new ArrayList<>();
         medicineListLiveData.setValue(medicineList);
+
+//        inventoryListLiveData = new MutableLiveData<>();
+//        inventoryList = new ArrayList<>();
+//        inventoryListLiveData.setValue(inventoryList);
 
         patientMapLiveData = new MutableLiveData<>();
         patientMap = new HashMap<>();

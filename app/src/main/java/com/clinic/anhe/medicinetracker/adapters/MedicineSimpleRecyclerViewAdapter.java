@@ -62,6 +62,10 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
 
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
     public int getItemCount() {

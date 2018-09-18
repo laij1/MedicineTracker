@@ -102,7 +102,7 @@ public class MedicineDetailSearchFragment extends Fragment {
         recordList = new ArrayList<>();
 
         mDisplay = view.findViewById(R.id.medicine_detail_search_display);
-        mDisplay.setText(medicineName);
+        mDisplay.setText(medicineName + " 使用紀錄");
 
         //here for the search
         mSelectStartDate = view.findViewById(R.id.medicine_detail_search_startdate);

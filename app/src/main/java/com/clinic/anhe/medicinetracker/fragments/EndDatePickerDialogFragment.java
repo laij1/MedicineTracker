@@ -49,6 +49,8 @@ public class EndDatePickerDialogFragment extends DialogFragment implements DateP
             ((CashflowSearchFragment)mFrag).setEndDateTextView(endDate);
         } else if (mFrag instanceof MedicineDetailSearchFragment) {
             ((MedicineDetailSearchFragment)mFrag).setEndDateTextView(endDate);
+        } else if (mFrag instanceof MedicineDetailInventoryFragment) {
+            ((MedicineDetailInventoryFragment)mFrag).setEndDateTextView(endDate);
         }
     }
 }

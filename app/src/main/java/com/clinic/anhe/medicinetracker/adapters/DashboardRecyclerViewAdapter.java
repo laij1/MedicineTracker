@@ -95,16 +95,17 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         EmployeeCardViewModel current = employeeList.get(position);
         holder.mNurseName.setText(current.getEmployeeName());
 
-        for(ShiftRecordModel s: dashboardViewModel.getShiftRecordListLiveData().getValue()) {
-            Log.d("nurse is: " + s.getNurse(), "  patient Assign List" + s.getPatient() );
-            if(s.getNurse().equalsIgnoreCase(current.getEmployeeName()) && s.getShift().equalsIgnoreCase(shift.toString()) ) {
-                if(!holder.patientAssignList.contains(s.getPatient())) {
-                    holder.patientAssignList.add(s.getPatient());
+        if(dashboardViewModel.getShiftRecordListLiveData().getValue() != null) {
+            for (ShiftRecordModel s : dashboardViewModel.getShiftRecordListLiveData().getValue()) {
+                Log.d("nurse is: " + s.getNurse(), "  patient Assign List" + s.getPatient());
+                if (s.getNurse().equalsIgnoreCase(current.getEmployeeName()) && s.getShift().equalsIgnoreCase(shift.toString())) {
+                    if (!holder.patientAssignList.contains(s.getPatient())) {
+                        holder.patientAssignList.add(s.getPatient());
                     } else {
                     }
                 }
             }
-
+        }
 
             if(holder.patientAssignList.size() > 0) {
                 holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));

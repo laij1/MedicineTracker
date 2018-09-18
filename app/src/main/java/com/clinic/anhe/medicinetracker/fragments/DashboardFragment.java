@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,6 +25,7 @@ import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
 import com.clinic.anhe.medicinetracker.adapters.DashboardRecyclerViewAdapter;
+import com.clinic.anhe.medicinetracker.adapters.DashboardSettingPagerAdapter;
 import com.clinic.anhe.medicinetracker.adapters.PatientListRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
@@ -58,6 +61,7 @@ public class DashboardFragment extends Fragment {
     private DashboardViewModel dashboardViewModel;
     private SelectedPatientViewModel selectedPatientViewModel;
     private Shift shift;
+    private FloatingActionButton mAddEmployee;
 
     public static DashboardFragment newInstance(Shift s){
         DashboardFragment fragment = new DashboardFragment();
@@ -103,6 +107,8 @@ public class DashboardFragment extends Fragment {
         ip = globalVariable.getIpaddress();
         port = globalVariable.getPort();
 
+        mAddEmployee = view.findViewById(R.id.add_employee_fab);
+
         mRecyclerView = view.findViewById(R.id.dashboard_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -110,7 +116,7 @@ public class DashboardFragment extends Fragment {
         shiftList = new ArrayList<>();
         prepareShiftRecordData();
         prepareEmployeeData();
-        mAdapter = new DashboardRecyclerViewAdapter(shift, employeeList, this, dashboardViewModel,selectedPatientViewModel);
+        mAdapter = new DashboardRecyclerViewAdapter(shift, employeeList, this, dashboardViewModel, selectedPatientViewModel);
 
         dashboardViewModel.getShiftRecordListLiveData().observe(getParentFragment(), new Observer<List<ShiftRecordModel>>() {
             @Override
@@ -135,11 +141,27 @@ public class DashboardFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
+
+        mAddEmployee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddEmployeeDialogFragment addEmployeeDialogFragment = AddEmployeeDialogFragment.newInstance(DashboardFragment.this, employeeList);
+                addEmployeeDialogFragment.show(getFragmentManager(), "addEmployee");
+                Toast.makeText(mContext, "adding Employee...", Toast.LENGTH_LONG).show();
+            }
+        });
+
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
         setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Resuming Dashboard", "CHLOE");
     }
 
     private void prepareEmployeeData() {
@@ -187,7 +209,7 @@ public class DashboardFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                 }
-                                Log.d("the shift record live data is loaded: ", ""+ dashboardViewModel.getShiftRecordListLiveData().getValue().size());
+//                                Log.d("the shift record live data is loaded: ", ""+ dashboardViewModel.getShiftRecordListLiveData().getValue().size());
                                 volleyCallBack.onResult(VolleyStatus.SUCCESS);
                             }
                         },

@@ -2,13 +2,6 @@ package com.clinic.anhe.medicinetracker.model;
 
 public class ShiftRecordModel {
 
-//    "sid": 7,
-//            "createAt": "2018-09-02",
-//            "nurse": "吳宏基",
-//            "patient": "連朱網",
-//            "shift": "早班",
-//            "day": "二四六"
-
     private Integer sid;
     private String createAt;
     private String nurse;

@@ -139,7 +139,6 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
                                             }
                                             dashboardViewModel.getShiftRecordListLiveData().setValue(currentShiftList);
                                             for(ShiftRecordModel s :dashboardViewModel.getShiftRecordList()) {
-
                                                 Log.d("after deleting patient ", s.getPatient() );
                                             }
                                             parentAdapter.notifyDataSetChanged();

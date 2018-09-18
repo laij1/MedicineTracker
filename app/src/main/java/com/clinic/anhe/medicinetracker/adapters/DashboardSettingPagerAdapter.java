@@ -39,6 +39,7 @@ public class DashboardSettingPagerAdapter extends FragmentPagerAdapter{
 
     }
 
+
     @Override
     public CharSequence getPageTitle(int position) {
         return tabTitles[position];

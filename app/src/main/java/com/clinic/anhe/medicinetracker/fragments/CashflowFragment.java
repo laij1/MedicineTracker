@@ -52,7 +52,7 @@ public class CashflowFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate( R.layout.fragment_cashflow, container, false);
         mBottomNavigationView = view.findViewById(R.id.cashflow_bottom_navigation);
-
+        
         mContext = view.getContext();
         //TODO: livedata
         patientMap = new HashMap<>();

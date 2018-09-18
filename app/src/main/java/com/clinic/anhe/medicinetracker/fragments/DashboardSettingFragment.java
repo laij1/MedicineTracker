@@ -71,7 +71,6 @@ public class DashboardSettingFragment extends Fragment {
 //        });
 
 
-
         mDashboardSettingTabLayout = (TabLayout) view.findViewById(R.id.dashboard_setting_tabLayout);
         //set up tab
         TabLayout.Tab morning = mDashboardSettingTabLayout.newTab();
@@ -145,7 +144,6 @@ public class DashboardSettingFragment extends Fragment {
 //
 //        });
 
-
         setRetainInstance(true);
         return view;
     }
@@ -163,6 +161,7 @@ public class DashboardSettingFragment extends Fragment {
         tab.setCustomView(null);
         tab.setCustomView(mDashboardSettingPagerAdapter.getSelectedTabView(position));
     }
+
 
 
 }

@@ -78,7 +78,7 @@ public class MedicineDetailFragment extends Fragment {
                         break;
 
                     case R.id.medicine_detail_inventory:
-                        MedicineDetailInventoryFragment medicineDetailInventoryFragment = new MedicineDetailInventoryFragment();
+                        MedicineDetailInventoryFragment medicineDetailInventoryFragment = MedicineDetailInventoryFragment.newInstance(medicineName);
                         transaction.replace(R.id.medicine_detail_fragment_container, medicineDetailInventoryFragment)
                                    .commit();
                         break;
