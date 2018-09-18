@@ -91,7 +91,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     @Override
     public void onBindViewHolder(@NonNull EmployeeViewHolder holder, int position) {
         //when position ==1
-        Log.d("holder positon", ""+ position);
+//        Log.d("holder positon", ""+ position);
         EmployeeCardViewModel current = employeeList.get(position);
         holder.mNurseName.setText(current.getEmployeeName());
 

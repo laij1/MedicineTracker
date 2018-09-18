@@ -38,6 +38,10 @@ public class SummaryRecyclerViewAdapter extends RecyclerView.Adapter<SummaryRecy
     }
 
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
     public int getItemCount() {
