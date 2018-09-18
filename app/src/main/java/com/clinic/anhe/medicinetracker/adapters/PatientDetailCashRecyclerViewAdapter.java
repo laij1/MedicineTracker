@@ -56,6 +56,11 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public int getItemCount() {
         return recordList.size();
     }
