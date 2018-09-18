@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android .support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,14 +48,16 @@ public class AddInventoryDialogFragment extends DialogFragment {
     private Context mContext;
     private GlobalVariable globalVariable;
     private VolleyController volleyController;
+    private static Fragment parentFragment;
 
     private String medicineName;
     private Integer mid;
     private Integer stock;
 
 
-    public static AddInventoryDialogFragment newInstance(String medicineName , Integer mid, Integer stock){
+    public static AddInventoryDialogFragment newInstance(String medicineName , Integer mid, Integer stock, Fragment parent){
         AddInventoryDialogFragment fragment = new AddInventoryDialogFragment();
+        parentFragment = parent;
         Bundle args = new Bundle();
         args.putString(ArgumentVariables.ARG_INVENTORY_MEDICINE_NAME, medicineName);
         args.putInt(ArgumentVariables.ARG_INVENTORY_MID, mid);
@@ -110,6 +113,7 @@ public class AddInventoryDialogFragment extends DialogFragment {
                         if(status == VolleyStatus.SUCCESS) {
                             Toast.makeText(mContext, "進貨輸入成功", Toast.LENGTH_SHORT).show();
                             updateStock();
+                            ((MedicineSimpleFragment)parentFragment).refreshRecyclerView();
                             dismiss();
                         }
                     }

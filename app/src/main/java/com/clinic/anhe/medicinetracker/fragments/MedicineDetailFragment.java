@@ -74,11 +74,13 @@ public class MedicineDetailFragment extends Fragment {
                     case R.id.medicine_detail_search:
                         MedicineDetailSearchFragment cashflowSearchFragment = MedicineDetailSearchFragment.newInstance(medicineName);
                         transaction.replace(R.id.medicine_detail_fragment_container, cashflowSearchFragment)
-                                .commit();
+                                   .commit();
                         break;
 
                     case R.id.medicine_detail_inventory:
-//
+                        MedicineDetailInventoryFragment medicineDetailInventoryFragment = new MedicineDetailInventoryFragment();
+                        transaction.replace(R.id.medicine_detail_fragment_container, medicineDetailInventoryFragment)
+                                   .commit();
                         break;
                 }
                 return false;

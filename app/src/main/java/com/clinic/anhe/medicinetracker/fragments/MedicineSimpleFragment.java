@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -51,6 +52,7 @@ public class MedicineSimpleFragment extends Fragment {
     private String ip;
     private String port;
     private Context mContext;
+    private FloatingActionButton mAddItem;
 
     public static MedicineSimpleFragment newInstance(MedicineType medicineType) {
         MedicineSimpleFragment fragment = new MedicineSimpleFragment();
@@ -74,6 +76,7 @@ public class MedicineSimpleFragment extends Fragment {
 
         View view  = inflater.inflate(R.layout.fragment_medicine_simple, container, false);
 
+
         mContext = view.getContext();
 
         globalVariable = GlobalVariable.getInstance();
@@ -91,6 +94,8 @@ public class MedicineSimpleFragment extends Fragment {
         medicineList = new ArrayList<>();
         prepareMedicineData();
 
+        mAddItem = view.findViewById(R.id.add_medicine_fab);
+
         mRecyclerView = view.findViewById(R.id.medicine_simple_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         //mLayoutManager = new LinearLayoutManager(getContext());
@@ -101,11 +106,23 @@ public class MedicineSimpleFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        mAddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddMedicineDialogFragment addMedicineDialogFragment = AddMedicineDialogFragment.newInstance(MedicineSimpleFragment.this, medicineType, medicineList);
+                addMedicineDialogFragment.show(getFragmentManager(), "addmedicine");
+//                Toast.makeText(mContext, "adding medicine...", Toast.LENGTH_LONG).show();
+            }
+        });
+
 //setRetainInstance to true is important so that onSaveInstanceState will work
         setRetainInstance(true);
         return view;
     }
 
+    public void refreshRecyclerView(){
+        mAdapter.notifyDataSetChanged();
+    }
     private void prepareMedicineData() {
         String url = "http://" + ip + ":" + port + "/anhe/medicine?category=" + medicineType.toString();
                parseMedicineList(url, new VolleyCallBack() {

@@ -88,6 +88,10 @@ public class CashflowFragment extends Fragment {
                         transaction.replace(R.id.cashflow_fragment_container, cashflowSearchFragment)
                                    .commit();
                         break;
+                    case R.id.cashflow_month:
+                        CashflowMonthFragment cashflowMonthFragment = new CashflowMonthFragment();
+                        transaction.replace(R.id.cashflow_fragment_container, cashflowMonthFragment)
+                                    .commit();
                 }
                 return false;
             }

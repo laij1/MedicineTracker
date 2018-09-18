@@ -10,5 +10,6 @@
     <color name="checkoutButtonColor">#F8BBD0</color>
     <color name="dialog_bg_color">#FFFFFF</color>
     <color name="unchargeViewColor">#FFFDE7</color>
+    <color name="shortOfStock">#EC407A</color>
 
 </resources>

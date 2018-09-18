@@ -52,6 +52,13 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
     @Override
     public void onBindViewHolder(@NonNull MedicineSimpleViewHolder holder, int position) {
         holder.name.setText(medicineList.get(position).getMedicinName());
+        int stockNum = medicineList.get(position).getMedicineStock();
+        if (stockNum < 0) {
+            holder.stock.setTextColor(mContext.getResources().getColor(R.color.shortOfStock));
+        } else {
+            holder.stock.setTextColor(mContext.getResources().getColor(R.color.menuTextIconColor));
+        }
+        holder.stock.setText(stockNum + "");
 
     }
 
@@ -65,11 +72,13 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
 
         private TextView name;
         private Button addStock;
+        private TextView stock;
 
         public MedicineSimpleViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.medicine_simple_name);
             addStock = itemView.findViewById(R.id.medicine_simple_add_inventory);
+            stock = itemView.findViewById(R.id.medicine_simple_stock);
 
             addStock.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,9 +86,9 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
                     MedicineCardViewModel current = medicineList.get(getAdapterPosition());
                     //TODO: sending medicine.mid and medicine.name to addinventoryDialog
                     AddInventoryDialogFragment addInventoryDialogFragment =
-                            AddInventoryDialogFragment.newInstance(current.getMedicinName(), current.getMedicineId(), current.getMedicineStock());
+                            AddInventoryDialogFragment.newInstance(current.getMedicinName(), current.getMedicineId(), current.getMedicineStock(), mFragment);
                     addInventoryDialogFragment.show(mFragment.getFragmentManager(), "addStock");
-
+                    notifyDataSetChanged();
                 }
             });
 

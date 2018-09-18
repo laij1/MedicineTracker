@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -40,6 +42,7 @@ public class MedicineManageFragment extends Fragment {
     private Context mContext;
     private ViewPager mMedicineManageViewPager;
     private MedicineManagePagerAdapter mMedicineManagePagerAdapter;
+//    private FloatingActionButton mAddItem;
    // private static List<MedicineCardViewModel> medicineList;
 
 
@@ -47,6 +50,11 @@ public class MedicineManageFragment extends Fragment {
     public static MedicineManageFragment newInstance(){
         MedicineManageFragment fragment = new MedicineManageFragment();
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -60,6 +68,8 @@ public class MedicineManageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view  = inflater.inflate(R.layout.fragment_medicine_manage, container, false);
+
+//        mAddItem = view.findViewById(R.id.add_medicine_fab);
 
         mMedicineManageTabLayout = (TabLayout) view.findViewById(R.id.medicine_manage_tabLayout);
 
@@ -120,21 +130,14 @@ public class MedicineManageFragment extends Fragment {
             }
         });
 
-//        mCounterfab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //new fragment for add medicine
-//                //pop a dialog
-//                AddMedicineDialogFragment addMedicineDialogFragment = new AddMedicineDialogFragment();
-//                addMedicineDialogFragment.show(getChildFragmentManager(), "addmedicine");
-//
-//
-//            }
-//        });
+
+
 
         setRetainInstance(true);
         return view;
     }
+
+
 
     private void highLightCurrentTab(int position) {
         for (int i = 0; i < mMedicineManagePagerAdapter.getCount(); i++) {

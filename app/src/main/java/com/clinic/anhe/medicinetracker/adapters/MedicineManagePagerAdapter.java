@@ -43,7 +43,6 @@ public class MedicineManagePagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 MedicineSimpleFragment dialysis = MedicineSimpleFragment.newInstance(MedicineType.dialysis);
-                Log.d("dialysis tab view pager is created", "CHLOE!!!");
 //                transaction.add(dialysis, "dialysis").commit();
                 return dialysis;
             case 1:
