@@ -81,7 +81,7 @@
         android:id="@+id/cashflow_uncharged_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/cashflow_today_upperview"
+        android:layout_below="@id/cashflow_uncharged_upperview"
         android:background="@color/recyclerViewBackground"
         android:padding="4dp"
         android:scrollbars="vertical" />
