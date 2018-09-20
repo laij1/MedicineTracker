@@ -5,6 +5,8 @@
     <color name="colorAccent">#00BFA5</color>
     <color name="nurseAssignColor">#B2EBF2</color>
     <color name="menuTextIconColor">#757575</color>
+    <color name="bankBackground">#b2dfc0</color>
+    <color name="allowanceBackground">#E1BEE7</color>
     <color name="recyclerViewBackground">#FFE6EBF5</color>
     <color name="functionButtonColor">#87CEEB</color>
     <color name="checkoutButtonColor">#F8BBD0</color>

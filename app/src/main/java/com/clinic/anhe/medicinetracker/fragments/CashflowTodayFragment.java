@@ -81,8 +81,9 @@ public class CashflowTodayFragment extends Fragment {
         mDisplay = view.findViewById(R.id.cashflow_today_display);
         //TODO: get current day and display
         Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH) + 1;
         String today = "" + c.get(Calendar.YEAR) + "年"
-                        + c.get(Calendar.MONTH) + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" ;
+                        + month + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" ;
 
         mDisplay.setText(today);
         mRevenue = view.findViewById(R.id.cashflow_today_revenue);

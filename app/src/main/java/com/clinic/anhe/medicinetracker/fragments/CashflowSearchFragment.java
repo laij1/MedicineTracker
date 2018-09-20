@@ -89,16 +89,17 @@ public class CashflowSearchFragment extends Fragment {
         mDisplay = view.findViewById(R.id.cashflow_search_display);
         //TODO: get current day and display
         Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH) +1;
         String today = "" + c.get(Calendar.YEAR) + "年"
-                + c.get(Calendar.MONTH) + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" ;
+                + month + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" ;
 
         mDisplay.setText(today);
 
         //here for the search
         mSelectStartDate = view.findViewById(R.id.cashflow_search_startdate);
         mSelectEndDate = view.findViewById(R.id.cashflow_search_enddate);
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
+        //Calendar cal = Calendar.getInstance();
+        Date date = c.getTime();
         String defaultDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
 
         if(savedInstanceState != null) {

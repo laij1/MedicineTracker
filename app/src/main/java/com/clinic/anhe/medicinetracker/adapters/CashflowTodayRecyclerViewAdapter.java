@@ -85,6 +85,8 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
             case "search":
                 current = cashFlowViewModel.getSearchListLiveData().getValue().get(position);
                 break;
+            case "month":
+                current = cashFlowViewModel.getMonthListLiveData().getValue().get(position);
         }
         holder.itemQuantity.setText(String.valueOf(current.getQuantity()));
         holder.itemSubtotal.setText(String.valueOf(current.getSubtotal()));
@@ -131,6 +133,8 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
                 return cashFlowViewModel.getUnchargedListLiveData().getValue().size();
             case "search":
                 return cashFlowViewModel.getSearchListLiveData().getValue().size();
+            case "month":
+                return cashFlowViewModel.getMonthListLiveData().getValue().size();
         }
         return 0;
     }

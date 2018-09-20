@@ -19,6 +19,11 @@ public interface ArgumentVariables {
     public static final String ARG_INVENTORY_MID = "inventory mid";
     public static final String ARG_INVENTORY_STOCK = "invnetory stock";
 
+    public static final String ARG_DIFFERENCEBUTTON = "difference button";
+    public static final String ARG_ACTUAL_CASH ="actual cash";
+    public static final String ARG_CASHFLOW_MONTH_TOTAL="cashflow month total";
+
+
     //for pager to recognize what kind of fragment to new
     public static final String KIND_PATIENTS = "patients";
     public static final String KIND_PATIENTLIST = "patientlist";

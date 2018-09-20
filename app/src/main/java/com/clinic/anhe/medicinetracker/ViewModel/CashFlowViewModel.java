@@ -34,6 +34,9 @@ public class CashFlowViewModel extends ViewModel {
     private MutableLiveData<List<MedicineRecordCardViewModel>> searchListLiveData;
     private List<MedicineRecordCardViewModel> searchList;
 
+    private MutableLiveData<List<MedicineRecordCardViewModel>> monthListLiveData;
+    private List<MedicineRecordCardViewModel> monthList;
+
     private MutableLiveData<Map<Integer, String>> patientMapLiveData;
     private Map<Integer,String> patientMap;
 
@@ -54,6 +57,10 @@ public class CashFlowViewModel extends ViewModel {
         searchListLiveData = new MutableLiveData<>();
         searchList = new ArrayList<>();
         searchListLiveData.setValue(searchList);
+
+        monthListLiveData = new MutableLiveData<>();
+        monthList = new ArrayList<>();
+        monthListLiveData.setValue(monthList);
 
         patientMapLiveData = new MutableLiveData<>();
         patientMap = new HashMap<>();
@@ -82,6 +89,10 @@ public class CashFlowViewModel extends ViewModel {
 
     public MutableLiveData<List<MedicineRecordCardViewModel>> getSearchListLiveData() {
         return searchListLiveData;
+    }
+
+    public MutableLiveData<List<MedicineRecordCardViewModel>> getMonthListLiveData() {
+        return monthListLiveData;
     }
 
     public MutableLiveData<Map<Integer, String>> getPatientMapLiveData() {

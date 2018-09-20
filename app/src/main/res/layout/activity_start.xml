@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/iplabel"
             android:layout_below="@+id/portlabel"
-            android:text="8080"
+            android:text="8843"
             android:textColor="@color/menuTextIconColor"
             android:textSize="25dp"
             android:textStyle="bold" />

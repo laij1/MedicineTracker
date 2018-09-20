@@ -355,6 +355,7 @@ public class SummaryFragment  extends Fragment {
                 jsonObject.put("pid", cartViewModel.getCartSelectedPatientLiveData().getValue().getPID());
                 jsonObject.put("quantity", item.getQuantity());
                 jsonObject.put("createBy", nurseEid);
+                jsonObject.put("patientName", cartViewModel.getCartSelectedPatientLiveData().getValue().getPatientName());
                 int subtotal = item.getSubtotal();
                 jsonObject.put("subtotal", subtotal);
                 jsonArray.put(jsonObject);

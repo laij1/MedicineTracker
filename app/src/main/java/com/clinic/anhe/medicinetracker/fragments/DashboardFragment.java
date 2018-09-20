@@ -147,7 +147,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 AddEmployeeDialogFragment addEmployeeDialogFragment = AddEmployeeDialogFragment.newInstance(DashboardFragment.this, employeeList);
                 addEmployeeDialogFragment.show(getFragmentManager(), "addEmployee");
-                Toast.makeText(mContext, "adding Employee...", Toast.LENGTH_LONG).show();
+//                Toast.makeText(mContext, "adding Employee...", Toast.LENGTH_LONG).show();
             }
         });
 
