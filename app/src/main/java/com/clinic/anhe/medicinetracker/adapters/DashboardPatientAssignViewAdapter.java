@@ -171,7 +171,7 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, patientList.get(getAdapterPosition()), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(mContext, patientList.get(getAdapterPosition()), Toast.LENGTH_LONG).show();
                     //TODO: here goes to medicine catergory
                     findPatient(patientList.get(getAdapterPosition()), new VolleyCallBack() {
                         @Override
