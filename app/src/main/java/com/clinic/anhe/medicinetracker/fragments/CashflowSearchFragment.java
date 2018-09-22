@@ -103,6 +103,7 @@ public class CashflowSearchFragment extends Fragment {
         String defaultDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
 
         if(savedInstanceState != null) {
+
             mSelectStartDate.setText(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_STARTDATE));
             mSelectEndDate.setText(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_ENDDATE));
         }
@@ -132,12 +133,20 @@ public class CashflowSearchFragment extends Fragment {
             }
         });
 
+        mRecyclerView = view.findViewById(R.id.cashflow_search_recyclerview);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new CashflowTodayRecyclerViewAdapter(cashFlowViewModel, "search");
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+
         mStartSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(mContext, "start search....", Toast.LENGTH_LONG ).show();
                 url = "http://" + ip + ":" + port + "/anhe/record/charged/rangedate?start=" +
-                                       mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
+                        mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
                 refreshRecyclerView();
                 parseRecordListData(url, new VolleyCallBack() {
                     @Override
@@ -149,14 +158,7 @@ public class CashflowSearchFragment extends Fragment {
             }
         });
 
-
-        mRecyclerView = view.findViewById(R.id.cashflow_search_recyclerview);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new CashflowTodayRecyclerViewAdapter(cashFlowViewModel, "search");
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-
+        setRetainInstance(true);
         return view;
     }
 

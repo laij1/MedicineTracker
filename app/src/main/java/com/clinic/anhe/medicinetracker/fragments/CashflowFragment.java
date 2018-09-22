@@ -20,6 +20,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.CashFlowViewModel;
+import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
@@ -28,6 +30,8 @@ import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -84,11 +88,19 @@ public class CashflowFragment extends Fragment {
                                    .commit();
                         break;
                     case R.id.cashflow_search:
+                        List<MedicineRecordCardViewModel> searchList = cashFlowViewModel.getSearchListLiveData().getValue();
+                        searchList.removeAll(searchList);
+                        cashFlowViewModel.getSearchListLiveData().setValue(searchList);
+
                         CashflowSearchFragment cashflowSearchFragment = CashflowSearchFragment.newInstance();
                         transaction.replace(R.id.cashflow_fragment_container, cashflowSearchFragment)
                                    .commit();
                         break;
                     case R.id.cashflow_month:
+                        List<MedicineRecordCardViewModel> monthList = cashFlowViewModel.getMonthListLiveData().getValue();
+                        monthList.removeAll(monthList);
+                        cashFlowViewModel.getMonthListLiveData().setValue(monthList);
+
                         CashflowMonthFragment cashflowMonthFragment = new CashflowMonthFragment();
                         transaction.replace(R.id.cashflow_fragment_container, cashflowMonthFragment)
                                     .commit();

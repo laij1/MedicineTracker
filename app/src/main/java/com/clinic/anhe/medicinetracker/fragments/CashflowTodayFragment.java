@@ -113,6 +113,8 @@ public class CashflowTodayFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        setRetainInstance(true);
         return view;
     }
 
@@ -145,8 +147,12 @@ public class CashflowTodayFragment extends Fragment {
                                         item.setChargeAt(chargeAt);
                                         item.setChargeBy(chargeBy);
                                         Log.d("setting chargeat and chargeby", "" + item.getPid());
-                                        recordList.add(item);
-                                        totalRevenue += subtotal;
+                                        if(name.equalsIgnoreCase("實際金額")) {
+                                            //do nothing
+                                        } else {
+                                            totalRevenue += subtotal;
+                                            recordList.add(item);
+                                        }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

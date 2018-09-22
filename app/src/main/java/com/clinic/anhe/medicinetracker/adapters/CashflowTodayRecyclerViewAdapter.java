@@ -60,6 +60,7 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
         ip = globalVariable.getIpaddress();
         port = globalVariable.getPort();
 
+
         String url = "http://" + ip + ":" + port + "/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
@@ -99,6 +100,12 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
         }
         holder.itemName.setText(current.getMedicineName());
         holder.itemPayment.setText(current.getPayment().equalsIgnoreCase("CASH") ? "現" : "月");
+
+        if(current.getMedicineName().equalsIgnoreCase("實際金額")) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.actualcashBackground));
+        } else if (current.getMedicineName().equalsIgnoreCase("正負金額")) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.allowanceBackground));
+        }
 
         if(current.getChargeBy().equalsIgnoreCase("null")) {
             holder.itemChargeBy.setText("尚未結帳");

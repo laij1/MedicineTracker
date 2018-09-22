@@ -15,6 +15,9 @@ public class MedicineRecordCardViewModel {
 
     private String medicineName;
 
+    private String patientName;
+
+
     private Integer quantity;
 
     private String createBy;
@@ -84,6 +87,11 @@ public class MedicineRecordCardViewModel {
         this.medicineName = medicineName;
     }
 
+
+    public String getPatientName() { return patientName; }
+
+    public void setPatientName(String patientName) { this.patientName = patientName; }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -98,6 +106,27 @@ public class MedicineRecordCardViewModel {
 
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof MedicineRecordCardViewModel)) {
+            return false;
+        }
+
+        MedicineRecordCardViewModel record = (MedicineRecordCardViewModel) obj;
+
+        return record.getRid()==rid;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + medicineName.hashCode();
+        result = 31 * result + rid;
+        result = 31 * result + patientName.hashCode();
+        return result;
     }
 
     public String getChargeBy() {
