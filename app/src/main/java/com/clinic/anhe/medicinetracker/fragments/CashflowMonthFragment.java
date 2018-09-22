@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -49,7 +51,6 @@ public class CashflowMonthFragment extends Fragment {
     private CashflowTodayRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<MedicineRecordCardViewModel> recordList;
-    private List<MedicineRecordCardViewModel> diffList;
     private TextView mSelectEndDate;
     private ImageView mStartSearch;
 
@@ -96,24 +97,30 @@ public class CashflowMonthFragment extends Fragment {
         mTotal = view.findViewById(R.id.cashflow_month_total);
         mActualCash = view.findViewById(R.id.cashflow_month_actualcash);
 
+
         if(savedInstanceState != null) {
             mSelectEndDate.setText(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_ENDDATE));
             differenceButtonEnabled = savedInstanceState.getBoolean(ArgumentVariables.ARG_DIFFERENCEBUTTON);
             mActualCash.setText(savedInstanceState.getString(ArgumentVariables.ARG_ACTUAL_CASH));
             mTotal.setText(savedInstanceState.getString(ArgumentVariables.ARG_CASHFLOW_MONTH_TOTAL));
+            recordList = cashFlowViewModel.getMonthListLiveData().getValue();
+
         }
         else {
             mSelectEndDate.setText(defaultDate);
             differenceButtonEnabled = false;
+            recordList = new ArrayList<>();
 
         }
 
         cashFlowViewModel = ViewModelProviders.of(getParentFragment()).get(CashFlowViewModel.class);
 
         mContext = view.getContext();
-
-        recordList = new ArrayList<>();
-        diffList = new ArrayList<>();
+        View keyboardView = view.findFocus();
+        if (keyboardView != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
 
         int month = c.get(Calendar.MONTH) + 1;
 
@@ -157,7 +164,12 @@ public class CashflowMonthFragment extends Fragment {
         mDifferenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                diffList.removeAll(diffList);
+                View keyboardView = getView().findFocus();
+                if (keyboardView != null) {
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
                 int actual = Integer.parseInt(mActualCash.getText().toString());
                 int diff = actual - total;
                 url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
@@ -167,13 +179,14 @@ public class CashflowMonthFragment extends Fragment {
                     @Override
                     public void onResult(VolleyStatus status) {
                         if(status == VolleyStatus.SUCCESS) {
-
+                            mTotal.setText(String.valueOf(actual));
+                            total = actual;
                             cashFlowViewModel.getMonthListLiveData().setValue(recordList);
                             mAdapter.notifyDataSetChanged();
                         }
                     }
                 });
-                Toast.makeText(mContext, "正負金額產生中...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "產生正負金額 " + diff, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -318,7 +331,6 @@ public class CashflowMonthFragment extends Fragment {
 
         volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
     }
-
 
     public void setEndDateTextView(String endDate) {
         mSelectEndDate.setText(endDate);

@@ -15,6 +15,7 @@
         android:background="@drawable/gradientbackground"
         android:elevation="3dp"
         android:focusableInTouchMode="true"
+        android:focusable="true"
         android:orientation="vertical">
 
         <TextView
@@ -34,6 +35,8 @@
             android:layout_width="900dp"
             android:layout_height="65dp"
             android:layout_below="@id/cashflow_month_display"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:layout_centerInParent="true"
             android:background="@drawable/dialog_round">
 
