@@ -6,7 +6,9 @@ import android.arch.lifecycle.ViewModel;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddMedicineRecordViewModel extends ViewModel {
 
@@ -14,6 +16,9 @@ public class AddMedicineRecordViewModel extends ViewModel {
     MutableLiveData<EmployeeCardViewModel> selectedEmployee;
     MutableLiveData<List<EmployeeCardViewModel>> employListLiveData;
     List<EmployeeCardViewModel> employeeList;
+
+    private MutableLiveData<Map<String, Integer >> patientMapLiveData;
+    private Map<String, Integer> patientMap;
 
 
     public AddMedicineRecordViewModel() {
@@ -26,6 +31,10 @@ public class AddMedicineRecordViewModel extends ViewModel {
         EmployeeCardViewModel e = new EmployeeCardViewModel("", -1,"");
         selectedEmployee.postValue(e);
 
+        patientMapLiveData = new MutableLiveData<>();
+        patientMap = new HashMap<>();
+        patientMapLiveData.postValue(patientMap);
+
 
     }
 
@@ -35,5 +44,9 @@ public class AddMedicineRecordViewModel extends ViewModel {
 
     public MutableLiveData<List<EmployeeCardViewModel>> getEmployListLiveData() {
         return employListLiveData;
+    }
+
+    public MutableLiveData<Map<String, Integer>> getPatientMapLiveData() {
+        return patientMapLiveData;
     }
 }
