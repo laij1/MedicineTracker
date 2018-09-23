@@ -125,6 +125,11 @@ public class CashflowMonthFragment extends Fragment {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
+        //if recordlist live data size > 0, enable calculated diff button
+        if(cashFlowViewModel.getMonthListLiveData().getValue().size() > 0) {
+            enableDifferenceButton();
+        }
+
         int month = c.get(Calendar.MONTH) + 1;
 
         mDisplay = view.findViewById(R.id.cashflow_month_display);
@@ -208,9 +213,10 @@ public class CashflowMonthFragment extends Fragment {
                         calculateTotal();
                         //mTotal.setText(String.valueOf(total));
                         mAdapter.notifyDataSetChanged();
-                        mDifferenceButton.setEnabled(true);
-                        differenceButtonEnabled = true;
-                        mDifferenceButton.setColorFilter(getResources().getColor(R.color.colorPrimaryDark));
+                        enableDifferenceButton();
+//                        mDifferenceButton.setEnabled(true);
+//                        differenceButtonEnabled = true;
+//                        mDifferenceButton.setColorFilter(getResources().getColor(R.color.colorPrimaryDark));
                     }
                 });
             }
@@ -235,6 +241,12 @@ public class CashflowMonthFragment extends Fragment {
 
     }
 
+    public void enableDifferenceButton() {
+        differenceButtonEnabled = true;
+        mDifferenceButton.setEnabled(true);
+        mDifferenceButton.setColorFilter(getResources().getColor(R.color.colorPrimaryDark));
+    }
+
     public void getRecordList() {
         url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                 + "/anhe/record/charged/rangedate?start=" +
@@ -245,6 +257,7 @@ public class CashflowMonthFragment extends Fragment {
             public void onResult(VolleyStatus status) {
                 if(status == VolleyStatus.SUCCESS) {
                     cashFlowViewModel.getMonthListLiveData().setValue(recordList);
+                    enableDifferenceButton();
                     calculateTotal();
                     mAdapter.notifyDataSetChanged();
                 }
@@ -311,8 +324,7 @@ public class CashflowMonthFragment extends Fragment {
 
 
     public void calculateTotal () {
-
-        Log.d("size of the new record",cashFlowViewModel.getMonthListLiveData().getValue().size()+"");
+//        Log.d("size of the new record",cashFlowViewModel.getMonthListLiveData().getValue().size()+"");
         total = 0;
         for(MedicineRecordCardViewModel r : cashFlowViewModel.getMonthListLiveData().getValue()) {
             if(r.getMedicineName().equalsIgnoreCase("實際金額")) {
