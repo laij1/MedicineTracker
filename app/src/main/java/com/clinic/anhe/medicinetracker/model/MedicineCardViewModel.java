@@ -6,7 +6,7 @@ import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
 public class MedicineCardViewModel {
 
-    private String medicinName;
+    private String medicineName;
     private String medicinePrice;
     private String medicineDose;
     private Integer medicineId;
@@ -22,15 +22,36 @@ public class MedicineCardViewModel {
     public MedicineCardViewModel(
             Integer medicineId, String medicineName, String medicinePrice, String medicineDose, Integer medicineStock, String medicineCategory) {
         this.medicineId = medicineId;
-        this.medicinName = medicineName;
+        this.medicineName = medicineName;
         this.medicinePrice = medicinePrice;
         this.medicineDose = medicineDose;
         this.medicineStock = medicineStock;
         this.medicineCategory = medicineCategory;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof MedicineCardViewModel)) {
+            return false;
+        }
+
+        MedicineCardViewModel med = (MedicineCardViewModel) obj;
+
+        return med.getMedicineId() == medicineId;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + medicineName.hashCode();
+        result = 31 * result + medicineId;
+        return result;
+    }
+
+
     public String getMedicinName(){
-        return medicinName;
+        return medicineName;
     }
 
     public String getMedicinePrice(){
@@ -42,18 +63,19 @@ public class MedicineCardViewModel {
     public int getQuantity() { return quantity; }
 
     public void setQuantity(int i) {
+        quantity = i;
         Log.d("quantity at cartviewmodel", i + "");
-        if(medicinName.equalsIgnoreCase("Carnitine(原)")) {
-            int r = i / 10;
-            if(i < 10) {
-                quantity = i;
-            } else {
-                int mod = i % 10;
-                quantity = (r * 10) + (mod + (2 * r));
-            }
-        } else {
-            quantity = i;
-        }
+//        if(medicinName.equalsIgnoreCase("Carnitine(原)")) {
+//            int r = i / 10;
+//            if(i < 10) {
+//                quantity = i;
+//            } else {
+//                int mod = i % 10;
+//                quantity = (r * 10) + (mod + (2 * r));
+//            }
+//        } else {
+//            quantity = i;
+//        }
     }
 
     public void setCashPayment(boolean cash) {
@@ -116,9 +138,9 @@ public class MedicineCardViewModel {
 
     public void calculateSubtotal() {
         //TODO: here we need to calculate 買ㄧ送二
-        if(medicinName.equalsIgnoreCase("Carnitine(原)")) {
+        if(medicineName.equalsIgnoreCase("Carnitine(原)")) {
          int r = quantity / 10;
-            if(quantity < 10) {
+            if(quantity <= 10) {
                 subtotal = quantity * Integer.parseInt(medicinePrice);
             }else {
                 int mod = quantity % 10;

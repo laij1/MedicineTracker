@@ -98,6 +98,7 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
                 break;
             }
         }
+        holder.patientName.setText(current.getPatientName());
         holder.itemName.setText(current.getMedicineName());
         holder.itemPayment.setText(current.getPayment().equalsIgnoreCase("CASH") ? "現" : "月");
 
@@ -125,13 +126,14 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
             holder.itemChargeAt.setText(current.getChargeAt());
         }
 
+
         //get patient name
-        for(Map.Entry<Integer, String> entry : cashFlowViewModel.getPatientMapLiveData().getValue().entrySet()) {
-            if (entry.getKey().intValue() == current.getPid().intValue()) {
-                holder.patientName.setText(entry.getValue());
-                break;
-            }
-        }
+//        for(Map.Entry<Integer, String> entry : cashFlowViewModel.getPatientMapLiveData().getValue().entrySet()) {
+//            if (entry.getKey().intValue() == current.getPid().intValue()) {
+//                holder.patientName.setText(entry.getValue());
+//                break;
+//            }
+//        }
 
     }
 

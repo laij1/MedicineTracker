@@ -126,6 +126,7 @@ public class CashflowUnchargedFragment extends Fragment {
                                         Integer pid = object.getInt("pid");
                                         Integer mid = object.getInt("mid");
                                         String name = object.getString("medicineName");
+                                        String pName = object.getString("patientName");
                                         Integer quantity = object.getInt("quantity");
                                         Integer subtotal = object.getInt("subtotal");
                                         String createBy = object.getString("createBy");
@@ -137,6 +138,7 @@ public class CashflowUnchargedFragment extends Fragment {
                                                 subtotal, payment, pid, createBy);
                                         item.setChargeAt(chargeAt);
                                         item.setChargeBy(chargeBy);
+                                        item.setPatientName(pName);
                                         Log.d("setting chargeat and chargeby", "" + item.getPid());
                                         recordList.add(item);
                                         totaluncharged += subtotal;

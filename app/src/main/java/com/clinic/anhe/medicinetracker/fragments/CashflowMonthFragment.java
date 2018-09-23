@@ -239,6 +239,7 @@ public class CashflowMonthFragment extends Fragment {
         url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                 + "/anhe/record/charged/rangedate?start=" +
                 firstDay + "&end=" + mSelectEndDate.getText().toString();
+        recordList.removeAll(recordList);
         parseRecordListData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -310,12 +311,16 @@ public class CashflowMonthFragment extends Fragment {
 
 
     public void calculateTotal () {
+
+        Log.d("size of the new record",cashFlowViewModel.getMonthListLiveData().getValue().size()+"");
         total = 0;
         for(MedicineRecordCardViewModel r : cashFlowViewModel.getMonthListLiveData().getValue()) {
             if(r.getMedicineName().equalsIgnoreCase("實際金額")) {
-                                            //do nothing
+                //do nothing
             } else {
+//                Log.d("the subtotal is",r.getSubtotal() + "");
                 total += r.getSubtotal().intValue();
+//                Log.d("the total is",total + "");
             }
         }
         mTotal.setText(String.valueOf(total));

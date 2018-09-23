@@ -206,9 +206,9 @@ public class SummaryFragment  extends Fragment {
                             case 5:
                                 pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.warning_stroke_color));
                                 break;
-                            case 6:
-                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.success_stroke_color));
-                                break;
+                            //
+//                                pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.success_stroke_color));
+                               //ak;
                         }
                     }
 
@@ -294,9 +294,19 @@ public class SummaryFragment  extends Fragment {
         for(MedicineCardViewModel item : cartList) {
             Log.d("now total is: " + total, "item subtotal: " + item.getSubtotal());
             total += item.getSubtotal();
+
+            //here change the quanitity for 買十送二
+            if(item.getMedicinName().equalsIgnoreCase("Carnitine(原)") || item.getQuantity() >= 10) {
+                int q = item.getQuantity();
+                int r = q / 10;
+                int mod = q % 10;
+                int quantity = (r * 10) + (mod + (2 * r));
+                item.setQuantity(quantity);
+            }
         }
 
         mTotal.setText(String.valueOf(total));
+
 
         mAdapter = new SummaryRecyclerViewAdapter(cartList);
 

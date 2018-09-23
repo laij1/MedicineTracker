@@ -40,7 +40,7 @@ public class CashflowFragment extends Fragment {
     BottomNavigationView mBottomNavigationView;
     private CashFlowViewModel cashFlowViewModel;
     private VolleyController volleyController;
-    private Map<Integer, String> patientMap;
+//    private Map<Integer, String> patientMap;
     private Context mContext;
     private GlobalVariable globalVariable;
 
@@ -59,15 +59,15 @@ public class CashflowFragment extends Fragment {
         
         mContext = view.getContext();
         //TODO: livedata
-        patientMap = new HashMap<>();
-        String url = url = "http://" + globalVariable.getInstance().getIpaddress() +
-                ":" + globalVariable.getInstance().getPort() + "/anhe/patient/all";
-        populatePatientMap(url, new VolleyCallBack() {
-            @Override
-            public void onResult(VolleyStatus status) {
-                cashFlowViewModel.getPatientMapLiveData().setValue(patientMap);
-            }
-        });
+//        patientMap = new HashMap<>();
+////        String url = url = "http://" + globalVariable.getInstance().getIpaddress() +
+////                ":" + globalVariable.getInstance().getPort() + "/anhe/patient/all";
+////        populatePatientMap(url, new VolleyCallBack() {
+////            @Override
+////            public void onResult(VolleyStatus status) {
+////                cashFlowViewModel.getPatientMapLiveData().setValue(patientMap);
+////            }
+////        });
 
         cashFlowViewModel = ViewModelProviders.of(this).get(CashFlowViewModel.class);
 
@@ -115,39 +115,39 @@ public class CashflowFragment extends Fragment {
         return view;
     }
 
-    public void populatePatientMap(String url, final VolleyCallBack volleyCallBack) {
-        JsonArrayRequest jsonArrayRequest =
-                new JsonArrayRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                for(int i = 0; i < response.length(); i++){
-                                    JSONObject object = null;
-                                    try {
-                                        object = response.getJSONObject(i);
-                                        Integer pid = object.getInt("pid");
-                                        String name = object.getString("name");
-//                                        String shift = object.getString("shift");
-//                                        String ic = object.getString("ic");
-//                                        String day = object.getString("day");
+//    public void populatePatientMap(String url, final VolleyCallBack volleyCallBack) {
+//        JsonArrayRequest jsonArrayRequest =
+//                new JsonArrayRequest(Request.Method.GET, url, null,
+//                        new Response.Listener<JSONArray>() {
+//                            @Override
+//                            public void onResponse(JSONArray response) {
+//                                for(int i = 0; i < response.length(); i++){
+//                                    JSONObject object = null;
+//                                    try {
+//                                        object = response.getJSONObject(i);
+//                                        Integer pid = object.getInt("pid");
+//                                        String name = object.getString("name");
+////                                        String shift = object.getString("shift");
+////                                        String ic = object.getString("ic");
+////                                        String day = object.getString("day");
+////
+//                                        patientMap.put(new Integer(pid), name);
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    Log.d("getting patient data from database", "CashFlowViewModel");
+//                                    volleyCallBack.onResult(VolleyStatus.SUCCESS);
+//                                }
+//                            }
+//                        },
+//                        new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                                Log.d("VOLLEY", error.toString());
+//                                volleyCallBack.onResult(VolleyStatus.FAIL);
+//                            }
+//                        } );
 //
-                                        patientMap.put(new Integer(pid), name);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    Log.d("getting patient data from database", "CashFlowViewModel");
-                                    volleyCallBack.onResult(VolleyStatus.SUCCESS);
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
-                                volleyCallBack.onResult(VolleyStatus.FAIL);
-                            }
-                        } );
-
-        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
-    }
+//        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+//    }
 }

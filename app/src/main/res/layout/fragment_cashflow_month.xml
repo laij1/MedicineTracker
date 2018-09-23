@@ -180,7 +180,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="28dp"
         android:layout_marginEnd="27dp"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/darkerFAB"
         android:elevation="12dp"
         android:src="@drawable/ic_add_item"
         android:tint="@android:color/white"

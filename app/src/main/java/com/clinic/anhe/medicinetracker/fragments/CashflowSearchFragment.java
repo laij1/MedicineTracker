@@ -185,6 +185,7 @@ public class CashflowSearchFragment extends Fragment {
                                         Integer pid = object.getInt("pid");
                                         Integer mid = object.getInt("mid");
                                         String name = object.getString("medicineName");
+                                        String pName = object.getString("patientName");
                                         Integer quantity = object.getInt("quantity");
                                         Integer subtotal = object.getInt("subtotal");
                                         String createBy = object.getString("createBy");
@@ -195,6 +196,7 @@ public class CashflowSearchFragment extends Fragment {
                                                 subtotal, payment, pid, createBy);
                                         item.setChargeAt(chargeAt);
                                         item.setChargeBy(chargeBy);
+                                        item.setPatientName(pName);
                                         recordList.add(item);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
