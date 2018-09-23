@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -55,6 +57,7 @@ public class CashflowTodayFragment extends Fragment {
     private int totalRevenue = 0;
     private LinearLayoutManager mLayoutManager;
     private CashflowTodayRecyclerViewAdapter mAdapter;
+    private FloatingActionButton mAddOtherMedicineFAB;
     private CashFlowViewModel cashFlowViewModel;
 
 
@@ -78,6 +81,7 @@ public class CashflowTodayFragment extends Fragment {
 
         recordList = new ArrayList<>();
 
+        mAddOtherMedicineFAB = view.findViewById(R.id.add_other_medicine_record_fab);
         mDisplay = view.findViewById(R.id.cashflow_today_display);
         //TODO: get current day and display
         Calendar c = Calendar.getInstance();
@@ -109,6 +113,14 @@ public class CashflowTodayFragment extends Fragment {
             }
         });
 
+        mAddOtherMedicineFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddMedicineRecordDialogFragment addMedicineRecordDialogFragment = AddMedicineRecordDialogFragment.newInstance();
+                addMedicineRecordDialogFragment.show(getFragmentManager(), "addMedicineRecord");
+                Toast.makeText(mContext, "adding new medicine record...", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         mRecyclerView.setLayoutManager(mLayoutManager);
