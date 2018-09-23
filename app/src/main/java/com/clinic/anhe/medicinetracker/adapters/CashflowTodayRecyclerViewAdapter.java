@@ -104,7 +104,11 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
         if(current.getMedicineName().equalsIgnoreCase("實際金額")) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.actualcashBackground));
         } else if (current.getMedicineName().equalsIgnoreCase("正負金額")) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.differenceBackground));
+        } else if (current.getMedicineName().equalsIgnoreCase("補零用金")) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.allowanceBackground));
+        }else if (current.getMedicineName().equalsIgnoreCase("存入銀行")) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.bankBackground));
         }
 
         if(current.getChargeBy().equalsIgnoreCase("null")) {

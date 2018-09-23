@@ -1,6 +1,5 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
-import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,12 +26,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.clinic.anhe.medicinetracker.R;
-import com.clinic.anhe.medicinetracker.ViewModel.AddMedicineRecordViewModel;
+import com.clinic.anhe.medicinetracker.ViewModel.AddFinanceRecordViewModel;
+import com.clinic.anhe.medicinetracker.adapters.AddFinanceRecordRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.adapters.AddMedicineRecordRecyclerViewAdapter;
-import com.clinic.anhe.medicinetracker.adapters.SignatureRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
-import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
-import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
@@ -42,35 +40,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class AddMedicineRecordDialogFragment extends DialogFragment {
+public class AddFinanceRecordDialogFragment  extends DialogFragment {
 
-    private EditText mTarget;
-    private EditText mItem;
+    private RadioGroup mRadioGrop;
+    private String itemName= "";
     private EditText mSubtotal;
     private RecyclerView mSignature;
     private GridLayoutManager mLayoutManager;
-    private AddMedicineRecordRecyclerViewAdapter mAdapter;
+    private AddFinanceRecordRecyclerViewAdapter mAdapter;
 
     private TextView mConfirmButton;
     private TextView mCancelButton;
 
-    private AddMedicineRecordViewModel addMedicineRecordViewModel;
-    private List<EmployeeCardViewModel> employeeList;
-//    private static Map<String, Integer> employee;
-    private Map<String, Integer> patientMap;
-    private static CashflowTodayFragment parent;
 
     private Context mContext;
+    private List<EmployeeCardViewModel> employeeList;
+    private AddFinanceRecordViewModel addFinanceRecordViewModel;
     private VolleyController volleyController;
     String url = "";
     private GlobalVariable globalVariable;
+    private static CashflowMonthFragment parent;
 
-    public static AddMedicineRecordDialogFragment newInstance(CashflowTodayFragment parentFrag) {
-        AddMedicineRecordDialogFragment fragment = new AddMedicineRecordDialogFragment();
+
+
+    public static AddFinanceRecordDialogFragment newInstance(CashflowMonthFragment parentFrag){
+        AddFinanceRecordDialogFragment fragment = new AddFinanceRecordDialogFragment();
         parent = parentFrag;
         return fragment;
     }
@@ -87,24 +83,21 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_add_medicine_record, container, false);
+        View view = inflater.inflate(R.layout.dialog_add_finance_record, container, false);
+
         mContext = view.getContext();
-
-        addMedicineRecordViewModel = ViewModelProviders.of(this).get(AddMedicineRecordViewModel.class);
         employeeList = new ArrayList<>();
-        patientMap = new HashMap<>();
 
-        mTarget = view.findViewById(R.id.add_medicine_record_target);
-        mItem = view.findViewById(R.id.add_medicine_record_item);
-        mSubtotal = view.findViewById(R.id.add_medicine_record_subtotal);
+        addFinanceRecordViewModel = ViewModelProviders.of(this).get(AddFinanceRecordViewModel.class);
 
-        mConfirmButton = view.findViewById(R.id.add_medicine_record_confirmbutton);
-        mCancelButton = view.findViewById(R.id.add_medicine_record_cancelbutton);
-
-        mSignature = view.findViewById(R.id.add_medicine_record_recyclerview);
+        mRadioGrop = view.findViewById(R.id.add_finance_record_radiogroup);
+        mSubtotal = view.findViewById(R.id.add_finance_record_subtotal);
+        mSignature = view.findViewById(R.id.add_finance_record_recyclerview);
+        mConfirmButton = view.findViewById(R.id.add_finance_record_confirmbutton);
+        mCancelButton = view.findViewById(R.id.add_finance_record_cancelbutton);
         mSignature.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getContext(), 3);
-        mAdapter = new AddMedicineRecordRecyclerViewAdapter(addMedicineRecordViewModel);
+        mAdapter = new AddFinanceRecordRecyclerViewAdapter(addFinanceRecordViewModel);
         mSignature.setLayoutManager(mLayoutManager);
         mSignature.setAdapter(mAdapter);
 
@@ -114,84 +107,63 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
             @Override
             public void onResult(VolleyStatus status) {
                 if(status == VolleyStatus.SUCCESS) {
-                    addMedicineRecordViewModel.getEmployListLiveData().setValue(employeeList);
+                    addFinanceRecordViewModel.getEmployListLiveData().setValue(employeeList);
                     mAdapter.notifyDataSetChanged();
                 }
             }
         });
 
-        url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                + "/anhe/patient/all";
-        populatePatientMap(url, new VolleyCallBack() {
+
+        mRadioGrop.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onResult(VolleyStatus status) {
-                if(status == VolleyStatus.SUCCESS) {
-                    addMedicineRecordViewModel.getPatientMapLiveData().setValue(patientMap);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.add_finance_record_allowance:
+                        itemName = "補零用金";
+                        break;
+                    case R.id.add_finance_record_bank:
+                        itemName = "存入銀行";
+                        break;
                 }
             }
         });
 
-
         mConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(addMedicineRecordViewModel.getSelectedEmployee().getValue().getEid()== -1) {
+                if (addFinanceRecordViewModel.getSelectedEmployee().getValue().getEid() == -1) {
                     Toast.makeText(mContext, "請簽名", Toast.LENGTH_SHORT).show();
-                } else if (mItem.getText().toString().equalsIgnoreCase("")) {
-                    Toast.makeText(mContext, "請輸入項目名稱", Toast.LENGTH_SHORT).show();
+                } else if(itemName.equalsIgnoreCase("")) {
+                    Toast.makeText(mContext, "請選擇出納項目", Toast.LENGTH_SHORT).show();
                 } else {
-                    //see if target is a patient
-                    String targetName = mTarget.getText().toString();
-                    Integer targetPID;
-                    if(addMedicineRecordViewModel.getPatientMapLiveData().getValue().containsKey(targetName)) {
-                        Log.d("we have patient in our database" ,targetName);
-                        targetPID = addMedicineRecordViewModel.getPatientMapLiveData().getValue().get(targetName);
-                    } else {
-                        targetPID = Integer.valueOf(3);
-                        Log.d("we do not have patient in our database" ,targetName);
+                    Integer create_by = addFinanceRecordViewModel.getSelectedEmployee().getValue().getEid();
+                    if(itemName.equalsIgnoreCase("補零用金")) {
+                        url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
+                                + "/anhe/record/add?name=" + itemName
+                                + "&mid=1" + "&pid=1" + "&pname=帳本"
+                                + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
+                    } else if (itemName.equalsIgnoreCase("存入銀行")) {
+                        url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
+                                + "/anhe/record/add?name=" + itemName
+                                + "&mid=4" + "&pid=1" + "&pname=帳本"
+                                + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
                     }
 
-                    Integer create_by = addMedicineRecordViewModel.getSelectedEmployee().getValue().getEid();
-                    //if pid is not 0,
-                    if(targetPID!= 3) {
-//                        @RequestParam String name, @RequestParam Integer mid,
-//                        @RequestParam Integer pid, @RequestParam String pname,
-//                        @RequestParam Integer create_by,@RequestParam Integer subtotal)
-                         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                                 + "/anhe/record/add?name=" + mItem.getText().toString()
-                                 + "&mid=5" + "&pid=" + targetPID + "&pname=" + mTarget.getText().toString()
-                                 + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
-                         addMedicineRecord(url, new VolleyCallBack() {
-                             @Override
-                             public void onResult(VolleyStatus status) {
-                                 if(status == VolleyStatus.SUCCESS) {
-                                     Toast.makeText(mContext, "加入項目成功", Toast.LENGTH_SHORT).show();
-                                     parent.getRecordList();
-                                     dismiss();
-                                 }
-                             }
-                         });
-                    //if pid is 2
-                    } else {
-                        url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                                + "/anhe/record/add?name=" + mItem.getText().toString()
-                                + "&mid=5" + "&pid=3" + "&pname=" + mTarget.getText().toString()
-                                + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
-                        addMedicineRecord(url, new VolleyCallBack() {
+                    addMedicineRecord(url, new VolleyCallBack() {
                             @Override
                             public void onResult(VolleyStatus status) {
                                 if(status == VolleyStatus.SUCCESS) {
-                                    Toast.makeText(mContext, "加入項目成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "加入"+ itemName+ "成功", Toast.LENGTH_SHORT).show();
                                     parent.getRecordList();
                                     dismiss();
                                 }
                             }
                         });
+                    dismiss();
 
-                    }
                 }
 
-                //Toast.makeText(mContext, "confirm to add medicine record", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -201,6 +173,7 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                 dismiss();
             }
         });
+
 
 
         if (getDialog().getWindow() != null) {
@@ -249,42 +222,6 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
 
         volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
 
-    }
-
-    public void populatePatientMap(String url, final VolleyCallBack volleyCallBack) {
-        JsonArrayRequest jsonArrayRequest =
-                new JsonArrayRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                for(int i = 0; i < response.length(); i++){
-                                    JSONObject object = null;
-                                    try {
-                                        object = response.getJSONObject(i);
-                                        Integer pid = object.getInt("pid");
-                                        String name = object.getString("name");
-//                                        String shift = object.getString("shift");
-//                                        String ic = object.getString("ic");
-//                                        String day = object.getString("day");
-//
-                                        patientMap.put(name, new Integer(pid) );
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    Log.d("getting patient data from database", "CashFlowViewModel");
-                                    volleyCallBack.onResult(VolleyStatus.SUCCESS);
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
-                                volleyCallBack.onResult(VolleyStatus.FAIL);
-                            }
-                        } );
-
-        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
     }
 
     public void addMedicineRecord(String url, final VolleyCallBack volleyCallBack) {

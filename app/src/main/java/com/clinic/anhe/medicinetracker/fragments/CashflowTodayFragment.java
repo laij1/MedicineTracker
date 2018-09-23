@@ -53,8 +53,9 @@ public class CashflowTodayFragment extends Fragment {
     private GlobalVariable globalVariable;
     private String ip;
     private String port;
+    private String todayDate;
     private List<MedicineRecordCardViewModel> recordList;
-    private int totalRevenue = 0;
+//    private int totalRevenue = 0;
     private LinearLayoutManager mLayoutManager;
     private CashflowTodayRecyclerViewAdapter mAdapter;
     private FloatingActionButton mAddOtherMedicineFAB;
@@ -90,7 +91,7 @@ public class CashflowTodayFragment extends Fragment {
                         + month + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" ;
 
         mDisplay.setText(today);
-        mRevenue = view.findViewById(R.id.cashflow_today_revenue);
+//        mRevenue = view.findViewById(R.id.cashflow_today_revenue);
 
 
         mRecyclerView = view.findViewById(R.id.cashflow_today_recyclerview);
@@ -100,25 +101,16 @@ public class CashflowTodayFragment extends Fragment {
 
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
-        String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
+        todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
 
-        url = "http://" + ip + ":" + port + "/anhe/record/chargedate?start=" + todayDate;
-        parseRecordListData(url, new VolleyCallBack() {
-            @Override
-            public void onResult(VolleyStatus status) {
-                //TODO:update livedata
-                cashFlowViewModel.getTodayListLiveData().setValue(recordList);
-                mRevenue.setText(String.valueOf(totalRevenue));
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+        getRecordList();
 
         mAddOtherMedicineFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddMedicineRecordDialogFragment addMedicineRecordDialogFragment = AddMedicineRecordDialogFragment.newInstance();
+                AddMedicineRecordDialogFragment addMedicineRecordDialogFragment = AddMedicineRecordDialogFragment.newInstance(CashflowTodayFragment.this);
                 addMedicineRecordDialogFragment.show(getFragmentManager(), "addMedicineRecord");
-                Toast.makeText(mContext, "adding new medicine record...", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -130,13 +122,25 @@ public class CashflowTodayFragment extends Fragment {
         return view;
     }
 
+    public void getRecordList(){
+        url = "http://" + ip + ":" + port + "/anhe/record/chargedate?start=" + todayDate;
+        parseRecordListData(url, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+                //TODO:update livedata
+                cashFlowViewModel.getTodayListLiveData().setValue(recordList);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
-                                totalRevenue = 0;
+//                                totalRevenue = 0;
                                 for(int i = 0; i < response.length(); i++){
                                     JSONObject object = null;
                                     try {
@@ -159,10 +163,9 @@ public class CashflowTodayFragment extends Fragment {
                                         item.setChargeAt(chargeAt);
                                         item.setChargeBy(chargeBy);
                                         Log.d("setting chargeat and chargeby", "" + item.getPid());
-                                        if(name.equalsIgnoreCase("實際金額")) {
+                                        if(name.equalsIgnoreCase("實際金額") || name.equalsIgnoreCase("正負金額")) {
                                             //do nothing
                                         } else {
-                                            totalRevenue += subtotal;
                                             recordList.add(item);
                                         }
                                     } catch (JSONException e) {

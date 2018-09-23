@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +54,7 @@ public class CashflowMonthFragment extends Fragment {
     private List<MedicineRecordCardViewModel> recordList;
     private TextView mSelectEndDate;
     private ImageView mStartSearch;
+    private FloatingActionButton mAddFinanceRecordFAB;
 
     private int total = 0;
     private TextView mTotal;
@@ -96,6 +98,7 @@ public class CashflowMonthFragment extends Fragment {
         mSelectEndDate = view.findViewById(R.id.cashflow_month_enddate);
         mTotal = view.findViewById(R.id.cashflow_month_total);
         mActualCash = view.findViewById(R.id.cashflow_month_actualcash);
+        mAddFinanceRecordFAB = view.findViewById(R.id.add_finance_record_fab);
 
 
         if(savedInstanceState != null) {
@@ -202,7 +205,8 @@ public class CashflowMonthFragment extends Fragment {
                     @Override
                     public void onResult(VolleyStatus status) {
                         cashFlowViewModel.getMonthListLiveData().setValue(recordList);
-                        mTotal.setText(String.valueOf(total));
+                        calculateTotal();
+                        //mTotal.setText(String.valueOf(total));
                         mAdapter.notifyDataSetChanged();
                         mDifferenceButton.setEnabled(true);
                         differenceButtonEnabled = true;
@@ -212,6 +216,14 @@ public class CashflowMonthFragment extends Fragment {
             }
         });
 
+        mAddFinanceRecordFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddFinanceRecordDialogFragment addFinanceRecordDialogFragment = AddFinanceRecordDialogFragment.newInstance(CashflowMonthFragment.this);
+                addFinanceRecordDialogFragment.show(getFragmentManager(), "addFinanceRecord");
+                Toast.makeText(mContext, "加入出納項目", Toast.LENGTH_SHORT).show();
+            }
+        });
         setRetainInstance(true);
         return view;
     }
@@ -223,13 +235,30 @@ public class CashflowMonthFragment extends Fragment {
 
     }
 
+    public void getRecordList() {
+        url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
+                + "/anhe/record/charged/rangedate?start=" +
+                firstDay + "&end=" + mSelectEndDate.getText().toString();
+        parseRecordListData(url, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+                if(status == VolleyStatus.SUCCESS) {
+                    cashFlowViewModel.getMonthListLiveData().setValue(recordList);
+                    calculateTotal();
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
-                                total = 0;
+//                                total = 0;
                                 for(int i = 0; i < response.length(); i++){
                                     JSONObject object = null;
                                     try {
@@ -252,12 +281,14 @@ public class CashflowMonthFragment extends Fragment {
                                         item.setPatientName(patientName);
                                         item.setChargeAt(chargeAt);
                                         item.setChargeBy(chargeBy);
-                                        recordList.add(item);
-                                        if(name.equalsIgnoreCase("實際金額")) {
-                                            //do nothing
-                                        } else {
-                                            total += subtotal.intValue();
+                                        if(!recordList.contains(item)) {
+                                            recordList.add(item);
                                         }
+//                                        if(name.equalsIgnoreCase("實際金額")) {
+//                                            //do nothing
+//                                        } else {
+//                                            total += subtotal.intValue();
+//                                        }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -275,6 +306,19 @@ public class CashflowMonthFragment extends Fragment {
                         } );
 
         volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+    }
+
+
+    public void calculateTotal () {
+        total = 0;
+        for(MedicineRecordCardViewModel r : cashFlowViewModel.getMonthListLiveData().getValue()) {
+            if(r.getMedicineName().equalsIgnoreCase("實際金額")) {
+                                            //do nothing
+            } else {
+                total += r.getSubtotal().intValue();
+            }
+        }
+        mTotal.setText(String.valueOf(total));
     }
 
     private void generateActualCash(String url, final VolleyCallBack volleyCallBack) {

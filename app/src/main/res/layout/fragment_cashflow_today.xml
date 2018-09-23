@@ -10,58 +10,58 @@
     <RelativeLayout
         android:id="@+id/cashflow_today_upperview"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="130dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/gradientbackground"
         android:elevation="3dp"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="700dp"
-            android:layout_height="65dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="23dp"
-            android:background="@drawable/dialog_round">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="700dp"-->
+            <!--android:layout_height="65dp"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginBottom="23dp"-->
+            <!--android:background="@drawable/dialog_round">-->
 
 
-            <ImageView
-                android:id="@+id/cashflow_today_revenuesign"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="240dp"
-                android:src="@drawable/ic_price"
-                android:tint="@color/menuTextIconColor" />
+            <!--<ImageView-->
+                <!--android:id="@+id/cashflow_today_revenuesign"-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginStart="240dp"-->
+                <!--android:src="@drawable/ic_price"-->
+                <!--android:tint="@color/menuTextIconColor" />-->
 
-            <TextView
-                android:id="@+id/cashflow_today_revenuetitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/cashflow_today_revenuesign"
-                android:paddingLeft="15dp"
-                android:text="今日總收入："
-                android:textColor="@color/menuTextIconColor"
-                android:textSize="23dp"
-                android:textStyle="bold" />
+            <!--<TextView-->
+                <!--android:id="@+id/cashflow_today_revenuetitle"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toEndOf="@+id/cashflow_today_revenuesign"-->
+                <!--android:paddingLeft="15dp"-->
+                <!--android:text="今日總收入："-->
+                <!--android:textColor="@color/menuTextIconColor"-->
+                <!--android:textSize="23dp"-->
+                <!--android:textStyle="bold" />-->
 
 
-            <TextView
-                android:id="@+id/cashflow_today_revenue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/cashflow_today_revenuetitle"
-                android:paddingStart="15dp"
-                android:text="0"
-                android:textColor="@color/menuTextIconColor"
-                android:textSize="23dp"
-                android:textStyle="bold" />
+            <!--<TextView-->
+                <!--android:id="@+id/cashflow_today_revenue"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toEndOf="@+id/cashflow_today_revenuetitle"-->
+                <!--android:paddingStart="15dp"-->
+                <!--android:text="0"-->
+                <!--android:textColor="@color/menuTextIconColor"-->
+                <!--android:textSize="23dp"-->
+                <!--android:textStyle="bold" />-->
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
         <TextView
             android:id="@+id/cashflow_today_display"
