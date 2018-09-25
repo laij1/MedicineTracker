@@ -102,7 +102,7 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
                 @Override
                 public void onClick(View v) {
                     MedicineDetailFragment medicineDetailFragment = MedicineDetailFragment.newInstance(name.getText().toString());
-                    FragmentTransaction transaction = mFragment.getFragmentManager().beginTransaction();
+                    FragmentTransaction transaction = mFragment.getActivity().getSupportFragmentManager().beginTransaction();
 
                     transaction.replace(R.id.medicine_manage_layout, medicineDetailFragment)
                             .addToBackStack(ArgumentVariables.TAG_MEDICINE_DETAIL_FRAGMENT)

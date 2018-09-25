@@ -12,6 +12,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicineSimpleFragment extends Fragment {
+public class MedicineSimpleFragment extends Fragment implements View.OnKeyListener {
 
     private MedicineType medicineType;
     private RecyclerView mRecyclerView;
@@ -118,6 +119,19 @@ public class MedicineSimpleFragment extends Fragment {
 //setRetainInstance to true is important so that onSaveInstanceState will work
         setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                //use getChildFragmentManager instead of getSupportedFragmentManager
+                getActivity().getSupportFragmentManager().popBackStack();
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void refreshRecyclerView(){
