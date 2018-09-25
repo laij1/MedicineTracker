@@ -178,6 +178,15 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(mAdapter != null) {
+            prepareEmployeeData();
+        }
+        Log.d("calling setUserVisbleHint", "Chloe" + isVisibleToUser);
+    }
+
     private void parseEmployeeData(String url, final VolleyCallBack volleyCallBack) {
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,

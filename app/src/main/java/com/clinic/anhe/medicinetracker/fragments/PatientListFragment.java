@@ -10,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import com.clinic.anhe.medicinetracker.utils.Shift;
 
 import java.util.List;
 
-public class PatientListFragment extends Fragment implements ArgumentVariables {
+public class PatientListFragment extends Fragment implements ArgumentVariables, View.OnKeyListener  {
 
     //patients cardview
     private List<PatientsCardViewModel> patientList;
@@ -128,6 +129,19 @@ public class PatientListFragment extends Fragment implements ArgumentVariables {
         assert tab != null;
         tab.setCustomView(null);
         tab.setCustomView(mPatientsPagerAdapter.getSelectedTabView(position));
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                //use getChildFragmentManager instead of getSupportedFragmentManager
+                getActivity().getSupportFragmentManager().popBackStack();
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
