@@ -41,4 +41,25 @@ public class PatientsCardViewModel {
     public void setPatientDay(DayType day) { patientDay = day; }
 
     public void setPid(Integer pid){ this.pid = pid; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof PatientsCardViewModel)) {
+            return false;
+        }
+
+        PatientsCardViewModel p = (PatientsCardViewModel) obj;
+
+        return p.getPatientIC()== patientIC;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + patientName.hashCode();
+        result = 31 * result + patientIC.hashCode();
+        result = 31 * result + pid;
+        return result;
+    }
 }

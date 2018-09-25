@@ -2,6 +2,8 @@ package com.clinic.anhe.medicinetracker.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -43,6 +46,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
     private RecyclerView mRecyclerView;
     private PatientListRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private FloatingActionButton mAddPatient;
     private Shift shift;
     private DayType dayType;
     private VolleyController volleyController;
@@ -71,6 +75,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_patient_list_day, container, false);
+        mAddPatient = view.findViewById(R.id.add_patient_fab);
         mContext = getContext();
 
         //set ip and port
@@ -88,6 +93,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
         }
 
 
+        patientList = new ArrayList<>();
         preparePatientData();
         mRecyclerView = view.findViewById(R.id.patient_list_day_recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -98,13 +104,35 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        mAddPatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddPatientDialogFragment addPatientDialogFragment = AddPatientDialogFragment.newInstance(PatientListDayFragment.this);
+                addPatientDialogFragment.show(getFragmentManager(), "addPatient");
+                Toast.makeText(mContext, "adding patient..", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         setRetainInstance(true);
         return view;
 
     }
 
+    public void refreshrecyclerView() {
+        preparePatientData();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(mAdapter != null) {
+            Log.d("we are in set user visble hint", "" + shift.toString() + " / " + dayType.toString());
+            preparePatientData();
+        }
+    }
+
     private void preparePatientData() {
-        patientList = new ArrayList<>();
         String url = "";
         if(dayType == DayType.evenDay) {
         switch(shift) {
@@ -205,9 +233,10 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
                                         String ic = object.getString("ic");
                                         String day = object.getString("day");
 //                                        Log.d("patient jason object" , name + pid + shift + day + ic);
-
-                                        patientList.add(new PatientsCardViewModel(pid, name, ic, shift, day));
-
+                                        PatientsCardViewModel patient = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        if(!patientList.contains(patient)) {
+                                            patientList.add(new PatientsCardViewModel(pid, name, ic, shift, day));
+                                        }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
