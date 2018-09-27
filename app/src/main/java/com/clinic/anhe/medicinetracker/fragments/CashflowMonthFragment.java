@@ -62,6 +62,11 @@ public class CashflowMonthFragment extends Fragment {
     private ImageView mDifferenceButton;
     private boolean differenceButtonEnabled;
 
+    private int allowance = 0;
+    private int bank = 0;
+    private TextView mAllowanceTotal;
+    private TextView mBankTotal;
+
     private String firstDay;
     private TextView mDisplay;
     private Context mContext;
@@ -97,6 +102,8 @@ public class CashflowMonthFragment extends Fragment {
 
         mSelectEndDate = view.findViewById(R.id.cashflow_month_enddate);
         mTotal = view.findViewById(R.id.cashflow_month_total);
+        mBankTotal = view.findViewById(R.id.cashflow_month_bank_total);
+        mAllowanceTotal = view.findViewById(R.id.cashflow_month_allowance_total);
         mActualCash = view.findViewById(R.id.cashflow_month_actualcash);
         mAddFinanceRecordFAB = view.findViewById(R.id.add_finance_record_fab);
 
@@ -326,17 +333,27 @@ public class CashflowMonthFragment extends Fragment {
     public void calculateTotal () {
 //        Log.d("size of the new record",cashFlowViewModel.getMonthListLiveData().getValue().size()+"");
         total = 0;
+        bank = 0;
+        allowance = 0;
         for(MedicineRecordCardViewModel r : cashFlowViewModel.getMonthListLiveData().getValue()) {
             if(r.getMedicineName().equalsIgnoreCase("實際金額")) {
                 //do nothing
             } else {
 //                Log.d("the subtotal is",r.getSubtotal() + "");
                 total += r.getSubtotal().intValue();
+                if (r.getMedicineName().equalsIgnoreCase("存入銀行")) {
+                    bank += r.getSubtotal().intValue();
+                } else if (r.getMedicineName().equalsIgnoreCase("補零用金")) {
+                    allowance += r.getSubtotal().intValue();
+                }
 //                Log.d("the total is",total + "");
             }
         }
         mTotal.setText(String.valueOf(total));
+        mBankTotal.setText(String.valueOf(bank));
+        mAllowanceTotal.setText(String.valueOf(allowance));
     }
+
 
     private void generateActualCash(String url, final VolleyCallBack volleyCallBack) {
         JsonArrayRequest jsonArrayRequest =
