@@ -55,14 +55,16 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
     private String ip;
     private String port;
     private String url;
+    DashboardRecyclerViewAdapter.ClickPosition clickPosition;
 
     public DashboardPatientAssignViewAdapter(List<String> list, Fragment mFragment, SelectedPatientViewModel s,
-                                             DashboardViewModel d, DashboardRecyclerViewAdapter parent) {
+                                             DashboardViewModel d, DashboardRecyclerViewAdapter parent, DashboardRecyclerViewAdapter.ClickPosition clickPosition) {
         this.patientList = list;
         this.mFragment = mFragment;
         this.selectedPatientViewModel = s;
         this.dashboardViewModel = d;
         this.parentAdapter = parent;
+        this.clickPosition = clickPosition;
 
     }
 
@@ -109,6 +111,7 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
             mdeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    clickPosition.getPosition(getAdapterPosition());
                     final SweetAlertDialog deleteAlert = new SweetAlertDialog(mContext, SweetAlertDialog.NORMAL_TYPE);
                     deleteAlert.setTitleText("確定刪除" + mPatientName.getText().toString() +"嗎?");
                     deleteAlert.setConfirmText("確定");

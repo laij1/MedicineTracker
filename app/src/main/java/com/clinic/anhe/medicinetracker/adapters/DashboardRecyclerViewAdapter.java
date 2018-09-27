@@ -57,6 +57,13 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private String ip;
     private String port;
     private Shift shift;
+    ClickPosition clickPosition;
+
+
+    public interface ClickPosition {
+        public void getPosition(int position);
+    }
+
 
     public DashboardRecyclerViewAdapter(Shift shift, List<EmployeeCardViewModel> employeeList,
                                         Fragment mFragment, DashboardViewModel dashboardViewModel, SelectedPatientViewModel s){
@@ -141,14 +148,20 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             mRecyclerView = itemView.findViewById(R.id.dashboard_patient_assign_recyclerview);
             //here we need to load database to live data
             patientAssignList = new ArrayList<>();
+            clickPosition = new ClickPosition() {
+                @Override
+                public void getPosition(int position) {
+                    Toast.makeText(mContext, "" + position + "and parent's" + mNurseName.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            };
 //            prepareShiftRecordData();
             mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             mAdapter = new DashboardPatientAssignViewAdapter(patientAssignList, mFragment,
-                    selectedPatientViewModel, dashboardViewModel, DashboardRecyclerViewAdapter.this);
+                    selectedPatientViewModel, dashboardViewModel, DashboardRecyclerViewAdapter.this, clickPosition);
 
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            Log.d("how often does view holder constructor being called", "Chloe");
+            Log.d("parent's clicked position", getAdapterPosition() + "");
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +195,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             mAdapter.notifyDataSetChanged();
         }
     }
+
 
 
     private void prepareShiftRecordData() {
