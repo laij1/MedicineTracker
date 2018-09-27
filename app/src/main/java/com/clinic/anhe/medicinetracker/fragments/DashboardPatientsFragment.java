@@ -80,7 +80,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
 
 
         // Inflate the layout for this fragment
-        View view  = inflater.inflate(R.layout.fragment_patient_list_day, container, false);
+        View view  = inflater.inflate(R.layout.fragment_patient_day, container, false);
         mContext = getContext();
         globalVariable = GlobalVariable.getInstance();
         ip = globalVariable.getIpaddress();
@@ -101,7 +101,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
 //
         preparePatientData();
 
-        mRecyclerView = view.findViewById(R.id.patient_list_day_recyclerview);
+        mRecyclerView = view.findViewById(R.id.patient_day_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getContext(), 3);
         //here we need to filter

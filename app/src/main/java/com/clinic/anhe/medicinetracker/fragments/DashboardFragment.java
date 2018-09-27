@@ -164,6 +164,7 @@ public class DashboardFragment extends Fragment {
         Log.d("Resuming Dashboard", "CHLOE");
     }
 
+
     private void prepareEmployeeData() {
         String url = "http://" + ip + ":" + port + "/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
@@ -202,11 +203,14 @@ public class DashboardFragment extends Fragment {
                                         String position = object.getString("position");
                                         //TODO: here we rearrange employlist by whether it is assigned with patients
                                         EmployeeCardViewModel e = new EmployeeCardViewModel(name, eid, position);
-                                        if(dashboardViewModel.getShiftRecordListLiveData().getValue() != null) {
+
+                                        if( dashboardViewModel.getShiftRecordListLiveData().getValue() != null) {
                                             for(ShiftRecordModel s :dashboardViewModel.getShiftRecordListLiveData().getValue()) {
                                                 if(s.getNurse().equalsIgnoreCase(name) && s.getShift().equalsIgnoreCase(shift.toString())) {
-                                                    employeeList.add(0,e);
-                                                    break;
+                                                    if(employeeList.contains(e)) {
+                                                        employeeList.remove(e);
+                                                    }
+                                                    employeeList.add(0, e);
                                                 }
                                             }
                                         }
