@@ -409,9 +409,21 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     private void deletePatient(String pname, String nurse, final VolleyCallBack volleyCallBack) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String deletedShift = "";
+        switch (shift) {
+            case morning:
+                deletedShift = "早班";
+                break;
+            case afternoon:
+                deletedShift = "中班";
+                break;
+            case night:
+                deletedShift ="晚班";
+                break;
+        }
         String url = "http://" + ip +
-                ":" + port + "/anhe/shiftrecord/delete?patient=" + pname
-                + "&nurse=" + nurse + "&createAt=" + date;
+                ":" + port + "/anhe/shiftrecord/delete?patient=" + pname + "&nurse=" + nurse
+                + "&createAt=" + date + "&shift=" + deletedShift;
         Log.d("what is the url?", url);
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
