@@ -37,4 +37,24 @@ public class EmployeeCardViewModel {
         this.employeePosition = employeePosition;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof EmployeeCardViewModel)) {
+            return false;
+        }
+
+        EmployeeCardViewModel employee = (EmployeeCardViewModel) obj;
+        return employee.getEid() == eid;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + employeeName.hashCode();
+        result = 31 * result + eid;
+        return result;
+    }
+
+
 }
