@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                                 DashboardSettingFragment dashboardSettingFragment = DashboardSettingFragment.newInstance();
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                         .replace(R.id.main_fragment_container, dashboardSettingFragment)
-                                        .addToBackStack(ArgumentVariables.TAG_DASHBOARD_FRAGMENT)
+                                        .addToBackStack(ArgumentVariables.TAG_DASHBOARD_SETTING_FRAGMENT)
                                         .commit();
                                 break;
                             //patient menu

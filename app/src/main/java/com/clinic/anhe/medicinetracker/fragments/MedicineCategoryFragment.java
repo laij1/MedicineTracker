@@ -55,6 +55,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
     private String cartSelectedPatientName;
+    private int cartSelectedEid;
 
 
     public static MedicineCategoryFragment newInstance(){
@@ -68,6 +69,8 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         super.onSaveInstanceState(outState);
         //TODO: medicineType could be null....
         outState.putString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME, cartSelectedPatientName);
+        outState.putInt(ArgumentVariables.ARG_CART_SELECTED_EID, cartSelectedEid);
+
     }
 
 
@@ -80,9 +83,11 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         volleyController.getInstance(mContext);
         if(savedInstanceState != null) {
             cartSelectedPatientName = savedInstanceState.getString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME);
+            cartSelectedEid = savedInstanceState.getInt(ArgumentVariables.ARG_CART_SELECTED_EID);
         }
         if(cartSelectedPatientName == null) {
             cartSelectedPatientName = getArguments().getString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME);
+            cartSelectedEid = getArguments().getInt(ArgumentVariables.ARG_CART_SELECTED_EID);
         }
         findPatient(cartSelectedPatientName, new VolleyCallBack() {
             @Override
@@ -94,7 +99,8 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
 
         //set up view model
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-        Log.d(getParentFragment()== null ?"null": "not null", "parent frag"+ cartSelectedPatientName);
+        cartViewModel.getCartSelectedEid().setValue(Integer.valueOf(cartSelectedEid));
+        Log.d("what is eid in med category", cartViewModel.getCartSelectedEid().getValue() +"" );
 //        //TODO:get medicinelist from the database
 //        category = "dialysis";
 //        String url = "http://192.168.0.9:8080/anhe/medicine/all?category" + category;

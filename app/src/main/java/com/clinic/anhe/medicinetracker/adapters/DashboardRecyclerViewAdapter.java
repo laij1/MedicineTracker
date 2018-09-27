@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Bundle;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,8 +24,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.ViewModel.DashboardViewModel;
 import com.clinic.anhe.medicinetracker.ViewModel.SelectedPatientViewModel;
+import com.clinic.anhe.medicinetracker.fragments.DashboardFragment;
 import com.clinic.anhe.medicinetracker.fragments.SelectPatientFragment;
 import com.clinic.anhe.medicinetracker.fragments.SelectPatientsDialogFragment;
+import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
@@ -32,13 +35,16 @@ import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.Shift;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,7 +56,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private Context mContext;
     private Fragment mFragment;
     private DashboardViewModel dashboardViewModel;
-    private SelectedPatientViewModel selectedPatientViewModel;
+   // private SelectedPatientViewModel selectedPatientViewModel;
     private List<ShiftRecordModel> shiftList;
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
@@ -58,12 +64,19 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private String port;
     private Shift shift;
     ClickPosition clickPosition;
+    DialogCallBack dialogCallBack;
+    ShiftRecordModel deletedShiftRecord;
+    DashboardRecyclerViewAdapter.EmployeeViewHolder employeeViewHolder;
+
 
 
     public interface ClickPosition {
-        public void getPosition(int position);
+        public void getPosition(int position, boolean deleted);
     }
 
+    public interface DialogCallBack {
+        public void callBack(boolean result);
+    }
 
     public DashboardRecyclerViewAdapter(Shift shift, List<EmployeeCardViewModel> employeeList,
                                         Fragment mFragment, DashboardViewModel dashboardViewModel, SelectedPatientViewModel s){
@@ -71,7 +84,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         this.employeeList = employeeList;
         this.mFragment = mFragment;
         this.dashboardViewModel = dashboardViewModel;
-        this.selectedPatientViewModel = s;
+       // this.selectedPatientViewModel = s;
         this.shiftList = new ArrayList<>();
 
     }
@@ -91,7 +104,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         ip = globalVariable.getIpaddress();
         port = globalVariable.getPort();
 
-        DashboardRecyclerViewAdapter.EmployeeViewHolder employeeViewHolder = new DashboardRecyclerViewAdapter.EmployeeViewHolder(view);
+        employeeViewHolder = new DashboardRecyclerViewAdapter.EmployeeViewHolder(view);
         return employeeViewHolder;
     }
 
@@ -102,6 +115,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         EmployeeCardViewModel current = employeeList.get(position);
         holder.mNurseName.setText(current.getEmployeeName());
 
+        holder.patientAssignList.removeAll(holder.patientAssignList);
         if(dashboardViewModel.getShiftRecordListLiveData().getValue() != null) {
             for (ShiftRecordModel s : dashboardViewModel.getShiftRecordListLiveData().getValue()) {
                 Log.d("nurse is: " + s.getNurse(), "  patient Assign List" + s.getPatient());
@@ -148,20 +162,100 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             mRecyclerView = itemView.findViewById(R.id.dashboard_patient_assign_recyclerview);
             //here we need to load database to live data
             patientAssignList = new ArrayList<>();
+            //TODO: here we delete the patient related to the nurse if deleted is true
+            //TODO: otherwise, we save the nurs info for cart
             clickPosition = new ClickPosition() {
                 @Override
-                public void getPosition(int position) {
-                    Toast.makeText(mContext, "" + position + "and parent's" + mNurseName.getText().toString(), Toast.LENGTH_SHORT).show();
+                public void getPosition(int position, boolean deleted) {
+//                    Toast.makeText(mContext, "" + patientAssignList.get(position) + "and parent's" + employeeList.get(getAdapterPosition()).getEmployeeName() + deleted, Toast.LENGTH_SHORT).show();
+                    String currentPatient = patientAssignList.get(position);
+                    if(deleted) {
+//                        Toast.makeText(mContext, "you are in the deleted section..", Toast.LENGTH_SHORT).show();
+                        SweetAlertDialog deleteAlert = new SweetAlertDialog(mContext, SweetAlertDialog.NORMAL_TYPE);
+                        deleteAlert.setTitleText("確定刪除" + currentPatient +"嗎?");
+                        deleteAlert.setConfirmText("確定");
+                        deleteAlert.setCancelText("取消");
+                        deleteAlert.show();
+
+
+                        deleteAlert.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                deletePatient(currentPatient, mNurseName.getText().toString(), new VolleyCallBack() {
+                                    @Override
+                                    public void onResult(VolleyStatus status) {
+                                        if(status == VolleyStatus.SUCCESS) {
+                                            patientAssignList.remove(currentPatient);
+                                            notifyDataSetChanged();
+                                            //TODO: update dash livedata
+                                            if(deletedShiftRecord != null) {
+                                                List<ShiftRecordModel> list = dashboardViewModel.getShiftRecordList();
+                                                List<ShiftRecordModel> currentShiftList = dashboardViewModel.getShiftRecordList();
+//                                            list.remove(deletedShiftRecord);
+                                                Iterator<ShiftRecordModel> iter = currentShiftList.iterator();
+                                                while (iter.hasNext()) {
+                                                    // String str = iter.next();
+                                                    ShiftRecordModel item = iter.next();
+                                                    if (item.getPatient().equalsIgnoreCase(deletedShiftRecord.getPatient())) {
+                                                        iter.remove();
+                                                    }
+                                                }
+                                                dashboardViewModel.getShiftRecordListLiveData().setValue(currentShiftList);
+                                                for(ShiftRecordModel s :dashboardViewModel.getShiftRecordList()) {
+                                                    Log.d("after deleting patient ", s.getPatient() );
+                                                }
+                                                mAdapter.notifyDataSetChanged();
+
+                                            }
+//                                        dashboardViewModel.getShiftRecordListLiveData().getValue().remove(deletedShiftRecord);
+                                            Toast.makeText(mContext, "刪除成功", Toast.LENGTH_SHORT).show();
+
+                                        } else {
+                                            Toast.makeText(mContext, "刪除失敗", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+                                //dashboardViewModel.getShiftRecordListLiveData().setValue(dashboardViewModel.getShiftRecordListLiveData().getValue());
+                                deleteAlert.dismiss();
+                            }
+                        });
+                        deleteAlert.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                deleteAlert.dismiss();
+                            }
+                        });
+
+                    } else {
+                        findPatient(currentPatient, new VolleyCallBack() {
+                        @Override
+                        public void onResult(VolleyStatus status) {
+                            FragmentTransaction transaction = mFragment.getActivity().getSupportFragmentManager().beginTransaction();
+//                                    mFragment.getParentFragment().getChildFragmentManager().beginTransaction();
+
+                            MedicineCategoryFragment medicineCategoryFragment = MedicineCategoryFragment.newInstance();
+                            Bundle args = new Bundle();
+                            args.putString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME, currentPatient);
+                            args.putInt(ArgumentVariables.ARG_CART_SELECTED_EID,employeeList.get(getAdapterPosition()).getEid() );
+                            medicineCategoryFragment.setArguments(args);
+                            transaction.replace(R.id.dashboard_setting_layout, medicineCategoryFragment, ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                                    .addToBackStack(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)
+                                    .commit();
+
+
+                        }
+                    });
+                    }
                 }
             };
 //            prepareShiftRecordData();
             mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             mAdapter = new DashboardPatientAssignViewAdapter(patientAssignList, mFragment,
-                    selectedPatientViewModel, dashboardViewModel, DashboardRecyclerViewAdapter.this, clickPosition);
+                    dashboardViewModel, DashboardRecyclerViewAdapter.this, clickPosition);
 
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            Log.d("parent's clicked position", getAdapterPosition() + "");
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -180,9 +274,20 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                         dashboardViewModel.getSelectedPatientsLiveData().setValue(dashboardViewModel.getSelectedPatientsList());
                     }
 
+                    dialogCallBack = new DialogCallBack() {
+                        @Override
+                        public void callBack(boolean result) {
+                            if(result == true) {
+//                                Toast.makeText(mContext, "callback is true", Toast.LENGTH_SHORT).show();
+                                ((DashboardFragment)mFragment).prepareEmployeeData();
+
+                            }
+                        }
+                    };
+
                     SelectPatientsDialogFragment fragment = SelectPatientsDialogFragment.newInstance(shift,
                             current.getEmployeeName(),
-                            current.getEid());
+                            current.getEid(), dialogCallBack);
                     fragment.show(mFragment.getFragmentManager(), "selectdashboardpatients");
 
 
@@ -191,12 +296,52 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             });
         }
 
-        public void  refreshRecyclerView(){
-            mAdapter.notifyDataSetChanged();
+    }
+    public void  refreshChildRecyclerView(){
+        if(employeeViewHolder != null && employeeViewHolder.mAdapter != null) {
+            employeeViewHolder.mAdapter.notifyDataSetChanged();
         }
     }
 
+    private void findPatient(String name, final VolleyCallBack volleyCallBack) {
+//        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String url = "http://" + ip +
+                ":" + port + "/anhe/patient/name?name=" + name;
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++) {
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        Integer pid = object.getInt("pid");
+                                        String name = object.getString("name");
+                                        String shift = object.getString("shift");
+                                        String ic = object.getString("ic");
+                                        String day = object.getString("day");
+                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        //selectedPatientViewModel.getPatientLiveData().setValue(p);
 
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+
+    }
 
     private void prepareShiftRecordData() {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -261,4 +406,53 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
 
     }
+
+    private void deletePatient(String pname, String nurse, final VolleyCallBack volleyCallBack) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String url = "http://" + ip +
+                ":" + port + "/anhe/shiftrecord/delete?patient=" + pname
+                + "&nurse=" + nurse + "&createAt=" + date;
+        Log.d("what is the url?", url);
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++){
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        String nurse = object.getString("nurse");
+                                        Integer sid = object.getInt("sid");
+                                        String patient = object.getString("patient");
+                                        String shift = object.getString("shift");
+                                        String day = object.getString("day");
+                                        String createAt = object.getString("createAt");
+                                        deletedShiftRecord = new ShiftRecordModel(sid, createAt, nurse, patient,shift, day);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+//                                if(deletedShiftRecord != null) {
+//                                   List<ShiftRecordModel> temp = dashboardViewModel.getShiftRecordList();
+//                                   temp.remove(deletedShiftRecord);
+//                                   dashboardViewModel.getShiftRecordListLiveData().setValue(temp);
+//                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+
+                            }
+
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+
+    }
+
 }

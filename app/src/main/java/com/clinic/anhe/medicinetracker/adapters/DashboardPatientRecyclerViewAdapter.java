@@ -60,15 +60,15 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
             }
         }
 
-        holder.imageButton.setEnabled(true);
-        for(ShiftRecordModel s : dashboardViewModel.getShiftRecordList()) {
-            if(s.getPatient().equalsIgnoreCase(current.getPatientName())) {
-                holder.imageButton.setEnabled(false);
-            }
+//        holder.imageButton.setEnabled(true);
+//        for(ShiftRecordModel s : dashboardViewModel.getShiftRecordList()) {
+//            if(s.getPatient().equalsIgnoreCase(current.getPatientName())) {
+//                holder.imageButton.setEnabled(false);
+//            }
 //            else {
 //                holder.imageButton.setEnabled(true);
 //            }
-        }
+//        }
 
     }
 

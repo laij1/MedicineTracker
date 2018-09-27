@@ -92,14 +92,6 @@ public class DashboardFragment extends Fragment {
         }
 
         dashboardViewModel = ViewModelProviders.of(getParentFragment()).get(DashboardViewModel.class);
-        selectedPatientViewModel = ViewModelProviders.of(getParentFragment()).get(SelectedPatientViewModel.class);
-
-//        selectedPatientViewModel.getPatientLiveData().observe(getParentFragment(), new Observer<PatientsCardViewModel>() {
-//            @Override
-//            public void onChanged(@Nullable PatientsCardViewModel patientsCardViewModel) {
-//                Log.d("Wee","CHLOE");
-//            }
-//        });
 
         mContext = getContext();
 
@@ -165,12 +157,13 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    private void prepareEmployeeData() {
+    public void prepareEmployeeData() {
         String url = "http://" + ip + ":" + port + "/anhe/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
                 if(status==VolleyStatus.SUCCESS) {
+                    mAdapter.refreshChildRecyclerView();
                     mAdapter.notifyDataSetChanged();
 //                    Log.d("refreshing employee", employeeList.get(0).getEmployeeName());
                 }

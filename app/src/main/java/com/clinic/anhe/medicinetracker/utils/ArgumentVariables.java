@@ -15,6 +15,7 @@ public interface ArgumentVariables {
     public static final String ARG_PATIENT_DETAIL_SEARCH_ENDDATE= "endDate";
     public static final String ARG_SELECTED_MEDICINE_NAME ="selected medicine name";
     public static final String ARG_CART_SELECTED_PATIENT_NAME="cart selected patient name";
+    public static final String ARG_CART_SELECTED_EID = "cart selected eid";
     public static final String ARG_INVENTORY_MEDICINE_NAME = "inventory medicine name";
     public static final String ARG_INVENTORY_MID = "inventory mid";
     public static final String ARG_INVENTORY_STOCK = "invnetory stock";
@@ -32,7 +33,7 @@ public interface ArgumentVariables {
 
     public static final String TAG_MEDICINE_CATEGORY_FRAGMENT = "medicinecategory";
     public static final String TAG_SELECT_PATIENT_FRAGMENT = "selectpatient";
-    public static final String TAG_DASHBOARD_FRAGMENT = "dashboard";
+    public static final String TAG_DASHBOARD_SETTING_FRAGMENT = "dashboard setting";
     public static final String TAG_MORNING_FRAGMENT = "morning";
     public static final String TAG_AFTERNOON_FRAGMENT = "afternoon";
     public static final String TAG_NIGHT_FRAGMENT = "night";

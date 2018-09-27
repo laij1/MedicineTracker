@@ -164,7 +164,7 @@ public class SummaryFragment  extends Fragment {
        // mQueue = Volley.newRequestQueue(getContext());
 
         cartViewModel = ViewModelProviders.of(getActivity().getSupportFragmentManager().findFragmentByTag(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)).get(CartViewModel.class);
-        //selectedPatientViewModel = ViewModelProviders.of(getActivity().getSupportFragmentManager().findFragmentByTag(ArgumentVariables.TAG_DASHBOARD_FRAGMENT)).get(SelectedPatientViewModel.class);
+        cartViewModel.getCartSelectedEid().getValue();
 
 
         patientName = view.findViewById(R.id.summary_patientname);
@@ -234,39 +234,54 @@ public class SummaryFragment  extends Fragment {
 
                     }
                 }.start();
-                findNurse(new VolleyCallBack() {
+//                findNurse(new VolleyCallBack() {
+//                    @Override
+//                    public void onResult(VolleyStatus status) {
+//                        if(status == VolleyStatus.SUCCESS && nurseEid > 0 ) {
+//                            addRecordToDatabase(new VolleyCallBack() {
+//                                @Override
+//                                public void onResult(VolleyStatus status) {
+//                                    if(status == VolleyStatus.SUCCESS) {
+//                                        SummaryFragment.status = VolleyStatus.SUCCESS;
+//                                        pDialog.setTitleText("Success!")
+//                                                .setConfirmText("OK")
+//                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+//                                    } else {
+//                                        SummaryFragment.status = VolleyStatus.FAIL;
+//                                        pDialog.setTitleText("Fail!")
+//                                                .setConfirmText("Try Again")
+//                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+//                                    }
+//                                    timer.onFinish();
+//                                }
+//                            });
+//
+//                        } else {
+//                            //pop up an alter
+//                            SummaryFragment.status = VolleyStatus.UNSET;
+//                            pDialog.setTitleText("請設定負責護士")
+//                                    .setConfirmText("Try Again")
+//                                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+//                        }
+//                    }
+//                });
+                addRecordToDatabase(new VolleyCallBack() {
                     @Override
                     public void onResult(VolleyStatus status) {
-                        if(status == VolleyStatus.SUCCESS && nurseEid > 0 ) {
-                            addRecordToDatabase(new VolleyCallBack() {
-                                @Override
-                                public void onResult(VolleyStatus status) {
-                                    if(status == VolleyStatus.SUCCESS) {
-                                        SummaryFragment.status = VolleyStatus.SUCCESS;
-                                        pDialog.setTitleText("Success!")
-                                                .setConfirmText("OK")
-                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                    } else {
-                                        SummaryFragment.status = VolleyStatus.FAIL;
-                                        pDialog.setTitleText("Fail!")
-                                                .setConfirmText("Try Again")
-                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                                    }
-                                    timer.onFinish();
-                                }
-                            });
-
+                        if(status == VolleyStatus.SUCCESS) {
+                            SummaryFragment.status = VolleyStatus.SUCCESS;
+                            pDialog.setTitleText("Success!")
+                                    .setConfirmText("OK")
+                                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                         } else {
-                            //pop up an alter
-                            SummaryFragment.status = VolleyStatus.UNSET;
-                            pDialog.setTitleText("請設定負責護士")
+                            SummaryFragment.status = VolleyStatus.FAIL;
+                            pDialog.setTitleText("Fail!")
                                     .setConfirmText("Try Again")
                                     .changeAlertType(SweetAlertDialog.ERROR_TYPE);
                         }
+                        timer.onFinish();
                     }
                 });
-
-
 
             }
         });
@@ -317,41 +332,42 @@ public class SummaryFragment  extends Fragment {
         return view;
     }
 
-    private void findNurse(final VolleyCallBack volleyCallBack) {
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://" + ip +
-                ":" + port + "/anhe/shiftrecord/patient?patient=" + cartSelectedPatientName
-                + "&createAt=" + date;
-        JsonArrayRequest jsonArrayRequest =
-                new JsonArrayRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                for(int i = 0; i < response.length(); i++) {
-                                    JSONObject object = null;
-                                    try {
-                                        object = response.getJSONObject(i);
-                                        nurseEid = object.getInt("eid");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
-                                volleyCallBack.onResult(VolleyStatus.FAIL);
-                            }
-                        } );
-
-        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
-
-    }
+//    private void findNurse(final VolleyCallBack volleyCallBack) {
+//        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//        String url = "http://" + ip +
+//                ":" + port + "/anhe/shiftrecord/patient?patient=" + cartSelectedPatientName
+//                + "&createAt=" + date;
+//        JsonArrayRequest jsonArrayRequest =
+//                new JsonArrayRequest(Request.Method.GET, url, null,
+//                        new Response.Listener<JSONArray>() {
+//                            @Override
+//                            public void onResponse(JSONArray response) {
+//                                for(int i = 0; i < response.length(); i++) {
+//                                    JSONObject object = null;
+//                                    try {
+//                                        object = response.getJSONObject(i);
+//                                        nurseEid = object.getInt("eid");
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+//                            }
+//                        },
+//                        new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                                Log.d("VOLLEY", error.toString());
+//                                volleyCallBack.onResult(VolleyStatus.FAIL);
+//                            }
+//                        } );
+//
+//        volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
+//
+//    }
 
     private void addRecordToDatabase(final VolleyCallBack volleyCallBack) {
+        Log.d("what is the eid", cartViewModel.getCartSelectedEid().getValue() +"");
         //TODO: needs to modified create_by and subtotal
         String url = "http://" + ip +
                 ":" + port + "/anhe/record/addlist";
@@ -364,7 +380,7 @@ public class SummaryFragment  extends Fragment {
                 jsonObject.put("payment", item.isCashPayment().toString());
                 jsonObject.put("pid", cartViewModel.getCartSelectedPatientLiveData().getValue().getPID());
                 jsonObject.put("quantity", item.getQuantity());
-                jsonObject.put("createBy", nurseEid);
+                jsonObject.put("createBy", cartViewModel.getCartSelectedEid().getValue().intValue());
                 jsonObject.put("patientName", cartViewModel.getCartSelectedPatientLiveData().getValue().getPatientName());
                 int subtotal = item.getSubtotal();
                 jsonObject.put("subtotal", subtotal);

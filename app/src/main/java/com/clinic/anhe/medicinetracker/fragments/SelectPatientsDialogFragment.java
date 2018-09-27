@@ -74,14 +74,16 @@ public class SelectPatientsDialogFragment extends DialogFragment {
     private String ip;
     private String port;
     private List<ShiftRecordModel> shiftList;
+    static DashboardRecyclerViewAdapter.DialogCallBack dialogCallBack;
 
 
 
 
-    public static SelectPatientsDialogFragment newInstance(Shift shift, String name, Integer eid) {
+    public static SelectPatientsDialogFragment newInstance(Shift shift, String name, Integer eid, DashboardRecyclerViewAdapter.DialogCallBack callBack) {
         SelectPatientsDialogFragment fragment = new SelectPatientsDialogFragment();
         //TODO:there is a bug here, cannot add the patient list everytinme, there will be dups
 //        list = patientList;
+        dialogCallBack = callBack;
         Bundle args = new Bundle();
         args.putString(ArgumentVariables.ARG_NURSE_NAME, name);
         args.putString(ArgumentVariables.ARG_PATIENT_SHIFT, shift.toString());
@@ -218,8 +220,10 @@ public class SelectPatientsDialogFragment extends DialogFragment {
                     @Override
                     public void onResult(VolleyStatus status) {
                         if(status == VolleyStatus.SUCCESS) {
+                            dialogCallBack.callBack(true);
                             Toast.makeText(mContext, "設定完成", Toast.LENGTH_LONG).show();
                         } else {
+                            dialogCallBack.callBack(false);
                             Toast.makeText(mContext, "設定未完成", Toast.LENGTH_LONG).show();
                         }
                         //clear data

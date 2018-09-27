@@ -10,6 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class CartViewModel extends ViewModel {
     List<MedicineCardViewModel> bandaidList;
 
     private MutableLiveData<PatientsCardViewModel> cartSelectedPatientLiveData;
+
+    private MutableLiveData<Integer> cartSelectedEid;
 
     //for fluidslider
     private MutableLiveData<Integer> count;
@@ -84,6 +87,8 @@ public class CartViewModel extends ViewModel {
         cartSelectedPatientLiveData = new MutableLiveData<>();
         PatientsCardViewModel p = new PatientsCardViewModel(-1, "","","", "");
         cartSelectedPatientLiveData.postValue(p);
+
+        cartSelectedEid = new MutableLiveData<>();
 
 
         String url = "http://"+ globalVariable.getInstance().getIpaddress() +":" +
@@ -211,6 +216,9 @@ public class CartViewModel extends ViewModel {
 //    }
 
 
+    public MutableLiveData<Integer> getCartSelectedEid() {
+        return cartSelectedEid;
+    }
 
     public void addToCart(int position, MedicineType medicineType) {
         MedicineCardViewModel item = null;
