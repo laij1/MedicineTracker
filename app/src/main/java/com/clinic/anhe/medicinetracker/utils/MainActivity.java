@@ -17,6 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -43,6 +46,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private AnimatedVectorDrawable mCurrentDrawable;
     private List<MedicineCardViewModel> medicineList;
     private Context mContext;
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
     private VolleyController volleyController;
 //    NavigationDrawerAdapter mMenuAdapter;
 //    ExpandableListView expandableList;
@@ -215,6 +221,9 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().performIdentifierAction(R.id.menu_home, 0);
             navigationView.getMenu().findItem(R.id.menu_home).setChecked(false);
         }
+
+        //here set the alarm manager
+        setReminderAlarm();
     }
 
     @Override
@@ -243,81 +252,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private  void populateMedicineList (){
-//        String url = "http://192.168.0.4:8080/anhe/medicine/all/";
-//        JsonArrayRequest jsonArrayRequest =
-//                new JsonArrayRequest(Request.Method.GET, url, null,
-//                        new Response.Listener<JSONArray>() {
-//                            @Override
-//                            public void onResponse(JSONArray response) {
-//                                for(int i = 0; i < response.length(); i++){
-//                                    JSONObject object = null;
-//                                    try {
-//                                        object = response.getJSONObject(i);
-//                                        String category = object.getString("category");
-//                                        String name = object.getString("name");
-//                                        Integer id = object.getInt("mid");
-//                                        Integer price = object.getInt("price");
-//                                        String dose = object.getString("dose");
-//                                        Integer stock = object.getInt("stock");
-//                                        Log.d("jason object" , name + id +price +dose + stock);
-//
-//                                        medicineList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
-//
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                    Log.d("getting data from database", "CHLOE");
-//                                    MedicineManageFragment medicineManageFragment = MedicineManageFragment.newInstance(medicineList);
-//                                    getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                                            .replace(R.id.main_fragment_container, medicineManageFragment).commit();
-//
-//                                }
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                Log.d("VOLLEY", error.toString());
-//                            }
-//                        } );
-//
-//        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
-//    }
-//    private void prepareListData() {
-//        listDataHeader = new ArrayList<GroupMenuModel>();
-//        //listDataChild = new HashMap<GroupMenuModel, List<String>>();
-//        listDataChild = new HashMap<>();
-//
-//        GroupMenuModel patients = new GroupMenuModel();
-//        patients.setIconName("病患");
-//        patients.setIconImg(R.drawable.ic_account);
-//        // Adding data header
-//        listDataHeader.add(patients);
-//
-//        GroupMenuModel medicine = new GroupMenuModel();
-//        medicine.setIconName("藥品");
-//        medicine.setIconImg(R.drawable.ic_medicine);
-//        listDataHeader.add(medicine);
-//
-////        GroupMenuModel cart = new GroupMenuModel();
-////        cart.setIconName("購物車");
-////        cart.setIconImg(R.drawable.ic_cart);
-////        listDataHeader.add(cart);
-//
-//        //Adding child data
-//        List<GroupMenuModel> shifts = new ArrayList<>();
-//        GroupMenuModel morning = new GroupMenuModel("早班", R.drawable.ic_morning);
-//        shifts.add(morning);
-//
-//        GroupMenuModel afternoon = new GroupMenuModel("中班", R.drawable.ic_afternoon);
-//        shifts.add(afternoon);
-//
-//        GroupMenuModel night = new GroupMenuModel("晚班", R.drawable.ic_night);
-//        shifts.add(night);
-//
-//        listDataChild.put(listDataHeader.get(0), shifts);// Header, Child data
-//
-//
-//    }
+    private void setReminderAlarm() {
+
+        Log.d("we are setting reminder", "Chloe");
+        alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(mContext, AlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+
+        // Set the alarm to start at 11 a.m.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 1);
+        calendar.set(Calendar.MINUTE, 0);
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntent);
+
+    }
 }
