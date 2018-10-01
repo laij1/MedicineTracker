@@ -27,10 +27,11 @@ public class NotificationHelper extends ContextWrapper {
     @TargetApi(Build.VERSION_CODES.O)
     public void createChannel() {
         NotificationChannel channel1 = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
-//        channel1.enableLights(true);
+        channel1.enableLights(true);
         channel1.enableVibration(true);
-//        channel1.setLightColor(R.color.colorPrimaryDark);
+        channel1.setLightColor(R.color.colorPrimaryDark);
         channel1.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+
 
         getNotificationManager().createNotificationChannel(channel1);
     }
@@ -47,6 +48,7 @@ public class NotificationHelper extends ContextWrapper {
                 .setSmallIcon(R.drawable.ic_account)
                 .setContentTitle(title)
                 .setContentText(message);
+
     }
 
 }

@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
+    private PendingIntent alarmIntent1;
+    private PendingIntent alarmIntent2;
     private VolleyController volleyController;
 //    NavigationDrawerAdapter mMenuAdapter;
 //    ExpandableListView expandableList;
@@ -257,15 +259,43 @@ public class MainActivity extends AppCompatActivity {
         Log.d("we are setting reminder", "Chloe");
         alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext, AlarmReceiver.class);
-        alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+        intent.putExtra("Reminder", "firstReminder");
+        Intent intent1 = new Intent(mContext, AlarmReceiver.class);
+        intent1.putExtra("Reminder", "secondReminder");
+        Intent intent2 = new Intent(mContext, AlarmReceiver.class);
+        intent2.putExtra("Reminder", "thirdReminder");
 
-        // Set the alarm to start at 11 a.m.
+        alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmIntent1 = PendingIntent.getBroadcast(mContext, 1, intent1, PendingIntent.FLAG_CANCEL_CURRENT );
+        alarmIntent2 = PendingIntent.getBroadcast(mContext, 2, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        // Set the alarm to start at 11am.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 11);
         calendar.set(Calendar.MINUTE, 0);
+
+        //set second alarm to start at 15pm
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTimeInMillis(System.currentTimeMillis());
+        calendar1.set(Calendar.HOUR_OF_DAY, 15);
+        calendar1.set(Calendar.MINUTE, 0);
+
+
+        //set third alarm to start at 9pm
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTimeInMillis(System.currentTimeMillis());
+        calendar2.set(Calendar.HOUR_OF_DAY, 21);
+        calendar2.set(Calendar.MINUTE, 0);
+
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
+
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar1.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntent1);
+
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntent2);
 
     }
 }

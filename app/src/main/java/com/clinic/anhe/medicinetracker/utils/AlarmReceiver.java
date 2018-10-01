@@ -30,28 +30,41 @@ public class AlarmReceiver extends BroadcastReceiver {
     private VolleyController volleyController;
     private List<String> reminder = new ArrayList();
     private String result = "";
+    private String shift = "";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        getReminder("早班", new VolleyCallBack() {
+        result = "";
+        shift = "";
+
+        String arg = intent.getStringExtra("Reminder");
+        if(arg.equalsIgnoreCase("firstReminder")) {
+            shift = "早班";
+        } else  if (arg.equalsIgnoreCase("secondReminder")) {
+            shift = "中班";
+        } else {
+            shift = "晚班";
+        }
+
+        getReminder(shift, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
                 if(status == VolleyStatus.SUCCESS) {
                     for(String s : reminder) {
                         result = result.concat(s).concat(" ");
                     }
-//                    Toast.makeText(context, result,Toast.LENGTH_LONG).show();
-                    NotificationHelper notificationHelper = new NotificationHelper(context);
-                    NotificationCompat.Builder nb = notificationHelper.getChannel1Notification("提醒輸入病患自費項目", result + "尚未輸入");
-                    notificationHelper.getNotificationManager().notify(1, nb.build());
+                    if(!result.equalsIgnoreCase("")){
+                       NotificationHelper notificationHelper = new NotificationHelper(context);
+                       NotificationCompat.Builder nb = notificationHelper.getChannel1Notification("提醒輸入病患自費項目", result + "尚未輸入");
+                       notificationHelper.getNotificationManager().notify(1, nb.build());
+                    }
                 }
             }
         });
-
-
-    }
+        }
 
     private void getReminder(String shift, final VolleyCallBack volleyCallBack) {
+        reminder.removeAll(reminder);
         Log.d("we are in get reminder", "weee");
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String url = "http://" + GlobalVariable.getInstance().getIpaddress() +
