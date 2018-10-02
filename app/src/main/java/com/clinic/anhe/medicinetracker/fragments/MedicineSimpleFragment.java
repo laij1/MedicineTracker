@@ -166,7 +166,7 @@ public class MedicineSimpleFragment extends Fragment implements View.OnKeyListen
                                         Integer price = object.getInt("price");
                                         String dose = object.getString("dose");
                                         Integer stock = object.getInt("stock");
-                                        Log.d("jason object" , name + id +price +dose + stock);
+                                       // Log.d("jason object" , name + id +price +dose + stock);
 
                                         medicineList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
 //
@@ -181,7 +181,7 @@ public class MedicineSimpleFragment extends Fragment implements View.OnKeyListen
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                              //  Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );

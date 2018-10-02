@@ -159,13 +159,13 @@ public class CashflowTodayFragment extends Fragment {
                                         String payment = object.getString("payment");
                                         String chargeAt = object.getString("chargeAt");
                                         String chargeBy = object.getString("chargeBy");
-                                        Log.d("medicine record jason object" , name + pid + createAt);
+                                      //  Log.d("medicine record jason object" , name + pid + createAt);
                                         MedicineRecordCardViewModel item = new MedicineRecordCardViewModel(rid, createAt, mid, name, quantity,
                                                 subtotal, payment, pid, createBy);
                                         item.setChargeAt(chargeAt);
                                         item.setChargeBy(chargeBy);
                                         item.setPatientName(pName);
-                                        Log.d("setting chargeat and chargeby", "" + item.getPid());
+                                      //  Log.d("setting chargeat and chargeby", "" + item.getPid());
                                         if(recordList.contains(item) || name.equalsIgnoreCase("實際金額") || name.equalsIgnoreCase("正負金額")
                                                 ||name.equalsIgnoreCase("補零用金") || name.equalsIgnoreCase("存入銀行")) {
                                             //do nothing
@@ -175,7 +175,7 @@ public class CashflowTodayFragment extends Fragment {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    Log.d("getting patient data from database", "CHLOE");
+                                  //  Log.d("getting patient data from database", "CHLOE");
                                     volleyCallBack.onResult(VolleyStatus.SUCCESS);
                                 }
                             }
@@ -183,7 +183,7 @@ public class CashflowTodayFragment extends Fragment {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                              //  Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );

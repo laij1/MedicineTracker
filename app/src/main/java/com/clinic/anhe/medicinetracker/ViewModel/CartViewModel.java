@@ -108,7 +108,7 @@ public class CartViewModel extends ViewModel {
                                         Integer price = object.getInt("price");
                                         String dose = object.getString("dose");
                                         Integer stock = object.getInt("stock");
-                                        Log.d("jason object" , name + id +price +dose + stock);
+                                        //Log.d("jason object" , name + id +price +dose + stock);
                                         switch (category) {
                                             case "dialysis":
                                                 dialysisList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
@@ -126,7 +126,7 @@ public class CartViewModel extends ViewModel {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    Log.d("getting data from database", "CHLOE");
+                                    //Log.d("getting data from database", "CHLOE");
 
                                 }
                                 dialysisLiveData.postValue(dialysisList);
@@ -138,7 +138,7 @@ public class CartViewModel extends ViewModel {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                               // Log.d("VOLLEY", error.toString());
                             }
                         } );
 

@@ -105,7 +105,7 @@ public class NavigationDrawerAdapter extends BaseExpandableListAdapter {
 //            }
 //        }
 
-        Log.d("when group is clicked", "getGroupView is called "+ groupPosition);
+        //Log.d("when group is clicked", "getGroupView is called "+ groupPosition);
 
         return convertView;
     }

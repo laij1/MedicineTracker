@@ -45,7 +45,7 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         if(selectedPatientViewModel.getPatientLiveData().getValue()!= null &&
                 selectedPatientViewModel.getPatientLiveData().getValue().getPatientName().equals(current.getPatientName())) {
             holder.imageButton.setChecked(true);
-            Log.d("the select patient live data is: ", selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
+            //Log.d("the select patient live data is: ", selectedPatientViewModel.getPatientLiveData().getValue().getPatientName());
         } else {
             holder.imageButton.setChecked(false);
            // Log.d("the select patient live data is: ", selectedPatientViewModel==null?"null":"not null");

@@ -100,7 +100,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         //set up view model
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         cartViewModel.getCartSelectedEid().setValue(Integer.valueOf(cartSelectedEid));
-        Log.d("what is eid in med category", cartViewModel.getCartSelectedEid().getValue() +"" );
+       // Log.d("what is eid in med category", cartViewModel.getCartSelectedEid().getValue() +"" );
 //        //TODO:get medicinelist from the database
 //        category = "dialysis";
 //        String url = "http://192.168.0.9:8080/anhe/medicine/all?category" + category;
@@ -312,7 +312,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                               // Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );

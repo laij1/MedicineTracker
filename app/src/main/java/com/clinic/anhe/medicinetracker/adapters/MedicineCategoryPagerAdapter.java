@@ -49,7 +49,7 @@ public class MedicineCategoryPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 MedicineFragment dialysis = MedicineFragment.newInstance(mCounterFab, MedicineType.dialysis);
-                Log.d("dialysis tab view pager is created", "CHLOE!!!");
+               // Log.d("dialysis tab view pager is created", "CHLOE!!!");
 //                transaction.add(dialysis, "dialysis").commit();
                 return dialysis;
             case 1:

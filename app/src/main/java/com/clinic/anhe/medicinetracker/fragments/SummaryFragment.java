@@ -367,7 +367,7 @@ public class SummaryFragment  extends Fragment {
 //    }
 
     private void addRecordToDatabase(final VolleyCallBack volleyCallBack) {
-        Log.d("what is the eid", cartViewModel.getCartSelectedEid().getValue() +"");
+       // Log.d("what is the eid", cartViewModel.getCartSelectedEid().getValue() +"");
         //TODO: needs to modified create_by and subtotal
         String url = "http://" + ip +
                 ":" + port + "/anhe/record/addlist";
@@ -390,7 +390,7 @@ public class SummaryFragment  extends Fragment {
 
         }
         final String requestBody = jsonArray.toString();
-        Log.d(requestBody, "");
+       // Log.d(requestBody, "");
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -461,7 +461,7 @@ public class SummaryFragment  extends Fragment {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                               // Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );

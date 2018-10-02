@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                         // Get the back stack fragment id.
                             getSupportFragmentManager().popBackStack(
                                     getSupportFragmentManager().getBackStackEntryAt(i).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                             Log.d("removing fragments",i+"");
+                           //  Log.d("removing fragments",i+"");
                         } /* end of for */
 
                         switch(item.getItemId()) {
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setReminderAlarm() {
 
-        Log.d("we are setting reminder", "Chloe");
+        //Log.d("we are setting reminder", "Chloe");
         alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext, AlarmReceiver.class);
         intent.putExtra("Reminder", "firstReminder");

@@ -127,7 +127,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(mAdapter != null) {
-            Log.d("we are in set user visble hint", "" + shift.toString() + " / " + dayType.toString());
+           // Log.d("we are in set user visble hint", "" + shift.toString() + " / " + dayType.toString());
             preparePatientData();
         }
     }
@@ -248,7 +248,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                              //  Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );

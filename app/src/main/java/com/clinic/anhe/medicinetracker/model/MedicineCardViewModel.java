@@ -64,7 +64,7 @@ public class MedicineCardViewModel {
 
     public void setQuantity(int i) {
         quantity = i;
-        Log.d("quantity at cartviewmodel", i + "");
+       // Log.d("quantity at cartviewmodel", i + "");
 //        if(medicinName.equalsIgnoreCase("Carnitine(原)")) {
 //            int r = i / 10;
 //            if(i < 10) {

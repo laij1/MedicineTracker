@@ -101,7 +101,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
         //TODO: if item in the cart, we need the ui to be ic_check
        boolean isAddtoCart = current.getIsAddToCart();
         // boolean isAddtoCart = cartViewModel.getMedicineLiveData().getValue().get(position).getIsAddToCart();
-        Log.d("position: " + position, "is added to cart: " + isAddtoCart);
+       // Log.d("position: " + position, "is added to cart: " + isAddtoCart);
         if(isAddtoCart) {
             holder.imageButton.setImageResource(R.drawable.ic_check);
         } else {
@@ -296,7 +296,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
 //                        cartList.remove(cartViewModel.get(position));
                         //counterFab.decrease();
                         cartViewModel.decreaseCount();
-                        Log.d("cartList removed: " + position, " counterfab count is: "+ counterFab.getCount());
+                       // Log.d("cartList removed: " + position, " counterfab count is: "+ counterFab.getCount());
 
 
                     }else {
@@ -311,7 +311,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                                   paymentAlert.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                       @Override
                                       public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            Log.d("sweet dialog confirm button is clicked","CHLOE" );
+                                          //  Log.d("sweet dialog confirm button is clicked","CHLOE" );
                                           sweetAlertDialog.dismiss();
                                       }
                                   });
@@ -331,7 +331,7 @@ public class MedicineRecyclerViewAdapter extends RecyclerView.Adapter<MedicineRe
                             //Log.d("" + item.getMedicinName(), "cash payment: "+ item.isCashPayment());
                             // counterFab.increase();
                             cartViewModel.increaseCount();
-                            Log.d("cartList added: " + position, " counterfab count is: " + counterFab.getCount());
+                            //Log.d("cartList added: " + position, " counterfab count is: " + counterFab.getCount());
                         }
                     }
                 }

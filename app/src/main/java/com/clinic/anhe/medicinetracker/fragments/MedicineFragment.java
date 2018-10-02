@@ -52,13 +52,13 @@ public class MedicineFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("OnDestory", "CHLOE!");
+      //  Log.d("OnDestory", "CHLOE!");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("OnDestoryView", "CHLOE!");
+       // Log.d("OnDestoryView", "CHLOE!");
     }
 
     @Override
@@ -91,11 +91,11 @@ public class MedicineFragment extends Fragment {
         if(medicineType == null) {
             medicineType = medicineType.fromString(getArguments().getString(ArgumentVariables.ARG_MEDICINE_TYPE));
         }
-        if(medicineType == null) {
-            Log.d("medicineType is null in OnCreateView", "CHLOE!!!!");
-        } else {
-            Log.d("medicineType is NOT null in OnCreateView", "CHLOE");
-        }
+//        if(medicineType == null) {
+           // Log.d("medicineType is null in OnCreateView", "CHLOE!!!!");
+//        } else {
+            //Log.d("medicineType is NOT null in OnCreateView", "CHLOE");
+//        }
 
        // prepareMedicineData();
         mRecyclerView = view.findViewById(R.id.medicine_recyclerview);
@@ -110,11 +110,11 @@ public class MedicineFragment extends Fragment {
         cartViewModel = ViewModelProviders.of(
                getParentFragment()).get(CartViewModel.class);
 
-        if(cartViewModel.getDialysisList() == null) {
-            Log.d("cartViewModel- dialysis list in medicineFragment is null", "CHLOEE!");
-        } else {
-            Log.d("cartViewModel- dialysis list in medicineFragment is NOT null", "CHLOEE!WEEE!!");
-        }
+//        if(cartViewModel.getDialysisList() == null) {
+//            Log.d("cartViewModel- dialysis list in medicineFragment is null", "CHLOEE!");
+//        } else {
+//            Log.d("cartViewModel- dialysis list in medicineFragment is NOT null", "CHLOEE!WEEE!!");
+//        }
 
 
         //init all the medicine in livedata

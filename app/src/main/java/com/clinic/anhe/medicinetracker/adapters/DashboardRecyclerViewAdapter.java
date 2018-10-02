@@ -118,7 +118,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         holder.patientAssignList.removeAll(holder.patientAssignList);
         if(dashboardViewModel.getShiftRecordListLiveData().getValue() != null) {
             for (ShiftRecordModel s : dashboardViewModel.getShiftRecordListLiveData().getValue()) {
-                Log.d("nurse is: " + s.getNurse(), "  patient Assign List" + s.getPatient());
+              //  Log.d("nurse is: " + s.getNurse(), "  patient Assign List" + s.getPatient());
                 if (s.getNurse().equalsIgnoreCase(current.getEmployeeName()) && s.getShift().equalsIgnoreCase(shift.toString())) {
                     if (!holder.patientAssignList.contains(s.getPatient())) {
                         holder.patientAssignList.add(s.getPatient());
@@ -202,7 +202,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                                 }
                                                 dashboardViewModel.getShiftRecordListLiveData().setValue(currentShiftList);
                                                 for(ShiftRecordModel s :dashboardViewModel.getShiftRecordList()) {
-                                                    Log.d("after deleting patient ", s.getPatient() );
+                                                   // Log.d("after deleting patient ", s.getPatient() );
                                                 }
                                                 mAdapter.notifyDataSetChanged();
 
@@ -334,7 +334,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                              //  Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );
@@ -387,7 +387,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                         String day = object.getString("day");
                                         String createAt = object.getString("createAt");
                                         shiftList.add(new ShiftRecordModel(sid, createAt, nurse, patient,shift, day));
-                                        Log.d("getting shift record", nurse + patient);
+                                     //   Log.d("getting shift record", nurse + patient);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -398,7 +398,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                            //    Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );
@@ -424,7 +424,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         String url = "http://" + ip +
                 ":" + port + "/anhe/shiftrecord/delete?patient=" + pname + "&nurse=" + nurse
                 + "&createAt=" + date + "&shift=" + deletedShift;
-        Log.d("what is the url?", url);
+      //  Log.d("what is the url?", url);
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
@@ -458,7 +458,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                              //  Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );

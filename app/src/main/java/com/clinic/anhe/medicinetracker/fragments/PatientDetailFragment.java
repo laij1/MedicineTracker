@@ -57,7 +57,7 @@ public class PatientDetailFragment extends Fragment {
             selectedPatientIC = getArguments().getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
             selectedPatientPID = getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
         }
-        Log.d("tring to see if we can get pid", "" + getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID));
+      //  Log.d("tring to see if we can get pid", "" + getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID));
         mBottomNavigationView = view.findViewById(R.id.patient_detail_bottom_navigation);
 
 

@@ -153,7 +153,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("Resuming Dashboard", "CHLOE");
+      //  Log.d("Resuming Dashboard", "CHLOE");
     }
 
 
@@ -178,7 +178,7 @@ public class DashboardFragment extends Fragment {
         if(mAdapter != null) {
             prepareEmployeeData();
         }
-        Log.d("calling setUserVisbleHint", "Chloe" + isVisibleToUser);
+     //   Log.d("calling setUserVisbleHint", "Chloe" + isVisibleToUser);
     }
 
     private void parseEmployeeData(String url, final VolleyCallBack volleyCallBack) {
@@ -210,7 +210,7 @@ public class DashboardFragment extends Fragment {
                                         if(e.getEid()!= 1 && !employeeList.contains(e)) {
                                             employeeList.add(e);
                                         }
-                                        Log.d("employeename:" , name);
+                                     //   Log.d("employeename:" , name);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -222,7 +222,7 @@ public class DashboardFragment extends Fragment {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                           //     Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );
@@ -268,7 +268,7 @@ public class DashboardFragment extends Fragment {
                                         String day = object.getString("day");
                                         String createAt = object.getString("createAt");
                                         shiftList.add(new ShiftRecordModel(sid, createAt, nurse, patient,shift, day));
-                                        Log.d("getting shift record", nurse + patient);
+                                    //    Log.d("getting shift record", nurse + patient);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -279,7 +279,7 @@ public class DashboardFragment extends Fragment {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("VOLLEY", error.toString());
+                             //   Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
                         } );
