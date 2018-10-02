@@ -109,7 +109,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
             public void onClick(View v) {
                 AddPatientDialogFragment addPatientDialogFragment = AddPatientDialogFragment.newInstance(PatientListDayFragment.this);
                 addPatientDialogFragment.show(getFragmentManager(), "addPatient");
-                Toast.makeText(mContext, "adding patient..", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "adding patient..", Toast.LENGTH_SHORT).show();
             }
         });
 

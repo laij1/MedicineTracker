@@ -189,7 +189,9 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
                                         object = response.getJSONObject(i);
                                         String name = object.getString("name");
                                         Integer eid = object.getInt("eid");
-                                        employee.put(name,eid);
+                                        if( eid != 1 ) {
+                                            employee.put(name,eid);
+                                        }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

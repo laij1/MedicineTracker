@@ -202,7 +202,9 @@ public class AddFinanceRecordDialogFragment  extends DialogFragment {
                                         Integer eid = object.getInt("eid");
                                         String position = object.getString("position");
                                         EmployeeCardViewModel employee = new EmployeeCardViewModel(name, eid, position);
-                                        employeeList.add(employee);
+                                        if(eid != 1) {
+                                            employeeList.add(employee);
+                                        }
                                         Log.d("employeename:" , name);
                                     } catch (JSONException e) {
                                         e.printStackTrace();

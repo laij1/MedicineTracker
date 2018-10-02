@@ -197,7 +197,7 @@ public class DashboardFragment extends Fragment {
                                         //TODO: here we rearrange employlist by whether it is assigned with patients
                                         EmployeeCardViewModel e = new EmployeeCardViewModel(name, eid, position);
 
-                                        if( dashboardViewModel.getShiftRecordListLiveData().getValue() != null) {
+                                        if(e.getEid()!= 1 && dashboardViewModel.getShiftRecordListLiveData().getValue() != null) {
                                             for(ShiftRecordModel s :dashboardViewModel.getShiftRecordListLiveData().getValue()) {
                                                 if(s.getNurse().equalsIgnoreCase(name) && s.getShift().equalsIgnoreCase(shift.toString())) {
                                                     if(employeeList.contains(e)) {
@@ -207,7 +207,7 @@ public class DashboardFragment extends Fragment {
                                                 }
                                             }
                                         }
-                                        if(!employeeList.contains(e)) {
+                                        if(e.getEid()!= 1 && !employeeList.contains(e)) {
                                             employeeList.add(e);
                                         }
                                         Log.d("employeename:" , name);
