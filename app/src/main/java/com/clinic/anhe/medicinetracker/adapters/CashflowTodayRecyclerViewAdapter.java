@@ -110,6 +110,8 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.allowanceBackground));
         }else if (current.getMedicineName().equalsIgnoreCase("存入銀行")) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.bankBackground));
+        } else {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.dialog_bg_color));
         }
 
         if(current.getChargeBy().equalsIgnoreCase("null")) {

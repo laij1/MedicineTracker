@@ -54,13 +54,66 @@
         android:textSize="15dp"
         android:textStyle="bold" />
 
+    <RadioGroup
+        android:id="@+id/add_medicine_record_radiogroup"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignStart="@id/add_medicine_record_item_title"
+        android:layout_below="@+id/add_medicine_record_item_title"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/add_medicine_record_recycle"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="資源回收"
+            android:textSize="20dp"
+            android:textColor="@color/menuTextIconColor" />
+
+        <RadioButton
+            android:id="@+id/add_medicine_record_clinicvisit"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="掛號費"
+            android:textColor="@color/menuTextIconColor"
+            android:textSize="20dp" />
+
+        <RadioButton
+            android:id="@+id/add_medicine_record_transportation"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="車票"
+            android:textColor="@color/menuTextIconColor"
+            android:textSize="20dp" />
+        <RadioButton
+            android:id="@+id/add_medicine_record_other"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="其他"
+            android:textSize="20dp"
+            android:textColor="@color/menuTextIconColor"
+            />
+
+
+    </RadioGroup>
     <EditText
         android:id="@+id/add_medicine_record_item"
         android:layout_width="450dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_medicine_record_item_title"
+        android:layout_below="@id/add_medicine_record_radiogroup"
         android:layout_marginLeft="30dp"
-        android:text=""
+        android:text="（選擇其他項目必填）"
         android:textColor="@color/menuTextIconColor"
         android:textSize="20dp" />
     <TextView

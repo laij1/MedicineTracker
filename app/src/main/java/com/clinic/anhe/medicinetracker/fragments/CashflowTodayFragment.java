@@ -135,6 +135,7 @@ public class CashflowTodayFragment extends Fragment {
     }
 
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {
+        recordList.removeAll(recordList);
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
@@ -165,7 +166,7 @@ public class CashflowTodayFragment extends Fragment {
                                         item.setChargeBy(chargeBy);
                                         item.setPatientName(pName);
                                         Log.d("setting chargeat and chargeby", "" + item.getPid());
-                                        if(name.equalsIgnoreCase("實際金額") || name.equalsIgnoreCase("正負金額")
+                                        if(recordList.contains(item) || name.equalsIgnoreCase("實際金額") || name.equalsIgnoreCase("正負金額")
                                                 ||name.equalsIgnoreCase("補零用金") || name.equalsIgnoreCase("存入銀行")) {
                                             //do nothing
                                         } else {

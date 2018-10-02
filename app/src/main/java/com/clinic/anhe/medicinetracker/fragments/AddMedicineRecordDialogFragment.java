@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,10 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
     private RecyclerView mSignature;
     private GridLayoutManager mLayoutManager;
     private AddMedicineRecordRecyclerViewAdapter mAdapter;
+
+    private RadioGroup mRadioGroup;
+    //defult mid is
+    private int  mid = 5;
 
     private TextView mConfirmButton;
     private TextView mCancelButton;
@@ -101,6 +106,8 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
         mConfirmButton = view.findViewById(R.id.add_medicine_record_confirmbutton);
         mCancelButton = view.findViewById(R.id.add_medicine_record_cancelbutton);
 
+        mRadioGroup = view.findViewById(R.id.add_medicine_record_radiogroup);
+
         mSignature = view.findViewById(R.id.add_medicine_record_recyclerview);
         mSignature.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getContext(), 3);
@@ -131,6 +138,29 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
             }
         });
 
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId) {
+                    case R.id.add_medicine_record_recycle:
+                        mid = 6;
+                        mItem.setText("資源回收");
+                        break;
+                    case R.id.add_medicine_record_clinicvisit:
+                        mid = 7;
+                        mItem.setText("掛號費");
+                        break;
+                    case R.id.add_medicine_record_transportation:
+                        mid = 8;
+                        mItem.setText("車票");
+                        break;
+                    case R.id.add_medicine_record_other:
+                        mid = 5;
+                        mItem.setText("必填");
+                        break;
+                }
+            }
+        });
 
         mConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +169,8 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                     Toast.makeText(mContext, "請簽名", Toast.LENGTH_SHORT).show();
                 } else if (mItem.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(mContext, "請輸入項目名稱", Toast.LENGTH_SHORT).show();
+                } else if (mid == 5 && mItem.getText().toString().equalsIgnoreCase("必填")) {
+                    Toast.makeText(mContext, "選擇其他必須輸入項目名稱", Toast.LENGTH_SHORT).show();
                 } else {
                     //see if target is a patient
                     String targetName = mTarget.getText().toString();
@@ -152,14 +184,14 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                     }
 
                     Integer create_by = addMedicineRecordViewModel.getSelectedEmployee().getValue().getEid();
-                    //if pid is not 0,
+                    //if pid is not 3,
                     if(targetPID!= 3) {
 //                        @RequestParam String name, @RequestParam Integer mid,
 //                        @RequestParam Integer pid, @RequestParam String pname,
 //                        @RequestParam Integer create_by,@RequestParam Integer subtotal)
                          url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                                  + "/anhe/record/add?name=" + mItem.getText().toString()
-                                 + "&mid=5" + "&pid=" + targetPID + "&pname=" + mTarget.getText().toString()
+                                 + "&mid=" + mid + "&pid=" + targetPID + "&pname=" + mTarget.getText().toString()
                                  + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
                          addMedicineRecord(url, new VolleyCallBack() {
                              @Override
@@ -171,11 +203,10 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                                  }
                              }
                          });
-                    //if pid is 2
                     } else {
                         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                                 + "/anhe/record/add?name=" + mItem.getText().toString()
-                                + "&mid=5" + "&pid=3" + "&pname=" + mTarget.getText().toString()
+                                + "&mid=" + mid + "&pid=3" + "&pname=" + mTarget.getText().toString()
                                 + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
                         addMedicineRecord(url, new VolleyCallBack() {
                             @Override
@@ -229,7 +260,9 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                                         Integer eid = object.getInt("eid");
                                         String position = object.getString("position");
                                         EmployeeCardViewModel employee = new EmployeeCardViewModel(name, eid, position);
-                                        employeeList.add(employee);
+                                        if(eid != 1) {
+                                            employeeList.add(employee);
+                                        }
                                         Log.d("employeename:" , name);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
