@@ -61,7 +61,7 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
         port = globalVariable.getPort();
 
 
-        String url = "http://" + ip + ":" + port + "/anhe/employee/all";
+        String url = "http://" + ip + ":" + port + "/anho/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

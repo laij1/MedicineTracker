@@ -127,7 +127,7 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
 //    private void findPatient(String name, final VolleyCallBack volleyCallBack) {
 ////        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 //        url = "http://" + ip +
-//                ":" + port + "/anhe/patient/name?name=" + name;
+//                ":" + port + "/anho/patient/name?name=" + name;
 //        JsonArrayRequest jsonArrayRequest =
 //                new JsonArrayRequest(Request.Method.GET, url, null,
 //                        new Response.Listener<JSONArray>() {
@@ -167,7 +167,7 @@ public class DashboardPatientAssignViewAdapter extends RecyclerView.Adapter<Dash
 //    private void deletePatient(String name, final VolleyCallBack volleyCallBack) {
 //        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 //        url = "http://" + ip +
-//                ":" + port + "/anhe/shiftrecord/delete?patient=" + name + "&createAt=" + date;
+//                ":" + port + "/anho/shiftrecord/delete?patient=" + name + "&createAt=" + date;
 //        JsonArrayRequest jsonArrayRequest =
 //                new JsonArrayRequest(Request.Method.GET, url, null,
 //                        new Response.Listener<JSONArray>() {

@@ -123,7 +123,7 @@ public class CashflowTodayFragment extends Fragment {
     }
 
     public void getRecordList(){
-        url = "http://" + ip + ":" + port + "/anhe/record/chargedate?start=" + todayDate;
+        url = "http://" + ip + ":" + port + "/anho/record/chargedate?start=" + todayDate;
         parseRecordListData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

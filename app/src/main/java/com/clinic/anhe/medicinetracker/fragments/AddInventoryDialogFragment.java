@@ -143,7 +143,7 @@ public class AddInventoryDialogFragment extends DialogFragment {
 
     private void addStock(final VolleyCallBack volleyCallBack) {
         String url = "http://" + globalVariable.getInstance().getIpaddress() +
-                ":" + globalVariable.getInstance().getPort() + "/anhe/inventory/add";
+                ":" + globalVariable.getInstance().getPort() + "/anho/inventory/add";
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("mid", mid);
@@ -197,7 +197,7 @@ public class AddInventoryDialogFragment extends DialogFragment {
 
     public void updateStock() {
         String url = "http://" + globalVariable.getInstance().getIpaddress() +
-                ":" + globalVariable.getInstance().getPort() + "/anhe/medicine/update?mid=" + mid +"&stock=" + Integer.valueOf(mAmount.getText().toString());
+                ":" + globalVariable.getInstance().getPort() + "/anho/medicine/update?mid=" + mid +"&stock=" + Integer.valueOf(mAmount.getText().toString());
         StringRequest stringRequest =
                 new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {

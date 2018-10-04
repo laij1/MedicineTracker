@@ -158,7 +158,7 @@ public class AddMedicineDialogFragment extends DialogFragment {
     public void addMedicineToDatabase(final VolleyCallBack volleyCallBack){
         //TODO: needs to modified create_by and subtotal
         String url = "http://" + GlobalVariable.getInstance().getIpaddress() +
-                ":" + GlobalVariable.getInstance().getPort() + "/anhe/medicine/add";
+                ":" + GlobalVariable.getInstance().getPort() + "/anho/medicine/add";
         JSONObject jsonObject = new JSONObject();
         try {
                 jsonObject.put("name", mName.getText().toString());

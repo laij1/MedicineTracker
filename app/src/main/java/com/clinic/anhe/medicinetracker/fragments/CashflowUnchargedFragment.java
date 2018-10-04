@@ -91,7 +91,7 @@ public class CashflowUnchargedFragment extends Fragment {
         mAdapter = new CashflowTodayRecyclerViewAdapter(cashFlowViewModel, "uncharged");
 
 
-        url = "http://" + ip + ":" + port + "/anhe/record/unpaid";
+        url = "http://" + ip + ":" + port + "/anho/record/unpaid";
         parseRecordListData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

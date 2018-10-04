@@ -335,7 +335,7 @@ public class SummaryFragment  extends Fragment {
 //    private void findNurse(final VolleyCallBack volleyCallBack) {
 //        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 //        String url = "http://" + ip +
-//                ":" + port + "/anhe/shiftrecord/patient?patient=" + cartSelectedPatientName
+//                ":" + port + "/anho/shiftrecord/patient?patient=" + cartSelectedPatientName
 //                + "&createAt=" + date;
 //        JsonArrayRequest jsonArrayRequest =
 //                new JsonArrayRequest(Request.Method.GET, url, null,
@@ -370,7 +370,7 @@ public class SummaryFragment  extends Fragment {
        // Log.d("what is the eid", cartViewModel.getCartSelectedEid().getValue() +"");
         //TODO: needs to modified create_by and subtotal
         String url = "http://" + ip +
-                ":" + port + "/anhe/record/addlist";
+                ":" + port + "/anho/record/addlist";
         JSONArray jsonArray = new JSONArray();
         try {
             for(MedicineCardViewModel item : cartList) {
@@ -434,7 +434,7 @@ public class SummaryFragment  extends Fragment {
     private void findPatient(String name, final VolleyCallBack volleyCallBack) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String url = "http://" + ip +
-                ":" + port + "/anhe/patient/name?name=" + name;
+                ":" + port + "/anho/patient/name?name=" + name;
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {

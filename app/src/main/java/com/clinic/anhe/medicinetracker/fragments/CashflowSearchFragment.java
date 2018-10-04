@@ -145,7 +145,7 @@ public class CashflowSearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(mContext, "start search....", Toast.LENGTH_LONG ).show();
-                url = "http://" + ip + ":" + port + "/anhe/record/charged/rangedate?start=" +
+                url = "http://" + ip + ":" + port + "/anho/record/charged/rangedate?start=" +
                         mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
                 refreshRecyclerView();
                 parseRecordListData(url, new VolleyCallBack() {

@@ -159,7 +159,7 @@ public class AddPatientDialogFragment extends DialogFragment {
     public void addPatientToDatabase(final VolleyCallBack volleyCallBack) {
 
         String url = "http://" + globalVariable.getInstance().getIpaddress() +
-                ":" + globalVariable.getInstance().getPort() + "/anhe/patient/add?name=" + mPatientName.getText().toString()
+                ":" + globalVariable.getInstance().getPort() + "/anho/patient/add?name=" + mPatientName.getText().toString()
                 + "&ic=" + mPatientIC.getText().toString() + "&day=" + day + "&shift=" + shift;
         StringRequest stringRequest =
                 new StringRequest(Request.Method.GET, url,

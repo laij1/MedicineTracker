@@ -85,7 +85,7 @@ public class AddEmployeeDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String url = "http://" + globalVariable.getInstance().getIpaddress() +
-                        ":" + globalVariable.getInstance().getPort() + "/anhe/employee/add?name=" + mName.getText().toString()
+                        ":" + globalVariable.getInstance().getPort() + "/anho/employee/add?name=" + mName.getText().toString()
                         +"&position=" + mPosition.getText().toString();
                 addEmployeeToDatabase(url, new VolleyCallBack() {
                     @Override

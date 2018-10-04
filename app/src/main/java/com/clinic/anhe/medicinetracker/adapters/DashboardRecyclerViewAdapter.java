@@ -306,7 +306,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private void findPatient(String name, final VolleyCallBack volleyCallBack) {
 //        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String url = "http://" + ip +
-                ":" + port + "/anhe/patient/name?name=" + name;
+                ":" + port + "/anho/patient/name?name=" + name;
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
@@ -345,7 +345,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     private void prepareShiftRecordData() {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://" + ip + ":" + port + "/anhe/shiftrecord?createAt=" + date;
+        String url = "http://" + ip + ":" + port + "/anho/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -422,7 +422,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                 break;
         }
         String url = "http://" + ip +
-                ":" + port + "/anhe/shiftrecord/delete?patient=" + pname + "&nurse=" + nurse
+                ":" + port + "/anho/shiftrecord/delete?patient=" + pname + "&nurse=" + nurse
                 + "&createAt=" + date + "&shift=" + deletedShift;
       //  Log.d("what is the url?", url);
         JsonArrayRequest jsonArrayRequest =

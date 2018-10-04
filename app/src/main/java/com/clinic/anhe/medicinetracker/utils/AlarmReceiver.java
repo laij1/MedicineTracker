@@ -68,7 +68,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.d("we are in get reminder", "weee");
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String url = "http://" + GlobalVariable.getInstance().getIpaddress() +
-                ":" + GlobalVariable.getInstance().getPort() + "/anhe/shiftrecord/reminder?shift=" + shift + "&today=" + date;
+                ":" + GlobalVariable.getInstance().getPort() + "/anho/shiftrecord/reminder?shift=" + shift + "&today=" + date;
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {

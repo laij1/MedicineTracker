@@ -84,7 +84,7 @@ public class DashboardViewModel extends ViewModel {
     private void prepareShiftRecordData() {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String url = "http://" + globalVariable.getInstance().getIpaddress()
-                + ":" + globalVariable.getInstance().getPort() + "/anhe/shiftrecord?createAt=" + date;
+                + ":" + globalVariable.getInstance().getPort() + "/anho/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

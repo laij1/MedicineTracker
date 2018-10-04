@@ -116,7 +116,7 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
         mSignature.setAdapter(mAdapter);
 
         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                + "/anhe/employee/all";
+                + "/anho/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -128,7 +128,7 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
         });
 
         url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                + "/anhe/patient/all";
+                + "/anho/patient/all";
         populatePatientMap(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -190,7 +190,7 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
 //                        @RequestParam Integer pid, @RequestParam String pname,
 //                        @RequestParam Integer create_by,@RequestParam Integer subtotal)
                          url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                                 + "/anhe/record/add?name=" + mItem.getText().toString()
+                                 + "/anho/record/add?name=" + mItem.getText().toString()
                                  + "&mid=" + mid + "&pid=" + targetPID + "&pname=" + mTarget.getText().toString()
                                  + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
                          addMedicineRecord(url, new VolleyCallBack() {
@@ -205,7 +205,7 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                          });
                     } else {
                         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                                + "/anhe/record/add?name=" + mItem.getText().toString()
+                                + "/anho/record/add?name=" + mItem.getText().toString()
                                 + "&mid=" + mid + "&pid=3" + "&pname=" + mTarget.getText().toString()
                                 + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
                         addMedicineRecord(url, new VolleyCallBack() {

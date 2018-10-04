@@ -107,7 +107,7 @@ public class PatientDetailMonthFragment extends Fragment {
 
 
         //TODO: needs to get pid from parent fragment
-        url = "http://" + ip + ":" + port + "/anhe/record/pid/unpaid?pid="+ selectedPatientPID;
+        url = "http://" + ip + ":" + port + "/anho/record/pid/unpaid?pid="+ selectedPatientPID;
         parseRecordListData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

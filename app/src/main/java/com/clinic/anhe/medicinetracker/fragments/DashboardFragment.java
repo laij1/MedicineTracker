@@ -158,7 +158,7 @@ public class DashboardFragment extends Fragment {
 
 
     public void prepareEmployeeData() {
-        String url = "http://" + ip + ":" + port + "/anhe/employee/all";
+        String url = "http://" + ip + ":" + port + "/anho/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -238,7 +238,7 @@ public class DashboardFragment extends Fragment {
 
     private void prepareShiftRecordData( ) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String url = "http://" + ip + ":" + port + "/anhe/shiftrecord?createAt=" + date;
+        String url = "http://" + ip + ":" + port + "/anho/shiftrecord?createAt=" + date;
         parseShiftRecordData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

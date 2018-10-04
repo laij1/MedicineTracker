@@ -74,7 +74,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         ip = globalVariable.getIpaddress();
         port = globalVariable.getPort();
         employee = new HashMap<>();
-        String url = "http://" + ip + ":" + port + "/anhe/employee/all";
+        String url = "http://" + ip + ":" + port + "/anho/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -128,7 +128,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
                 public void onClick(View v) {
                     MedicineRecordCardViewModel current = recordList.get(getAdapterPosition());
                     //TODO: needs to create a dialog to select charge person
-//                    String url = "http://192.168.0.4:8080/anhe/record/update?rid=" + current.getRid() + "&chargeBy=1";
+//                    String url = "http://192.168.0.4:8080/anho/record/update?rid=" + current.getRid() + "&chargeBy=1";
 //                    chargeItem(url, new VolleyCallBack() {
 //                        @Override
 //                        public void onResult(VolleyStatus status) {
@@ -137,7 +137,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
 //                            }
 //                        }
 //                    });
-//                    String url = "http://192.168.0.4:8080/anhe/employee/all";
+//                    String url = "http://192.168.0.4:8080/anho/employee/all";
 //                    parseEmployeeData(url, new VolleyCallBack() {
 //                        @Override
 //                        public void onResult(VolleyStatus status) {

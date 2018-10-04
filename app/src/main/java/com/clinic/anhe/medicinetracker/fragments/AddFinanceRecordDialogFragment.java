@@ -102,7 +102,7 @@ public class AddFinanceRecordDialogFragment  extends DialogFragment {
         mSignature.setAdapter(mAdapter);
 
         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                + "/anhe/employee/all";
+                + "/anho/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {
@@ -139,12 +139,12 @@ public class AddFinanceRecordDialogFragment  extends DialogFragment {
                     Integer create_by = addFinanceRecordViewModel.getSelectedEmployee().getValue().getEid();
                     if(itemName.equalsIgnoreCase("補零用金")) {
                         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                                + "/anhe/record/add?name=" + itemName
+                                + "/anho/record/add?name=" + itemName
                                 + "&mid=1" + "&pid=1" + "&pname=帳本"
                                 + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
                     } else if (itemName.equalsIgnoreCase("存入銀行")) {
                         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                                + "/anhe/record/add?name=" + itemName
+                                + "/anho/record/add?name=" + itemName
                                 + "&mid=4" + "&pid=1" + "&pname=帳本"
                                 + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
                     }

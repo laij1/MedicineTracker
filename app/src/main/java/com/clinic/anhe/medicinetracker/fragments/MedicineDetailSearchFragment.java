@@ -144,7 +144,7 @@ public class MedicineDetailSearchFragment extends Fragment {
         mStartSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                url = "http://" + ip + ":" + port + "/anhe/record/medname/rangedate?medname="+ medicineName +"&start=" +
+                url = "http://" + ip + ":" + port + "/anho/record/medname/rangedate?medname="+ medicineName +"&start=" +
                         mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
                 refreshRecyclerView();
                 parseRecordListData(url, new VolleyCallBack() {
@@ -165,7 +165,7 @@ public class MedicineDetailSearchFragment extends Fragment {
         //TODO: livedata
         patientMap = new HashMap<>();
         url = "http://" + ip +
-                ":" + port + "/anhe/patient/all";
+                ":" + port + "/anho/patient/all";
         populatePatientMap(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

@@ -188,7 +188,7 @@ public class CashflowMonthFragment extends Fragment {
                 int actual = Integer.parseInt(mActualCash.getText().toString());
                 int diff = actual - total;
                 url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                        + "/anhe/record/actualcash?cash=" + actual + "&diff=" + diff
+                        + "/anho/record/actualcash?cash=" + actual + "&diff=" + diff
                         + "&start=" + firstDay + "&end=" + mSelectEndDate.getText().toString();
                 generateActualCash(url, new VolleyCallBack() {
                     @Override
@@ -210,7 +210,7 @@ public class CashflowMonthFragment extends Fragment {
             public void onClick(View v) {
 //                Toast.makeText(mContext, "start search....", Toast.LENGTH_LONG ).show();
                 url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                        + "/anhe/record/charged/rangedate?start=" +
+                        + "/anho/record/charged/rangedate?start=" +
                         firstDay + "&end=" + mSelectEndDate.getText().toString();
                 refreshRecyclerView();
                 parseRecordListData(url, new VolleyCallBack() {
@@ -256,7 +256,7 @@ public class CashflowMonthFragment extends Fragment {
 
     public void getRecordList() {
         url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
-                + "/anhe/record/charged/rangedate?start=" +
+                + "/anho/record/charged/rangedate?start=" +
                 firstDay + "&end=" + mSelectEndDate.getText().toString();
         recordList.removeAll(recordList);
         parseRecordListData(url, new VolleyCallBack() {

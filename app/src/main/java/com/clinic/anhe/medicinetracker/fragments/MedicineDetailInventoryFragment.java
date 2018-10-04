@@ -148,10 +148,10 @@ public class MedicineDetailInventoryFragment extends Fragment {
 
         mStartSearch.setOnClickListener(new View.OnClickListener() {
 //
-//            localhost:8080/anhe/inventory/medname/rangedate?medname=HDF&start=2018-09-01&end=2018-09-20
+//            localhost:8080/anho/inventory/medname/rangedate?medname=HDF&start=2018-09-01&end=2018-09-20
             @Override
             public void onClick(View v) {
-                url = "http://" + ip + ":" + port + "/anhe/inventory/medname/rangedate?medname="+ medicineName +"&start=" +
+                url = "http://" + ip + ":" + port + "/anho/inventory/medname/rangedate?medname="+ medicineName +"&start=" +
                         mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
                 refreshRecyclerView();
                 parseRecordListData(url, new VolleyCallBack() {

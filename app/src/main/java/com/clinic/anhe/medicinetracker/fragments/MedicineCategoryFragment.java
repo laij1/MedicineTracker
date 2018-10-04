@@ -285,7 +285,7 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
     private void findPatient(String name, final VolleyCallBack volleyCallBack) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String url = "http://" + globalVariable.getInstance().getIpaddress() +
-                ":" + globalVariable.getInstance().getPort() + "/anhe/patient/name?name=" + name;
+                ":" + globalVariable.getInstance().getPort() + "/anho/patient/name?name=" + name;
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
