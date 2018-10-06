@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/cashflow_view"
+        android:layout_above="@+id/medicine_detail_view"
         android:background="@color/recyclerViewBackground">
 
     </FrameLayout>
