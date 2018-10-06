@@ -196,7 +196,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                                 while (iter.hasNext()) {
                                                     // String str = iter.next();
                                                     ShiftRecordModel item = iter.next();
-                                                    if (item.getPatient().equalsIgnoreCase(deletedShiftRecord.getPatient())) {
+                                                    if (item.equals(deletedShiftRecord)) {
                                                         iter.remove();
                                                     }
                                                 }

@@ -1,5 +1,7 @@
 package com.clinic.anhe.medicinetracker.model;
 
+import com.clinic.anhe.medicinetracker.utils.Shift;
+
 public class ShiftRecordModel {
 
     private Integer sid;
@@ -66,6 +68,26 @@ public class ShiftRecordModel {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof ShiftRecordModel)) {
+            return false;
+        }
+
+        ShiftRecordModel s = (ShiftRecordModel) obj;
+        return s.getSid()== sid;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + patient.hashCode();
+        result = 31 * result + nurse.hashCode();
+        result = 31 * result + sid;
+        return result;
     }
 
 
