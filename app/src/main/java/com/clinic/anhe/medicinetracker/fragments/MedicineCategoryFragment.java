@@ -32,6 +32,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -226,26 +227,40 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         mCounterfab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //first check if there is anything in the cart
+                if(mCounterfab.getCount()==0) {
+                    final SweetAlertDialog nothingInCart = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE);
+                    nothingInCart.setTitleText("購物車是空的");
+                    nothingInCart.setConfirmText("ok");
+                    nothingInCart.show();
+                    nothingInCart.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            nothingInCart.dismiss();
+                        }
+                    });
+                } else {
                 //cannot use getSupportFragmentManger(), it is for calling from activity, use getChildFragmentManager
                 //https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
                // FragmentTransaction transaction = ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
-               FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                   FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                SummaryFragment summaryFragment = SummaryFragment.newInstance();
-                Bundle args = new Bundle();
-                args.putString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME, cartSelectedPatientName);
-                summaryFragment.setArguments(args);
-//                ArrayList<String> cartlist = new ArrayList<>();
-//                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
-//                    if(item.getIsAddToCart() == true) {
-//                        cartlist.add(item.getMedicinName());
-//                    }
-//                }
-//                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
-//                selectPatientFragment.setArguments(args);
-                transaction.replace(R.id.medicine_category_layout, summaryFragment)
-                        .addToBackStack("summary")
-                        .commit();
+                    SummaryFragment summaryFragment = SummaryFragment.newInstance();
+                    Bundle args = new Bundle();
+                    args.putString(ArgumentVariables.ARG_CART_SELECTED_PATIENT_NAME, cartSelectedPatientName);
+                    summaryFragment.setArguments(args);
+    //                ArrayList<String> cartlist = new ArrayList<>();
+    //                for(MedicineCardViewModel item :medicineList.getMedicineList()) {
+    //                    if(item.getIsAddToCart() == true) {
+    //                        cartlist.add(item.getMedicinName());
+    //                    }
+    //                }
+    //                args.putStringArrayList(ArgumentVariables.ARG_CARTLIST, cartlist);
+    //                selectPatientFragment.setArguments(args);
+                    transaction.replace(R.id.medicine_category_layout, summaryFragment)
+                            .addToBackStack("summary")
+                            .commit();
+                }
             }
         });
 

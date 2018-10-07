@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -67,7 +68,7 @@ public class SummaryFragment  extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private SummaryRecyclerViewAdapter mAdapter;
-    private FloatingActionButton summaryFab;
+    private Button summaryFab;
     private TextView mTotal;
     private int i = -1;
     private VolleyController volleyController;

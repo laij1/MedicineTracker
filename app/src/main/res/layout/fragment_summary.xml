@@ -101,21 +101,18 @@
         <!--android:elevation="4dp"-->
         <!--android:background="@color/colorPrimaryDark" />-->
 
-    <android.support.design.widget.FloatingActionButton
+    <Button
         android:id="@+id/summary_fab"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="27dp"
         android:backgroundTint="@color/colorAccent"
-        android:elevation="12dp"
-        android:src="@drawable/ic_cart"
-        android:tint="@android:color/white"
-        app:elevation="10dp"
-        app:fabSize="normal"
-        app:layout_anchorGravity="bottom|end" />
+        android:elevation="15dp"
+        android:text="確定輸入"
+        android:textColor="@color/dialog_bg_color" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/summary_recyclerview"
@@ -126,7 +123,7 @@
         android:layout_below="@id/summary_upperview"
         android:layout_marginBottom="6dp"
         android:background="@color/recyclerViewBackground"
-        android:elevation="9dp"
+        android:elevation="1dp"
         android:padding="10dp"
         android:scrollbars="vertical" />
     <!--</FrameLayout>-->
