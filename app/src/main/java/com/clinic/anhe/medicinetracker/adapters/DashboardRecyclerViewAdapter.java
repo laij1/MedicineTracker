@@ -189,7 +189,6 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                             notifyDataSetChanged();
                                             //TODO: update dash livedata
                                             if(deletedShiftRecord != null) {
-                                                List<ShiftRecordModel> list = dashboardViewModel.getShiftRecordList();
                                                 List<ShiftRecordModel> currentShiftList = dashboardViewModel.getShiftRecordList();
 //                                            list.remove(deletedShiftRecord);
                                                 Iterator<ShiftRecordModel> iter = currentShiftList.iterator();
@@ -200,9 +199,9 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                                         iter.remove();
                                                     }
                                                 }
-                                                dashboardViewModel.getShiftRecordListLiveData().setValue(currentShiftList);
+                                                dashboardViewModel.getShiftRecordListLiveData().getValue().remove(deletedShiftRecord);
                                                 for(ShiftRecordModel s :dashboardViewModel.getShiftRecordList()) {
-                                                   // Log.d("after deleting patient ", s.getPatient() );
+                                                    Log.d("after deleting patient ", s.getPatient() + s.getNurse() );
                                                 }
                                                 mAdapter.notifyDataSetChanged();
 
@@ -350,20 +349,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             @Override
             public void onResult(VolleyStatus status) {
                 if(status==VolleyStatus.SUCCESS) {
-                    dashboardViewModel.getShiftRecordListLiveData().setValue(shiftList);
-//                    for(ShiftRecordModel s: shiftList) {
-//                        Log.d("nurse is: " + s.getNurse(), "adding to patient Assign List" + s.getPatient() );
-//                        if(s.getNurse().equalsIgnoreCase(current.getEmployeeName())) {
-//                            if(!holder.patientAssignList.contains(s.getPatient())) {
-//                                holder.patientAssignList.add(s.getPatient());
-//                            }
-//                        }
-//                    }
-//                    if(holder.patientAssignList.size() > 0) {
-//                        holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.nurseAssignColor));
-//                        holder.itemView.setOnClickListener(null);
-//                    }
-//                    holder.mAdapter.notifyDataSetChanged();
+//                    dashboardViewModel.getShiftRecordListLiveData().setValue(shiftList);
                 }
             }
         });
@@ -386,7 +372,10 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                         String shift = object.getString("shift");
                                         String day = object.getString("day");
                                         String createAt = object.getString("createAt");
-                                        shiftList.add(new ShiftRecordModel(sid, createAt, nurse, patient,shift, day));
+                                        ShiftRecordModel s =new ShiftRecordModel(sid, createAt, nurse, patient,shift, day);
+                                        if(!dashboardViewModel.getShiftRecordListLiveData().getValue().contains(s)) {
+                                            dashboardViewModel.getShiftRecordListLiveData().getValue().add(s);
+                                        }
                                      //   Log.d("getting shift record", nurse + patient);
                                     } catch (JSONException e) {
                                         e.printStackTrace();

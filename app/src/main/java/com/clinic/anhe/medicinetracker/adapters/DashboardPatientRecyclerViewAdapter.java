@@ -50,8 +50,20 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
         PatientsCardViewModel current =  patientList.get(position);
         holder.patientId.setVisibility(View.GONE);
         holder.patientName.setText(current.getPatientName());
-        holder.imageButton.setChecked(false);
 
+        holder.imageButton.setEnabled(true);
+        for(ShiftRecordModel s : dashboardViewModel.getShiftRecordList()) {
+            if(s.getPatient().equalsIgnoreCase(current.getPatientName()) && nurseName.equals(s.getNurse())) {
+                Log.d("disabling button for", s.getPatient() + s.getNurse());
+                holder.imageButton.setEnabled(false);
+                break;
+            }
+//            else {
+//                holder.imageButton.setEnabled(true);
+//            }
+        }
+
+        holder.imageButton.setChecked(false);
         if(nurseName.equalsIgnoreCase(dashboardViewModel.getNurseLiveData().getValue())) {
             for (String name : dashboardViewModel.getSelectedPatientsList()) {
                 if (name.equalsIgnoreCase(current.getPatientName())) {
@@ -60,15 +72,6 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
             }
         }
 
-//        holder.imageButton.setEnabled(true);
-//        for(ShiftRecordModel s : dashboardViewModel.getShiftRecordList()) {
-//            if(s.getPatient().equalsIgnoreCase(current.getPatientName())) {
-//                holder.imageButton.setEnabled(false);
-//            }
-//            else {
-//                holder.imageButton.setEnabled(true);
-//            }
-//        }
 
     }
 

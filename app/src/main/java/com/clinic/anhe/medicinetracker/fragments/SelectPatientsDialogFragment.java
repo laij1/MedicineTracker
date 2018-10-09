@@ -371,7 +371,7 @@ public class SelectPatientsDialogFragment extends DialogFragment {
                                         String createAt = object.getString("createAt");
                                         ShiftRecordModel s = new ShiftRecordModel(sid, createAt, nurse, patient,shift, day);
                                         if(!shiftList.contains(s)) {
-                                            Log.d("getting shift record", nurse + patient);
+                                            Log.d("getting shift record in select patient dialog", nurse + patient);
                                             shiftList.add(s);
                                         }
 
