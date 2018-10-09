@@ -31,12 +31,15 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
     private DashboardViewModel dashboardViewModel;
     private String nurseName;
     private Context mContext;
+    private Shift shift;
 
     //constructor
-    public DashboardPatientRecyclerViewAdapter(List<PatientsCardViewModel> patientList, DashboardViewModel dashboardViewModel, String nurseName) {
+    public DashboardPatientRecyclerViewAdapter(List<PatientsCardViewModel> patientList, DashboardViewModel dashboardViewModel,
+                                               String nurseName, Shift shift) {
         this.patientList = patientList;
         this.dashboardViewModel = dashboardViewModel;
         this.nurseName = nurseName;
+        this.shift = shift;
 
     }
 
@@ -59,7 +62,8 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
 
         holder.imageButton.setEnabled(true);
         for(ShiftRecordModel s : dashboardViewModel.getShiftRecordList()) {
-            if(s.getPatient().equalsIgnoreCase(current.getPatientName()) && nurseName.equals(s.getNurse())) {
+            if(s.getPatient().equalsIgnoreCase(current.getPatientName()) && nurseName.equals(s.getNurse())
+                    && s.getShift().equalsIgnoreCase(shift.toString())) {
                 Log.d("disabling button for", s.getPatient() + s.getNurse());
                 holder.imageButton.setEnabled(false);
                 break;

@@ -76,11 +76,11 @@ public class PatientsPagerAdapter extends FragmentPagerAdapter {
             //TODO: dashboard patients
             switch(position) {
                 case 0:
-                    DashboardPatientsFragment dashboardPatientsOddDayFragment = DashboardPatientsFragment.newInstance(DayType.oddDay, nurseName);
+                    DashboardPatientsFragment dashboardPatientsOddDayFragment = DashboardPatientsFragment.newInstance(DayType.oddDay, shift, nurseName);
                     return dashboardPatientsOddDayFragment;
 
                 case 1:
-                    DashboardPatientsFragment dashboardPatientsEvenDayFragment = DashboardPatientsFragment.newInstance(DayType.evenDay, nurseName);
+                    DashboardPatientsFragment dashboardPatientsEvenDayFragment = DashboardPatientsFragment.newInstance(DayType.evenDay,shift, nurseName);
                     return dashboardPatientsEvenDayFragment;
             }
             return null;

@@ -30,6 +30,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.DayType;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
+import com.clinic.anhe.medicinetracker.utils.Shift;
 
 
 import org.json.JSONArray;
@@ -46,7 +47,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
     private RecyclerView mRecyclerView;
     private DashboardPatientRecyclerViewAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
-//    private Shift shift;
+    private Shift shift;
     private DayType dayType;
     private VolleyController volleyController;
     private GlobalVariable globalVariable;
@@ -57,11 +58,12 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
     private String nurseName;
 
 
-    public static DashboardPatientsFragment newInstance(DayType dayType, String nurseName) {
+    public static DashboardPatientsFragment newInstance(DayType dayType, Shift shift, String nurseName) {
         DashboardPatientsFragment fragment = new DashboardPatientsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_DAY_TYPE, dayType.toString());
         args.putString(ARG_NURSE_NAME, nurseName);
+        args.putString(ARG_PATIENT_SHIFT, shift.toString());
 //        nurseName = nurseName;
         fragment.setArguments(args);
         return fragment;
@@ -72,6 +74,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         super.onSaveInstanceState(outState);
         outState.putString(ARG_DAY_TYPE, dayType.toString());
         outState.putString(ARG_NURSE_NAME, nurseName);
+        outState.putString(ARG_PATIENT_SHIFT, shift.toString());
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,14 +93,16 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         if(savedInstanceState != null) {
             dayType = dayType.fromString(savedInstanceState.getString(ARG_DAY_TYPE));
             nurseName= savedInstanceState.getString(ARG_NURSE_NAME);
+            shift = Shift.fromString(savedInstanceState.getString(ARG_PATIENT_SHIFT));
         }
 
         if(dayType == null) {
             dayType= dayType.fromString(getArguments().getString(ARG_DAY_TYPE));
             nurseName = getArguments().getString(ARG_NURSE_NAME);
-
+            shift = Shift.fromString(getArguments().getString(ARG_PATIENT_SHIFT));
         }
 
+        Log.d("shift is from dashboardpatients", shift.toString());
         Log.d("nurseName in dashboardPatientFragment", nurseName);
 //
         preparePatientData();
@@ -106,7 +111,7 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getContext(), 3);
         //here we need to filter
-        mAdapter = new DashboardPatientRecyclerViewAdapter(patientList, dashboardViewModel, nurseName);
+        mAdapter = new DashboardPatientRecyclerViewAdapter(patientList, dashboardViewModel, nurseName, shift);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
