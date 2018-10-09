@@ -14,6 +14,11 @@
                         android:icon="@drawable/ic_home"
                         android:title="今日值班"
                         />
+                    <item
+                        android:id="@+id/menu_today"
+                        android:icon="@drawable/ic_cart"
+                        android:title="今日輸入"
+                        />
                 </group>
             </menu>
         </item>

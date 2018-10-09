@@ -28,6 +28,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.ViewModel.CartViewModel;
 import com.clinic.anhe.medicinetracker.fragments.CashflowFragment;
 import com.clinic.anhe.medicinetracker.fragments.DashboardSettingFragment;
+import com.clinic.anhe.medicinetracker.fragments.DashboardTodayFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineCategoryFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineManageFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientsFragment;
@@ -164,6 +165,14 @@ public class MainActivity extends AppCompatActivity {
                                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                         .replace(R.id.main_fragment_container, dashboardSettingFragment)
                                         .addToBackStack(ArgumentVariables.TAG_DASHBOARD_SETTING_FRAGMENT)
+                                        .commit();
+                                break;
+                            //today's item
+                            case R.id.menu_today:
+                                DashboardTodayFragment dashboardTodayFragment = DashboardTodayFragment.newInstance();
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                        .replace(R.id.main_fragment_container, dashboardTodayFragment)
+                                        .addToBackStack(ArgumentVariables.TAG_DASHBOARD_TODAY_FRAGMENT)
                                         .commit();
                                 break;
                             //patient menu

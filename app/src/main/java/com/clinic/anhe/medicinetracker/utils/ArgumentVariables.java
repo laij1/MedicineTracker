@@ -39,4 +39,5 @@ public interface ArgumentVariables {
     public static final String TAG_NIGHT_FRAGMENT = "night";
     public static final String TAG_MEDICINE_MANAGE_FRAGMENT= "medicinemanage";
     public static final String TAG_MEDICINE_DETAIL_FRAGMENT ="medicinedetail";
+    public static final String TAG_DASHBOARD_TODAY_FRAGMENT = "dashboard today";
 }
