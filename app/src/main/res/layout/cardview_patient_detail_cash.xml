@@ -15,13 +15,20 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/patient_detail_cash_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_delete"
+            android:backgroundTint="@color/menuTextIconColor" />
+
+
         <TextView
             android:id="@+id/patient_detail_cash_createdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/patient_detail_cash_delete"
             android:text="2018-08-20"
             android:textSize="20dp" />
 

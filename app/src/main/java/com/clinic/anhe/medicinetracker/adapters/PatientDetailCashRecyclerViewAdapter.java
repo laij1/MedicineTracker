@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -17,12 +18,15 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.fragments.AddMedicineDialogFragment;
+import com.clinic.anhe.medicinetracker.fragments.PatientDetailCashFragment;
+import com.clinic.anhe.medicinetracker.fragments.PatientDetailMonthFragment;
 import com.clinic.anhe.medicinetracker.fragments.SignatureDialogFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
+import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -47,6 +51,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
     private Fragment mFragement;
     private Map<String,Integer> employee;
     private String[] employeeList;
+    private MedicineRecordCardViewModel deletedMedicineRecord;
 
 
     public PatientDetailCashRecyclerViewAdapter(List<MedicineRecordCardViewModel> recordList, Context mContext, Fragment fragment) {
@@ -73,6 +78,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         globalVariable = GlobalVariable.getInstance();
         ip = globalVariable.getIpaddress();
         port = globalVariable.getPort();
+
         employee = new HashMap<>();
         String url = "http://" + ip + ":" + port + "/anho/employee/all";
         parseEmployeeData(url, new VolleyCallBack() {
@@ -110,7 +116,9 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         private TextView itemPayment;
         private TextView itemQuantity;
         private TextView itemSubtotal;
-        public Button itemButton;
+        private Button itemButton;
+        private ImageButton itemDeleteButton;
+
 
         public PatientCashViewHolder(final View itemView) {
             super(itemView);
@@ -122,6 +130,30 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
             itemQuantity = itemView.findViewById(R.id.patient_detail_cash_quantity);
             itemSubtotal = itemView.findViewById(R.id.patient_detail_cash_subtotal);
             itemButton = itemView.findViewById(R.id.patient_detail_cash_button);
+            itemDeleteButton = itemView.findViewById(R.id.patient_detail_cash_delete);
+
+            itemDeleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MedicineRecordCardViewModel current = recordList.get(getAdapterPosition());
+                    deleteItem(current.getRid(), new VolleyCallBack() {
+                        @Override
+                        public void onResult(VolleyStatus status) {
+                            if(status == VolleyStatus.SUCCESS) {
+                                if( mFragement instanceof PatientDetailCashFragment ){
+                                    ((PatientDetailCashFragment) mFragement).refreshRecyclerView(getAdapterPosition());
+                                } else if (mFragement instanceof PatientDetailMonthFragment) {
+                                    ((PatientDetailMonthFragment) mFragement).refreshRecyclerView(getAdapterPosition());
+                                }
+                                Toast.makeText(mContext, "刪除成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(mContext, "刪除失敗", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+            });
 
             itemButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -153,27 +185,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
             });
         }
 
-//        private void chargeItem(String url, final VolleyCallBack volleyCallBack) {
-//            StringRequest stringRequest =
-//                    new StringRequest(Request.Method.GET, url,
-//                            new Response.Listener<String>() {
-//                                @Override
-//                                public void onResponse(String response) {
-//                                   if(response.toString().equals("saved")) {
-//                                    volleyCallBack.onResult(VolleyStatus.SUCCESS);
-//                                   }
-//                                }
-//                            },
-//                            new Response.ErrorListener() {
-//                                @Override
-//                                public void onErrorResponse(VolleyError error) {
-//                                    Log.d("VOLLEY", error.toString());
-//                                    volleyCallBack.onResult(VolleyStatus.FAIL);
-//                                }
-//                            } );
-//
-//            volleyController.getInstance(mContext).addToRequestQueue(stringRequest);
-//        }
+
     }
 
     private void parseEmployeeData(String url, final VolleyCallBack volleyCallBack) {
@@ -211,5 +223,46 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
 
     }
 
+    private void deleteItem(Integer rid, final VolleyCallBack volleyCallBack) {
+        String url =  "http://" + ip + ":" + port + "/anho/record/delete?rid=" + rid;
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+//                                for(int i = 0; i < response.length(); i++) {
+//                                    JSONObject object = null;
+//                                    try {
+//                                        object = response.getJSONObject(i);
+//
+//                                        String createAt = object.getString("createAt");
+//                                        Integer rid = object.getInt("rid");
+//                                        Integer pid = object.getInt("pid");
+//                                        Integer mid = object.getInt("mid");
+//                                        String name = object.getString("medicineName");
+//                                        Integer quantity = object.getInt("quantity");
+//                                        Integer subtotal = object.getInt("subtotal");
+//                                        String createBy = object.getString("createBy");
+//                                        String payment = object.getString("payment");
+//
+
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+
+    }
 
 }
