@@ -103,15 +103,16 @@
 
     <Button
         android:id="@+id/summary_fab"
+        android:background="@drawable/dialog_round"
         android:layout_width="128dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="27dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="34dp"
         android:backgroundTint="@color/colorAccent"
         android:elevation="15dp"
         android:text="確定輸入"
+        android:textSize="18dp"
         android:textColor="@color/dialog_bg_color" />
 
     <android.support.v7.widget.RecyclerView

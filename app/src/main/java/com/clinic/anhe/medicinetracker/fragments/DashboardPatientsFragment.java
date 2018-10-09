@@ -37,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DashboardPatientsFragment extends Fragment implements ArgumentVariables{
@@ -150,11 +151,13 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
 
 
     private void parsePatientList(String url, final VolleyCallBack volleyCallBack) {
+
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
+                                boolean addToSecond = false;
                                 for(int i = 0; i < response.length(); i++){
                                     JSONObject object = null;
                                     try {
@@ -164,19 +167,22 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
                                         String shift = object.getString("shift");
                                         String ic = object.getString("ic");
                                         String day = object.getString("day");
+                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day);
 //                                        Log.d("patient jason object" , name + pid + shift + day + ic);
-                                        //TODO: get ride of the ones that assigned
-                                        boolean add = false;
-                                        for(ShiftRecordModel s : dashboardViewModel.getShiftRecordListLiveData().getValue()) {
-                                            if(s.getPatient().equalsIgnoreCase(name)) {
-                                               add = true;
-                                               break;
+                                        if(pid == 2) {
+                                            patientList.add(0,p);
+                                            addToSecond = true;
+                                        } else if(shift.equalsIgnoreCase("早班")) {
+                                            if( addToSecond ) {
+                                                patientList.add(1,p);
+                                            } else {
+                                                patientList.add(0,p);
                                             }
+                                        } else {
+                                            patientList.add(p);
                                         }
-//                                        if(!add) {
-                                            patientList.add(new PatientsCardViewModel(pid, name, ic, shift, day));
-//                                        }
-//
+
+
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

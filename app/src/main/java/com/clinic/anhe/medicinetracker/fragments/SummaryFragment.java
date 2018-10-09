@@ -120,7 +120,7 @@ public class SummaryFragment  extends Fragment {
 
         if(status == VolleyStatus.SUCCESS) {
             final SweetAlertDialog successDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.SUCCESS_TYPE);
-            successDialog.setTitleText("Success!")
+            successDialog.setTitleText("輸入成功!")
                     .setConfirmText("OK")
                     .show();
             successDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -134,8 +134,8 @@ public class SummaryFragment  extends Fragment {
         }
         else if(status == VolleyStatus.FAIL) {
             final SweetAlertDialog failDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.ERROR_TYPE);
-            failDialog.setTitleText("Fail!")
-                    .setConfirmText("Try Again")
+            failDialog.setTitleText("輸入失敗！")
+                    .setConfirmText("重試")
                     .show();
             failDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
@@ -148,7 +148,7 @@ public class SummaryFragment  extends Fragment {
         else if(status == VolleyStatus.UNSET) {
                  final SweetAlertDialog unsetDialog =  new SweetAlertDialog(view.getContext(), SweetAlertDialog.ERROR_TYPE);
                  unsetDialog.setTitleText("請設定負責護士")
-                         .setConfirmText("Try Again")
+                         .setConfirmText("重試")
                          .show();
                  unsetDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                      @Override
@@ -181,7 +181,7 @@ public class SummaryFragment  extends Fragment {
             public void onClick(View v) {
                 //launch a sweetAlertDialog
                 final SweetAlertDialog pDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE);
-                pDialog.setTitleText("Loading");
+                pDialog.setTitleText("處理中");
                 pDialog.show();
                 pDialog.setCancelable(false);
                 final CountDownTimer timer = new CountDownTimer(500 * 7, 100) {
@@ -271,13 +271,13 @@ public class SummaryFragment  extends Fragment {
                     public void onResult(VolleyStatus status) {
                         if(status == VolleyStatus.SUCCESS) {
                             SummaryFragment.status = VolleyStatus.SUCCESS;
-                            pDialog.setTitleText("Success!")
+                            pDialog.setTitleText("輸入成功!")
                                     .setConfirmText("OK")
                                     .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                         } else {
                             SummaryFragment.status = VolleyStatus.FAIL;
-                            pDialog.setTitleText("Fail!")
-                                    .setConfirmText("Try Again")
+                            pDialog.setTitleText("輸入失敗!")
+                                    .setConfirmText("重試")
                                     .changeAlertType(SweetAlertDialog.ERROR_TYPE);
                         }
                         timer.onFinish();

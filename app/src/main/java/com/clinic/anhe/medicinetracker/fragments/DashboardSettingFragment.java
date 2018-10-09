@@ -76,8 +76,8 @@ public class DashboardSettingFragment extends Fragment {
         TabLayout.Tab morning = mDashboardSettingTabLayout.newTab();
         mDashboardSettingTabLayout.addTab(morning);
 
-        TabLayout.Tab afternoon = mDashboardSettingTabLayout.newTab();
-        mDashboardSettingTabLayout.addTab(afternoon);
+//        TabLayout.Tab afternoon = mDashboardSettingTabLayout.newTab();
+//        mDashboardSettingTabLayout.addTab(afternoon);
 
         TabLayout.Tab night = mDashboardSettingTabLayout.newTab();
         mDashboardSettingTabLayout.addTab(night);

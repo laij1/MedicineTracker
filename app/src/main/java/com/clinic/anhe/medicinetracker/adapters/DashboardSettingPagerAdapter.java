@@ -29,7 +29,7 @@ public class DashboardSettingPagerAdapter extends FragmentPagerAdapter{
 
     private int imageResId = R.drawable.ic_calender;
     private static final String[] tabTitles =
-            {" 早班", " 中班", " 晚班"};
+            {" 早班", " 晚班"};
 
 
     public DashboardSettingPagerAdapter(FragmentManager fm, int NumOfTabs, Context mContext) {
@@ -52,11 +52,11 @@ public class DashboardSettingPagerAdapter extends FragmentPagerAdapter{
                 DashboardFragment morningDashboardFragment = DashboardFragment.newInstance(Shift.morning);
                 return morningDashboardFragment;
             case 1:
-                DashboardFragment afternoonDashboardFragment = DashboardFragment.newInstance(Shift.afternoon);
-                return afternoonDashboardFragment;
-            case 2:
                 DashboardFragment nightDashboardFragment = DashboardFragment.newInstance(Shift.night);
                 return nightDashboardFragment;
+//            case 2:
+//                DashboardFragment nightDashboardFragment = DashboardFragment.newInstance(Shift.night);
+//                return nightDashboardFragment;
             }
             return null;
     }

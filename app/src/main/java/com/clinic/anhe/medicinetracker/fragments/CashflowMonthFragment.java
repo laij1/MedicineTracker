@@ -234,7 +234,7 @@ public class CashflowMonthFragment extends Fragment {
             public void onClick(View v) {
                 AddFinanceRecordDialogFragment addFinanceRecordDialogFragment = AddFinanceRecordDialogFragment.newInstance(CashflowMonthFragment.this);
                 addFinanceRecordDialogFragment.show(getFragmentManager(), "addFinanceRecord");
-                Toast.makeText(mContext, "加入出納項目", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "加入出納項目", Toast.LENGTH_SHORT).show();
             }
         });
         setRetainInstance(true);
