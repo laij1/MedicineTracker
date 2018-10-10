@@ -314,10 +314,7 @@ public class SummaryFragment  extends Fragment {
             //here change the quanitity for 買十送二
             if(item.getMedicinName().equalsIgnoreCase("Carnitine(原)") || item.getQuantity() >= 10) {
                 int q = item.getQuantity();
-                int r = q / 10;
-                int mod = q % 10;
-                int quantity = (r * 10) + (mod + (2 * r));
-                item.setQuantity(quantity);
+                item.setQuantity(q + 2);
             }
         }
 
