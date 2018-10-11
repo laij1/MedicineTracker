@@ -91,9 +91,9 @@ public class SummaryFragment  extends Fragment {
 
     //TODO
 //    private SelectedPatientViewModel selectedPatientViewModel;
-    private PatientsCardViewModel p;
+//    private PatientsCardViewModel p;
 
-    private EditOutsidePatientCallBack editOutsidePatientCallBack;
+//    private EditOutsidePatientCallBack editOutsidePatientCallBack;
 
     interface EditOutsidePatientCallBack {
       public void patientName(String name);
@@ -186,7 +186,7 @@ public class SummaryFragment  extends Fragment {
         patientName.setText(cartViewModel.getCartSelectedPatientLiveData().getValue().getPatientName());
 
         //hide edit button
-        if(!patientName.getText().toString().equalsIgnoreCase("院外人士")) {
+        if(!(cartViewModel.getCartSelectedPatientLiveData().getValue().getPID().intValue() == 2)) {
             mEditPatient.setVisibility(View.GONE);
         }
 
@@ -194,13 +194,13 @@ public class SummaryFragment  extends Fragment {
         mEditPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(view.getContext(), "editing patient name", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(), "editing patient name", Toast.LENGTH_SHORT).show();
                 EditOutsidePatientDialogFragment editOutsidePatientDialogFragment = EditOutsidePatientDialogFragment.newInstance(
                         new EditOutsidePatientCallBack() {
                             @Override
                             public void patientName(String name) {
                                 cartViewModel.getCartSelectedPatientLiveData().getValue().setPatientName(name);
-                                patientId.setText(name);
+                                patientName.setText(name);
                             }
                         }
                 );

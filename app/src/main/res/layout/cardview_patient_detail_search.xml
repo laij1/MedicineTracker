@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/patient_detail_search_createby"
-            android:layout_marginEnd="167dp"
+            android:layout_alignTop="@id/patient_detail_search_createby"
+            android:layout_marginEnd="130dp"
             android:text="2018-08-20"
             android:textSize="20dp" />
 
@@ -30,8 +30,8 @@
             android:id="@+id/patient_detail_search_chargedate"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_alignStart="@+id/patient_detail_search_createdate"
-            android:layout_alignTop="@+id/patient_detail_search_chargeby"
+            android:layout_alignStart="@id/patient_detail_search_createdate"
+            android:layout_alignTop="@id/patient_detail_search_chargeby"
             android:text="2018-08-20"
             android:textSize="20dp" />
 
@@ -41,7 +41,7 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="53dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/summary_payment"
             android:gravity="center"
@@ -51,12 +51,24 @@
 
         <TextView
             android:id="@+id/patient_detail_search_itemname"
-            android:layout_width="175dp"
+            android:layout_width="214dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/patient_detail_search_patientname"
+            android:text="item name"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/patient_detail_search_patientname"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="52dp"
-            android:text="item name"
+            android:layout_marginStart="15dp"
+            android:paddingRight="15dp"
+            android:text="病患名稱"
+            android:textColor="@color/menuTextIconColor"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -66,7 +78,7 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/patient_detail_search_createdate"
-            android:layout_marginEnd="400dp"
+            android:layout_marginEnd="323dp"
             android:background="@drawable/summary_payment"
             android:gravity="center"
             android:text="現"
@@ -78,8 +90,8 @@
             android:layout_width="56dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/patient_detail_search_createdate"
-            android:layout_marginEnd="333dp"
+            android:layout_alignTop="@id/patient_detail_search_createdate"
+            android:layout_marginEnd="250dp"
             android:background="@drawable/summary_payment"
             android:gravity="center"
             android:text="2"
@@ -87,11 +99,11 @@
             android:textSize="20dp" />
 
         <ImageView
-            android:id="@+id/patient_detail_cash_dollarsign"
+            android:id="@+id/patient_detail_search_dollarsign"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
-            android:layout_alignTop="@+id/patient_detail_search_subtotal"
-            android:layout_toStartOf="@+id/patient_detail_search_subtotal"
+            android:layout_alignEnd="@+id/patient_detail_search_payment"
+            android:layout_alignTop="@+id/patient_detail_search_chargedate"
             android:paddingEnd="10dp"
             android:src="@drawable/ic_price"
             android:tint="@color/menuTextIconColor" />
@@ -100,20 +112,19 @@
             android:id="@+id/patient_detail_search_subtotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/patient_detail_search_chargeby"
-            android:layout_marginEnd="348dp"
+            android:layout_alignTop="@+id/patient_detail_search_chargedate"
+            android:layout_marginStart="-323dp"
+            android:layout_toEndOf="@+id/patient_detail_search_payment"
             android:text="100000"
             android:textAlignment="viewEnd"
             android:textColor="@color/menuTextIconColor"
             android:textSize="20dp" />
-
         <TextView
             android:id="@+id/patient_detail_search_chargeby"
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/patient_detail_search_createby"
+            android:layout_alignStart="@id/patient_detail_search_createby"
             android:layout_marginBottom="15dp"
             android:background="@drawable/summary_payment"
             android:gravity="center"

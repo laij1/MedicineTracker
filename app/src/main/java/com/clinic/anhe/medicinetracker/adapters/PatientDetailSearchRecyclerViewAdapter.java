@@ -77,6 +77,7 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
         holder.itemQuantity.setText(String.valueOf(current.getQuantity()));
         holder.itemSubtotal.setText(String.valueOf(current.getSubtotal()));
         holder.itemCreateDate.setText(current.getCreateAt().toString());
+        holder.itemPatientName.setText(current.getPatientName().toString());
         for(Map.Entry<String, Integer> e : employee.entrySet()) {
             if (e.getValue() == Integer.parseInt(current.getCreateBy())) {
                 holder.itemCreateBy.setText(e.getKey());
@@ -120,6 +121,7 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
         private TextView itemSubtotal;
         private TextView itemChargeBy;
         private TextView itemChargeAt;
+        private TextView itemPatientName;
 
         public PatientSearchViewHolder(View itemView) {
             super(itemView);
@@ -131,6 +133,7 @@ public class PatientDetailSearchRecyclerViewAdapter extends RecyclerView.Adapter
             itemSubtotal = itemView.findViewById(R.id.patient_detail_search_subtotal);
             itemChargeBy = itemView.findViewById(R.id.patient_detail_search_chargeby);
             itemChargeAt = itemView.findViewById(R.id.patient_detail_search_chargedate);
+            itemPatientName = itemView.findViewById(R.id.patient_detail_search_patientname);
         }
     }
 

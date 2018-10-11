@@ -132,6 +132,16 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
             itemButton = itemView.findViewById(R.id.patient_detail_cash_button);
             itemDeleteButton = itemView.findViewById(R.id.patient_detail_cash_delete);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(recordList.get(getAdapterPosition()).getPid().equals(2)) {
+                       Toast.makeText(mContext, "院外人士姓名：" +
+                               recordList.get(getAdapterPosition()).getPatientName(),Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
             itemDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

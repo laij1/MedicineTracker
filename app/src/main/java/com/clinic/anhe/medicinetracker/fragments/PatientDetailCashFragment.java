@@ -123,6 +123,10 @@ public class PatientDetailCashFragment extends Fragment {
         return view;
     }
 
+    public TextView getPatientNameTextView(){
+        return mPatientName;
+    }
+
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {
         JsonArrayRequest jsonArrayRequest =
                 new JsonArrayRequest(Request.Method.GET, url, null,
@@ -143,11 +147,14 @@ public class PatientDetailCashFragment extends Fragment {
                                         Integer subtotal = object.getInt("subtotal");
                                         String createBy = object.getString("createBy");
                                         String payment = object.getString("payment");
+                                        String patientName = object.getString("patientName");
                                         Log.d("medicine record jason object" , name + pid + createAt);
 
                                         if(payment.equalsIgnoreCase(PaymentType.CASH.toString())){
-                                            recordList.add(new MedicineRecordCardViewModel(rid, createAt, mid, name, quantity,
-                                                    subtotal, payment, pid, createBy));
+                                            MedicineRecordCardViewModel record = new MedicineRecordCardViewModel(rid, createAt, mid, name, quantity,
+                                                    subtotal, payment, pid, createBy);
+                                            record.setPatientName(patientName);
+                                            recordList.add(record);
                                         }
 
                                     } catch (JSONException e) {
