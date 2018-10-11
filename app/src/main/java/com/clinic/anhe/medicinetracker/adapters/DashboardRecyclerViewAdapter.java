@@ -189,16 +189,6 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                             notifyDataSetChanged();
                                             //TODO: update dash livedata
                                             if(deletedShiftRecord != null) {
-                                                List<ShiftRecordModel> currentShiftList = dashboardViewModel.getShiftRecordList();
-//                                            list.remove(deletedShiftRecord);
-                                                Iterator<ShiftRecordModel> iter = currentShiftList.iterator();
-                                                while (iter.hasNext()) {
-                                                    // String str = iter.next();
-                                                    ShiftRecordModel item = iter.next();
-                                                    if (item.equals(deletedShiftRecord)) {
-                                                        iter.remove();
-                                                    }
-                                                }
                                                 dashboardViewModel.getShiftRecordListLiveData().getValue().remove(deletedShiftRecord);
                                                 for(ShiftRecordModel s :dashboardViewModel.getShiftRecordList()) {
                                                     Log.d("after deleting patient ", s.getPatient() + s.getNurse() );
@@ -429,7 +419,20 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                         String shift = object.getString("shift");
                                         String day = object.getString("day");
                                         String createAt = object.getString("createAt");
+                                        Log.d("we have the delete record", patient + sid);
                                         deletedShiftRecord = new ShiftRecordModel(sid, createAt, nurse, patient,shift, day);
+//                                        List<ShiftRecordModel> list = dashboardViewModel.getShiftRecordList();
+//                                        Iterator<ShiftRecordModel> iter = list.iterator();
+//                                                while (iter.hasNext()) {
+//                                                    // String str = iter.next();
+//                                                    ShiftRecordModel item = iter.next();
+//                                                    Log.d("see the comparison result" + item.getSid(), item.equals(deletedShiftRecord) + "");
+//                                                    if (item.equals(deletedShiftRecord)) {
+//                                                        iter.remove();
+//                                                        Log.d("deleting patient from live data", "success");
+//                                                    }
+//                                                }
+//                                        dashboardViewModel.getShiftRecordListLiveData().setValue(list);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

@@ -78,7 +78,7 @@ public class ShiftRecordModel {
         }
 
         ShiftRecordModel s = (ShiftRecordModel) obj;
-        return s.getSid()== sid;
+        return s.getSid().intValue()== sid.intValue();
     }
 
     @Override

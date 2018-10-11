@@ -117,7 +117,7 @@ public class MedicineRecordCardViewModel {
 
         MedicineRecordCardViewModel record = (MedicineRecordCardViewModel) obj;
 
-        return record.getRid()==rid;
+        return record.getRid().intValue()==rid.intValue();
     }
 
     @Override
