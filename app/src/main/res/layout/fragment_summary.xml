@@ -59,13 +59,14 @@
             android:textStyle="bold" />
 
     </RelativeLayout>
+
     <TextView
         android:id="@+id/summary_patientname"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="27dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:elevation="6dp"
         android:gravity="center"
         android:text="patient name"
@@ -81,6 +82,18 @@
         android:gravity="center"
         android:text="patient id"
         android:textSize="20dp" />
+
+    <ImageButton
+        android:id="@+id/summary_editpatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_edit"
+        android:tint="@color/colorAccent"
+        android:layout_alignBottom="@+id/summary_patientname"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="232dp"
+        android:background="@drawable/edit_round"
+         />
 
 </RelativeLayout>
 

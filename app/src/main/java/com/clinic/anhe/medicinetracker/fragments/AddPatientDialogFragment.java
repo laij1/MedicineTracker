@@ -21,8 +21,11 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
+import com.clinic.anhe.medicinetracker.model.ShiftRecordModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.utils.DayType;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
@@ -30,6 +33,16 @@ import com.clinic.anhe.medicinetracker.utils.Shift;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class AddPatientDialogFragment extends DialogFragment {
 
@@ -48,7 +61,7 @@ public class AddPatientDialogFragment extends DialogFragment {
     private GlobalVariable globalVariable;
     private String day="";
     private String shift="";
-
+    private List<PatientsCardViewModel> patientList = new ArrayList<>();
 
     public static AddPatientDialogFragment newInstance(PatientListDayFragment parentFrag) {
         AddPatientDialogFragment fragment = new AddPatientDialogFragment();
@@ -71,6 +84,8 @@ public class AddPatientDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_add_patient, container, false);
 
         mContext = view.getContext();
+
+        preparePatientData();
 
         mDayRadioGroup = view.findViewById(R.id.add_patient_day_radiogroup);
         mShiftGroup = view.findViewById(R.id.add_patient_shift_radiogroup);
@@ -120,17 +135,28 @@ public class AddPatientDialogFragment extends DialogFragment {
                 } else if(shift.equals("")) {
                     Toast.makeText(mContext, "請選擇班次", Toast.LENGTH_SHORT).show();
                 } else {
-                    addPatientToDatabase(new VolleyCallBack() {
-                        @Override
-                        public void onResult(VolleyStatus status) {
-                            if(status == VolleyStatus.SUCCESS) {
-                                Toast.makeText(mContext,"加入病患成功" , Toast.LENGTH_SHORT).show();
-                                parent.refreshrecyclerView();
-                                dismiss();
-                            }
+                    boolean existed = false;
+                    //here check if the patient already existed
+                    for (PatientsCardViewModel p : patientList) {
+                        if(p.getPatientName().equalsIgnoreCase(mPatientName.getText().toString())
+                                && p.getPatientIC().equalsIgnoreCase(mPatientIC.getText().toString())) {
+                            Toast.makeText(mContext,"病患已存在",Toast.LENGTH_SHORT).show();
+                            existed = true;
+                            dismiss();
                         }
-                    });
-
+                    }
+                    if(!existed) {
+                        addPatientToDatabase(new VolleyCallBack() {
+                            @Override
+                            public void onResult(VolleyStatus status) {
+                                if (status == VolleyStatus.SUCCESS) {
+                                    Toast.makeText(mContext, "加入病患成功", Toast.LENGTH_SHORT).show();
+                                    parent.refreshrecyclerView();
+                                    dismiss();
+                                }
+                            }
+                        });
+                    }
                 }
 
             }
@@ -180,5 +206,57 @@ public class AddPatientDialogFragment extends DialogFragment {
                         } );
 
         volleyController.getInstance(mContext).addToRequestQueue(stringRequest);
+    }
+
+    private void preparePatientData() {
+        String url ="http://" + globalVariable.getInstance().getIpaddress() +
+        ":" + globalVariable.getInstance().getPort() +"/anho/patient/all";
+        parsePatientData(url, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+                if(status==VolleyStatus.SUCCESS) {
+                }
+            }
+        });
+
+    }
+
+    private void parsePatientData(String url, final VolleyCallBack volleyCallBack) {
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                for(int i = 0; i < response.length(); i++){
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+                                        Integer pid = object.getInt("pid");
+                                        String name = object.getString("name");
+                                        String shift = object.getString("shift");
+                                        String ic = object.getString("ic");
+                                        String day = object.getString("day");
+//                                        Log.d("patient jason object" , name + pid + shift + day + ic);
+                                        PatientsCardViewModel patient = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        if(!patientList.contains(patient)) {
+                                            patientList.add(new PatientsCardViewModel(pid, name, ic, shift, day));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //    Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } );
+
+        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+
     }
 }

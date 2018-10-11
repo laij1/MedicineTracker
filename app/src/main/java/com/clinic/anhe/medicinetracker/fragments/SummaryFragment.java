@@ -21,7 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
@@ -79,6 +81,7 @@ public class SummaryFragment  extends Fragment {
     private String cartSelectedPatientName;
     private static VolleyStatus status= VolleyStatus.UNKNOWN;
     private Integer nurseEid = -1;
+    private ImageButton mEditPatient;
 
 
     //TODO
@@ -89,6 +92,12 @@ public class SummaryFragment  extends Fragment {
     //TODO
 //    private SelectedPatientViewModel selectedPatientViewModel;
     private PatientsCardViewModel p;
+
+    private EditOutsidePatientCallBack editOutsidePatientCallBack;
+
+    interface EditOutsidePatientCallBack {
+      public void patientName(String name);
+    }
 
     public static SummaryFragment newInstance(){
        SummaryFragment fragment = new SummaryFragment();
@@ -167,7 +176,7 @@ public class SummaryFragment  extends Fragment {
         cartViewModel = ViewModelProviders.of(getActivity().getSupportFragmentManager().findFragmentByTag(ArgumentVariables.TAG_MEDICINE_CATEGORY_FRAGMENT)).get(CartViewModel.class);
         cartViewModel.getCartSelectedEid().getValue();
 
-
+        mEditPatient = view.findViewById(R.id.summary_editpatient);
         patientName = view.findViewById(R.id.summary_patientname);
         patientId = view.findViewById(R.id.summary_patientid);
         summaryFab = view.findViewById(R.id.summary_fab);
@@ -175,6 +184,29 @@ public class SummaryFragment  extends Fragment {
 
         patientId.setText(cartViewModel.getCartSelectedPatientLiveData().getValue().getPatientIC());
         patientName.setText(cartViewModel.getCartSelectedPatientLiveData().getValue().getPatientName());
+
+        //hide edit button
+        if(!patientName.getText().toString().equalsIgnoreCase("院外人士")) {
+            mEditPatient.setVisibility(View.GONE);
+        }
+
+
+        mEditPatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(view.getContext(), "editing patient name", Toast.LENGTH_SHORT).show();
+                EditOutsidePatientDialogFragment editOutsidePatientDialogFragment = EditOutsidePatientDialogFragment.newInstance(
+                        new EditOutsidePatientCallBack() {
+                            @Override
+                            public void patientName(String name) {
+                                cartViewModel.getCartSelectedPatientLiveData().getValue().setPatientName(name);
+                                patientId.setText(name);
+                            }
+                        }
+                );
+                editOutsidePatientDialogFragment.show(getFragmentManager(), "edit outside patient");
+            }
+        });
 
         summaryFab.setOnClickListener(new View.OnClickListener() {
             @Override

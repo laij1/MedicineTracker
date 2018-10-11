@@ -51,7 +51,7 @@ public class PatientsCardViewModel {
 
         PatientsCardViewModel p = (PatientsCardViewModel) obj;
 
-        return p.getPatientIC().equalsIgnoreCase(patientIC);
+        return p.getPatientIC().equalsIgnoreCase(patientIC) && p.getPatientName().equalsIgnoreCase(patientName);
     }
 
     @Override
