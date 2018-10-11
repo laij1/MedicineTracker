@@ -100,12 +100,13 @@ public class MedicineDetailSearchRecyclerViewAdapter extends RecyclerView.Adapte
         }
 
         //get patient name
-        for(Map.Entry<Integer, String> entry : medicineDetailViewModel.getPatientMapLiveData().getValue().entrySet()) {
-            if (entry.getKey().intValue() == current.getPid().intValue()) {
-                holder.patientName.setText(entry.getValue());
-                break;
-            }
-        }
+        holder.patientName.setText(current.getPatientName());
+//        for(Map.Entry<Integer, String> entry : medicineDetailViewModel.getPatientMapLiveData().getValue().entrySet()) {
+//            if (entry.getKey().intValue() == current.getPid().intValue()) {
+//                holder.patientName.setText(entry.getValue());
+//                break;
+//            }
+//        }
 
     }
 
