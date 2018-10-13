@@ -344,7 +344,7 @@ public class SummaryFragment  extends Fragment {
             total += item.getSubtotal();
 
             //here change the quanitity for 買十送二
-            if(item.getMedicinName().equalsIgnoreCase("Carnitine(原)") || item.getQuantity() >= 10) {
+            if(item.getMedicinName().equalsIgnoreCase("Carnitine(原)") && item.getQuantity() >= 10) {
                 int q = item.getQuantity();
                 item.setQuantity(q + 2);
             }
