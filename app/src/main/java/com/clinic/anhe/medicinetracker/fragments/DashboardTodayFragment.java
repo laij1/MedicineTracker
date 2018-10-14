@@ -93,7 +93,7 @@ public class DashboardTodayFragment extends Fragment {
 
         Date date = c.getTime();
         url = "http://" + ip + ":" + port + "/anho/record/day" +
-                "?today=" + new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);;
+                "?today=" + new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
         parseRecordListData(url, new VolleyCallBack() {
             @Override
             public void onResult(VolleyStatus status) {

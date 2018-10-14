@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private PendingIntent alarmIntent;
     private PendingIntent alarmIntent1;
     private PendingIntent alarmIntent2;
+    private PendingIntent alarmIntentTodayCash;
+    private PendingIntent alarmIntentTodayCash1;
     private VolleyController volleyController;
 //    NavigationDrawerAdapter mMenuAdapter;
 //    ExpandableListView expandableList;
@@ -273,10 +275,17 @@ public class MainActivity extends AppCompatActivity {
         intent1.putExtra("Reminder", "secondReminder");
         Intent intent2 = new Intent(mContext, AlarmReceiver.class);
         intent2.putExtra("Reminder", "thirdReminder");
+        //for today cash intent
+        Intent intentTodayCash = new Intent(mContext, AlarmReceiver.class);
+        intentTodayCash.putExtra("Reminder", "firstTodayCashReminder");
+        Intent intentTodayCash1 = new Intent(mContext, AlarmReceiver.class);
+        intentTodayCash1.putExtra("Reminder", "secondTodayCashReminder");
 
         alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         alarmIntent1 = PendingIntent.getBroadcast(mContext, 1, intent1, PendingIntent.FLAG_CANCEL_CURRENT );
         alarmIntent2 = PendingIntent.getBroadcast(mContext, 2, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmIntentTodayCash = PendingIntent.getBroadcast(mContext,3, intentTodayCash, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmIntentTodayCash1 = PendingIntent.getBroadcast(mContext,4, intentTodayCash1, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // Set the alarm to start at 11am.
         Calendar calendar = Calendar.getInstance();
@@ -284,10 +293,10 @@ public class MainActivity extends AppCompatActivity {
         calendar.set(Calendar.HOUR_OF_DAY, 11);
         calendar.set(Calendar.MINUTE, 0);
 
-        //set second alarm to start at 15pm
+        //set second alarm to start at 14pm
         Calendar calendar1 = Calendar.getInstance();
         calendar1.setTimeInMillis(System.currentTimeMillis());
-        calendar1.set(Calendar.HOUR_OF_DAY, 15);
+        calendar1.set(Calendar.HOUR_OF_DAY, 14);
         calendar1.set(Calendar.MINUTE, 0);
 
 
@@ -296,6 +305,19 @@ public class MainActivity extends AppCompatActivity {
         calendar2.setTimeInMillis(System.currentTimeMillis());
         calendar2.set(Calendar.HOUR_OF_DAY, 21);
         calendar2.set(Calendar.MINUTE, 0);
+
+        //set today cash alarm to start at 15pm
+        Calendar calendar3 = Calendar.getInstance();
+        calendar3.setTimeInMillis(System.currentTimeMillis());
+        calendar3.set(Calendar.HOUR_OF_DAY, 15);
+        calendar3.set(Calendar.MINUTE, 0);
+
+        //set today cash alarm to start at 10pm
+        Calendar calendar4 = Calendar.getInstance();
+        calendar4.setTimeInMillis(System.currentTimeMillis());
+        calendar4.set(Calendar.HOUR_OF_DAY, 22);
+        calendar4.set(Calendar.MINUTE, 0);
+
 
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
@@ -306,5 +328,10 @@ public class MainActivity extends AppCompatActivity {
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent2);
 
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar3.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntentTodayCash);
+
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar4.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntentTodayCash1);
     }
 }
