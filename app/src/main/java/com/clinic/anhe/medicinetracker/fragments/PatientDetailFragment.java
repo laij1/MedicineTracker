@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CheckoutViewModel;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 
@@ -22,6 +24,7 @@ public class PatientDetailFragment extends Fragment {
     private String selectedPatientName;
     private String selectedPatientIC;
     private Integer selectedPatientPID;
+    private CheckoutViewModel checkoutViewModel;
 
     public static PatientDetailFragment newInstance(PatientsCardViewModel selectedPatient) {
         PatientDetailFragment fragment = new PatientDetailFragment();
@@ -57,6 +60,9 @@ public class PatientDetailFragment extends Fragment {
             selectedPatientIC = getArguments().getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
             selectedPatientPID = getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
         }
+
+        checkoutViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
+
       //  Log.d("tring to see if we can get pid", "" + getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID));
         mBottomNavigationView = view.findViewById(R.id.patient_detail_bottom_navigation);
 

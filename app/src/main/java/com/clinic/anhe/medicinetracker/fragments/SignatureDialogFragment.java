@@ -10,9 +10,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -30,14 +36,18 @@ import android.widget.AdapterView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CheckoutViewModel;
 import com.clinic.anhe.medicinetracker.ViewModel.SelectedEmployeeViewModel;
 import com.clinic.anhe.medicinetracker.adapters.SignatureRecyclerViewAdapter;
+import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
@@ -58,6 +68,7 @@ public class SignatureDialogFragment extends DialogFragment {
     private VolleyController volleyController;
     private Context mContext;
     private static Integer rid;
+    private Integer eid;
     private static  int index;
     private GlobalVariable globalVariable;
     private String ip;
@@ -70,14 +81,14 @@ public class SignatureDialogFragment extends DialogFragment {
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private SignatureRecyclerViewAdapter mAdapter;
+    private CheckoutViewModel checkoutViewModel;
 
 
-    public static SignatureDialogFragment newInstance(Map<String, Integer> employeeMap, Integer recordID, int i) {
+    public static SignatureDialogFragment newInstance(Map<String, Integer> employeeMap) {
 //        Bundle args = new Bundle();
         SignatureDialogFragment fragment = new SignatureDialogFragment();
-        index = i;
         employee = employeeMap;
-        rid = recordID;
+//        rid = recordID;
         return fragment;
     }
 
@@ -121,6 +132,7 @@ public class SignatureDialogFragment extends DialogFragment {
         }
 
         SelectedEmployeeViewModel selectedEmployeeViewModel = ViewModelProviders.of(this).get(SelectedEmployeeViewModel.class);
+        checkoutViewModel = ViewModelProviders.of(getParentFragment().getParentFragment()).get(CheckoutViewModel.class);
 
         mConfirmButton = view.findViewById(R.id.signature_confirmbutton);
         mCancelButton = view.findViewById(R.id.signature_cancelbutton);
@@ -140,18 +152,18 @@ public class SignatureDialogFragment extends DialogFragment {
                 }
                 else {
 
-                    Integer eid = selectedEmployeeViewModel.getSelectedEmployee().getValue().getEid();
-                            String url = "http://" + ip + ":" + port + "/anho/record/update?rid=" + rid + "&chargeBy=" + eid;
-                            chargeItem(url, new VolleyCallBack() {
+                     eid = selectedEmployeeViewModel.getSelectedEmployee().getValue().getEid();
+//                            String url = "http://" + ip + ":" + port + "/anho/record/update?rid=" + rid + "&chargeBy=" + eid;
+                            chargeItemList( new VolleyCallBack() {
                                 @Override
                                 public void onResult(VolleyStatus status) {
                                     if (status == VolleyStatus.SUCCESS) {
                                         if(getParentFragment() instanceof  PatientDetailCashFragment) {
                                             PatientDetailCashFragment fragment = (PatientDetailCashFragment)getParentFragment();
-                                            fragment.refreshRecyclerView(index);
+                                            fragment.refreshRecyclerViewFromCheckout();
                                         } else if ( getParentFragment() instanceof PatientDetailMonthFragment) {
                                             PatientDetailMonthFragment fragment = (PatientDetailMonthFragment)getParentFragment();
-                                            fragment.refreshRecyclerView(index);
+                                            fragment.refreshRecyclerViewFromCheckout();
                                         }
 
                                         Toast.makeText(getParentFragment().getContext(), "結帳完成",Toast.LENGTH_SHORT).show();
@@ -298,4 +310,83 @@ public class SignatureDialogFragment extends DialogFragment {
 
         volleyController.getInstance(mContext).addToRequestQueue(stringRequest);
     }
+
+    private void chargeItemList(final VolleyCallBack volleyCallBack) {
+        // Log.d("what is the eid", cartViewModel.getCartSelectedEid().getValue() +"");
+        Calendar c = Calendar.getInstance();
+        Date date = c.getTime();
+        String defaultDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
+        //TODO: needs to modified create_by and subtotal
+        String url = "http://" + ip +
+                ":" + port + "/anho/record/updatelist";
+        JSONArray jsonArray = new JSONArray();
+        try {
+            List<MedicineRecordCardViewModel> curentList = new ArrayList<>();
+            if(getParentFragment() instanceof PatientDetailCashFragment) {
+                curentList = checkoutViewModel.getCashCheckoutLiveData().getValue();
+            } else if (getParentFragment() instanceof  PatientDetailMonthFragment) {
+                curentList = checkoutViewModel.getMonthCheckoutLiveData().getValue();
+            }
+            for(MedicineRecordCardViewModel item : curentList) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("rid", item.getRid());
+                jsonObject.put("mid", item.getMid());
+                jsonObject.put("medicineName", item.getMedicineName());
+                jsonObject.put("payment", item.getPayment());
+                jsonObject.put("pid", item.getPid());
+                jsonObject.put("quantity", item.getQuantity());
+                jsonObject.put("createBy", item.getCreateBy());
+                jsonObject.put("createAt", item.getCreateAt());
+                jsonObject.put("chargeAt", defaultDate);
+                jsonObject.put("chargeBy", eid);
+                jsonObject.put("patientName", item.getPatientName());
+                jsonObject.put("subtotal", item.getSubtotal());
+                jsonArray.put(jsonObject);
+                Log.d("updateing all checkoutlist ", item.getRid() + item.getMedicineName());
+            }
+        } catch (JSONException e) {
+
+        }
+        final String requestBody = jsonArray.toString();
+        // Log.d(requestBody, "");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("saved")) {
+                            volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                        } else {
+                            volleyCallBack.onResult(VolleyStatus.FAIL);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY", error.toString());
+                        volleyCallBack.onResult(VolleyStatus.FAIL);
+                    }
+                })
+        {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+
+        };
+
+        volleyController.getInstance().addToRequestQueue(stringRequest);
+    }
+
 }

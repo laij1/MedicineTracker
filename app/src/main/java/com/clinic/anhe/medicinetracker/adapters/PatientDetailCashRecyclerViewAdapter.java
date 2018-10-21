@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.adapters;
 
+import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CheckoutViewModel;
 import com.clinic.anhe.medicinetracker.fragments.AddMedicineDialogFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientDetailCashFragment;
 import com.clinic.anhe.medicinetracker.fragments.PatientDetailMonthFragment;
@@ -25,6 +27,7 @@ import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
@@ -52,12 +55,19 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
     private Map<String,Integer> employee;
     private String[] employeeList;
     private MedicineRecordCardViewModel deletedMedicineRecord;
+    private CounterFab checkoutCounterFab;
+    private CheckoutViewModel checkoutViewModel;
 
 
-    public PatientDetailCashRecyclerViewAdapter(List<MedicineRecordCardViewModel> recordList, Context mContext, Fragment fragment) {
+
+    public PatientDetailCashRecyclerViewAdapter(List<MedicineRecordCardViewModel> recordList, Context mContext,
+                                                Fragment fragment, CounterFab counterFab, CheckoutViewModel viewModel) {
         this.recordList = recordList;
         this.mContext = mContext;
         this.mFragement = fragment;
+        this.checkoutCounterFab = counterFab;
+        this.checkoutViewModel = viewModel;
+
     }
 
     @Override
@@ -105,6 +115,14 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         }
         holder.itemName.setText(current.getMedicineName());
         holder.itemPayment.setText(current.getPayment().equalsIgnoreCase("CASH") ? "現" : "月");
+
+        if(checkoutViewModel.getCashCheckoutLiveData().getValue().contains(current)) {
+            holder.itemButton.setImageResource(R.drawable.ic_check);
+        } else {
+            holder.itemButton.setImageResource(R.drawable.ic_add);
+
+        }
+
     }
 
 
@@ -116,7 +134,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         private TextView itemPayment;
         private TextView itemQuantity;
         private TextView itemSubtotal;
-        private Button itemButton;
+        private ImageButton itemButton;
         private ImageButton itemDeleteButton;
 
 
@@ -169,6 +187,30 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
                 @Override
                 public void onClick(View v) {
                     MedicineRecordCardViewModel current = recordList.get(getAdapterPosition());
+                    //if checkout view model has the item, remove it
+                    if(mFragement instanceof PatientDetailCashFragment){
+                        if(checkoutViewModel.getCashCheckoutLiveData().getValue().contains(current)) {
+                            checkoutViewModel.getCashCheckoutLiveData().getValue().remove(current);
+                            checkoutCounterFab.decrease();
+                            itemButton.setImageResource(R.drawable.ic_add);
+                        } else {
+                            checkoutViewModel.getCashCheckoutLiveData().getValue().add(current);
+                            checkoutCounterFab.increase();
+                            itemButton.setImageResource(R.drawable.ic_check);
+
+                        }
+                    } else if (mFragement instanceof  PatientDetailMonthFragment) {
+                        if(checkoutViewModel.getMonthCheckoutLiveData().getValue().contains(current)) {
+                            checkoutViewModel.getMonthCheckoutLiveData().getValue().remove(current);
+                            checkoutCounterFab.decrease();
+                            itemButton.setImageResource(R.drawable.ic_add);
+                        } else {
+                            checkoutViewModel.getMonthCheckoutLiveData().getValue().add(current);
+                            checkoutCounterFab.increase();
+                            itemButton.setImageResource(R.drawable.ic_check);
+
+                        }
+                    }
                     //TODO: needs to create a dialog to select charge person
 //                    String url = "http://192.168.0.4:8080/anho/record/update?rid=" + current.getRid() + "&chargeBy=1";
 //                    chargeItem(url, new VolleyCallBack() {
@@ -184,15 +226,34 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
 //                        @Override
 //                        public void onResult(VolleyStatus status) {
 //                            if(status == VolleyStatus.SUCCESS) {
-                                SignatureDialogFragment signatureDialogFragment =
-                                        SignatureDialogFragment.newInstance(employee, current.getRid(), getAdapterPosition());
-                                signatureDialogFragment.show( mFragement.getChildFragmentManager(),"signature");
+//                                SignatureDialogFragment signatureDialogFragment =
+//                                        SignatureDialogFragment.newInstance(employee, current.getRid(), getAdapterPosition());
+//                                signatureDialogFragment.show( mFragement.getChildFragmentManager(),"signature");
 //                            }
 //                        }
 //                    });
 
                 }
             });
+
+            checkoutCounterFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(checkoutCounterFab.getCount() ==0) {
+
+                    } else {
+//                        String result ="";
+//                        for(MedicineRecordCardViewModel r :checkoutViewModel.getCashCheckoutLiveData().getValue()) {
+//                            result += r.getMedicineName() + " ";
+//                        }
+//                        Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+                        SignatureDialogFragment signatureDialogFragment =
+                                SignatureDialogFragment.newInstance(employee);
+                        signatureDialogFragment.show( mFragement.getChildFragmentManager(),"signature");
+                    }
+                }
+            });
+
         }
 
 

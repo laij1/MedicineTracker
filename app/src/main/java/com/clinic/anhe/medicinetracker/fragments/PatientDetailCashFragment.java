@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,15 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CheckoutViewModel;
 import com.clinic.anhe.medicinetracker.adapters.PatientDetailCashRecyclerViewAdapter;
-import com.clinic.anhe.medicinetracker.adapters.PatientListRecyclerViewAdapter;
-import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
-import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
@@ -35,7 +35,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PatientDetailCashFragment extends Fragment {
@@ -55,6 +54,8 @@ public class PatientDetailCashFragment extends Fragment {
     private TextView mPatientName;
     private TextView mPatientIC;
     String url = "";
+    private CounterFab counterFab;
+    private CheckoutViewModel checkoutViewModel;
 
     public static PatientDetailCashFragment newInstance(String selectedPatientName, String selectedPatientIC, Integer PID){
         PatientDetailCashFragment fragment  = new PatientDetailCashFragment();
@@ -91,6 +92,9 @@ public class PatientDetailCashFragment extends Fragment {
             selectedPatientIC = getArguments().getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
             selectedPatientPID = getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
         }
+
+        checkoutViewModel = ViewModelProviders.of(getParentFragment()).get(CheckoutViewModel.class);
+
         mContext = view.getContext();
         globalVariable = GlobalVariable.getInstance();
         ip = globalVariable.getIpaddress();
@@ -103,10 +107,13 @@ public class PatientDetailCashFragment extends Fragment {
         mPatientName.setText(selectedPatientName);
         mPatientIC.setText(selectedPatientIC);
 
+        //checkout counterfab
+        counterFab = view.findViewById(R.id.patient_detail_cash_fab);
+
         mRecyclerView = view.findViewById(R.id.patient_detail_cash_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new PatientDetailCashRecyclerViewAdapter(recordList, mContext, this);
+        mAdapter = new PatientDetailCashRecyclerViewAdapter(recordList, mContext, this, counterFab, checkoutViewModel);
 
 
         //TODO: needs to get pid from parent fragment
@@ -180,7 +187,15 @@ public class PatientDetailCashFragment extends Fragment {
         recordList.remove(index);
         mAdapter.notifyDataSetChanged();
 
+    }
 
+    public void refreshRecyclerViewFromCheckout() {
+        for(MedicineRecordCardViewModel item : checkoutViewModel.getCashCheckoutLiveData().getValue()){
+            recordList.remove(item);
+        }
+        checkoutViewModel.getCashCheckoutLiveData().getValue().removeAll(checkoutViewModel.getCashCheckoutLiveData().getValue());
+        counterFab.setCount(0);
+        mAdapter.notifyDataSetChanged();
     }
 
 }

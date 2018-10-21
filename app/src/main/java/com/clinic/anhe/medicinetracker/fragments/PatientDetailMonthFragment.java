@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,12 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.CheckoutViewModel;
 import com.clinic.anhe.medicinetracker.adapters.PatientDetailCashRecyclerViewAdapter;
 import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
+import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
 
@@ -51,6 +54,8 @@ public class PatientDetailMonthFragment extends Fragment {
     private TextView mPatientName;
     private TextView mPatientIC;
     String url = "";
+    private CounterFab counterFab;
+    private CheckoutViewModel checkoutViewModel;
 
     public static PatientDetailMonthFragment newInstance(String selectedPatientName, String selectedPatientIC, Integer PID) {
 
@@ -86,6 +91,8 @@ public class PatientDetailMonthFragment extends Fragment {
             selectedPatientIC = getArguments().getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
             selectedPatientPID = getArguments().getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
         }
+
+        checkoutViewModel = ViewModelProviders.of(getParentFragment()).get(CheckoutViewModel.class);
         mContext = view.getContext();
 
         globalVariable = GlobalVariable.getInstance();
@@ -100,10 +107,11 @@ public class PatientDetailMonthFragment extends Fragment {
         mPatientName.setText(selectedPatientName);
         mPatientIC.setText(selectedPatientIC);
 
+        counterFab = view.findViewById(R.id.patient_detail_month_fab);
         mRecyclerView = view.findViewById(R.id.patient_detail_month_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new PatientDetailCashRecyclerViewAdapter(recordList, mContext, this);
+        mAdapter = new PatientDetailCashRecyclerViewAdapter(recordList, mContext, this, counterFab, checkoutViewModel);
 
 
         //TODO: needs to get pid from parent fragment
@@ -174,7 +182,14 @@ public class PatientDetailMonthFragment extends Fragment {
     public void refreshRecyclerView(int index) {
         recordList.remove(index);
         mAdapter.notifyDataSetChanged();
+    }
 
-
+    public void refreshRecyclerViewFromCheckout() {
+        for(MedicineRecordCardViewModel item : checkoutViewModel.getMonthCheckoutLiveData().getValue()){
+            recordList.remove(item);
+        }
+        checkoutViewModel.getMonthCheckoutLiveData().getValue().removeAll(checkoutViewModel.getMonthCheckoutLiveData().getValue());
+        counterFab.setCount(0);
+        mAdapter.notifyDataSetChanged();
     }
 }
