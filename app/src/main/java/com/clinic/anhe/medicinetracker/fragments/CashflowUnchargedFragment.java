@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -25,6 +26,7 @@ import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.networking.VolleyCallBack;
 import com.clinic.anhe.medicinetracker.networking.VolleyController;
 import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
+import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 
 import org.json.JSONArray;
@@ -41,7 +43,9 @@ import java.util.Locale;
 public class CashflowUnchargedFragment extends Fragment {
 
     private TextView mDisplay;
-    private TextView mTotalUncharged;
+    private TextView mSelectStartDate;
+    private TextView mSelectEndDate;
+    private ImageView mStartSearch;
     private RecyclerView mRecyclerView;
     private Context mContext;
     private String url = "";
@@ -59,6 +63,14 @@ public class CashflowUnchargedFragment extends Fragment {
         CashflowUnchargedFragment fragment = new CashflowUnchargedFragment();
         return fragment;
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_STARTDATE, mSelectStartDate.getText().toString());
+        outState.putString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_ENDDATE, mSelectEndDate.getText().toString());
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,10 +92,44 @@ public class CashflowUnchargedFragment extends Fragment {
         int month = c.get(Calendar.MONTH) + 1;
         String today = "" + c.get(Calendar.YEAR) + "年"
                 + month + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" ;
+        //Calendar cal = Calendar.getInstance();
+        Date date = c.getTime();
+        String defaultDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
 
         mDisplay.setText(today);
-        mTotalUncharged = view.findViewById(R.id.cashflow_uncharged_total);
+        mSelectStartDate = view.findViewById(R.id.cashflow_uncharged_startdate);
+        mSelectEndDate = view.findViewById(R.id.cashflow_uncharged_enddate);
+        mStartSearch = view.findViewById(R.id.cashflow_uncharged_button);
 
+        if(savedInstanceState != null) {
+
+            mSelectStartDate.setText(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_STARTDATE));
+            mSelectEndDate.setText(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_ENDDATE));
+        }
+        else {
+            mSelectStartDate.setText(defaultDate);
+            mSelectEndDate.setText(defaultDate);
+        }
+
+        mSelectStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(mContext, "select start date", Toast.LENGTH_LONG ).show();
+                StartDatePickerDialogFragment startDate = StartDatePickerDialogFragment.newInstance(
+                        CashflowUnchargedFragment.this, mContext);
+                startDate.show(getFragmentManager(),"startdate");
+            }
+        });
+
+        mSelectEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(mContext, "select end date", Toast.LENGTH_LONG ).show();
+                EndDatePickerDialogFragment endDate = EndDatePickerDialogFragment.newInstance(
+                        CashflowUnchargedFragment.this, mContext);
+                endDate.show(getFragmentManager(), "enddate");
+            }
+        });
 
         mRecyclerView = view.findViewById(R.id.cashflow_uncharged_recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -91,22 +137,36 @@ public class CashflowUnchargedFragment extends Fragment {
         mAdapter = new CashflowTodayRecyclerViewAdapter(cashFlowViewModel, "uncharged");
 
 
-        url = "http://" + ip + ":" + port + "/anho/record/unpaid";
-        parseRecordListData(url, new VolleyCallBack() {
-            @Override
-            public void onResult(VolleyStatus status) {
-                //TODO:update livedata
-                cashFlowViewModel.getUnchargedListLiveData().setValue(recordList);
-                mTotalUncharged.setText(String.valueOf(totaluncharged));
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        mStartSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(mContext, "start search....", Toast.LENGTH_LONG ).show();
+                url = "http://" + ip + ":" + port + "/anho/record/unpaid/rangedate?start=" +
+                        mSelectStartDate.getText().toString() + "&end=" + mSelectEndDate.getText().toString();
+                refreshRecyclerView();
+                parseRecordListData(url, new VolleyCallBack() {
+                    @Override
+                    public void onResult(VolleyStatus status) {
+                        cashFlowViewModel.getUnchargedListLiveData().setValue(recordList);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+
+        setRetainInstance(true);
         return view;
+    }
+
+    public void refreshRecyclerView() {
+        recordList.removeAll(recordList);
+        cashFlowViewModel.getUnchargedListLiveData().setValue(recordList);
+        mAdapter.notifyDataSetChanged();
+
     }
 
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {
@@ -159,5 +219,13 @@ public class CashflowUnchargedFragment extends Fragment {
                         } );
 
         volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+    }
+
+    public void setStartDateTextView(String startDate) {
+        mSelectStartDate.setText(startDate);
+    }
+
+    public void setEndDateTextView(String endDate) {
+        mSelectEndDate.setText(endDate);
     }
 }

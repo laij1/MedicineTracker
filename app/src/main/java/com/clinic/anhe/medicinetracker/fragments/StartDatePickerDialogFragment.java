@@ -49,6 +49,8 @@ public class StartDatePickerDialogFragment extends DialogFragment implements Dat
             ((MedicineDetailSearchFragment)mFrag).setStartDateTextView(startDate);
         } else if (mFrag instanceof  MedicineDetailInventoryFragment) {
             ((MedicineDetailInventoryFragment)mFrag).setStartDateTextView(startDate);
+        } else if (mFrag instanceof CashflowUnchargedFragment) {
+            ((CashflowUnchargedFragment)mFrag).setStartDateTextView(startDate);
         }
     }
 }

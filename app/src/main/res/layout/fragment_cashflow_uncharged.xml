@@ -21,61 +21,97 @@
             android:layout_height="65dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="29dp"
             android:background="@drawable/dialog_round">
 
-
             <ImageView
-                android:id="@+id/cashflow_uncharged_sign"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="214dp"
-                android:src="@drawable/ic_price"
+                android:layout_marginStart="161dp"
+                android:src="@drawable/ic_calender"
                 android:tint="@color/menuTextIconColor" />
 
             <TextView
-                android:id="@+id/cashflow_uncharged_title"
+                android:id="@+id/cashflow_uncharged_startdate_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/cashflow_uncharged_sign"
-                android:paddingLeft="15dp"
-                android:text="總未收款金額："
+                android:layout_above="@id/cashflow_uncharged_startdate"
+                android:layout_alignStart="@id/cashflow_uncharged_startdate"
+                android:layout_marginLeft="28dp"
+                android:layout_marginRight="28dp"
+                android:text="開始日期"
                 android:textColor="@color/menuTextIconColor"
-                android:textSize="23dp"
-                android:textStyle="bold" />
-
+                android:textSize="10dp" />
 
             <TextView
-                android:id="@+id/cashflow_uncharged_total"
+                android:id="@+id/cashflow_uncharged_startdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/cashflow_uncharged_title"
-                android:paddingStart="15dp"
-                android:text="0"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="215dp"
+                android:background="?attr/editTextBackground"
+                android:text=" 2018-09-01"
                 android:textColor="@color/menuTextIconColor"
-                android:textSize="23dp"
-                android:textStyle="bold" />
+                android:textSize="18dp"
+                android:tint="@color/menuTextIconColor" />
+
+            <TextView
+                android:id="@+id/cashflow_uncharged_endtdate_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/cashflow_uncharged_enddate"
+                android:layout_alignStart="@id/cashflow_uncharged_enddate"
+                android:layout_marginLeft="28dp"
+                android:layout_marginRight="28dp"
+                android:text="結束日期"
+                android:textColor="@color/menuTextIconColor"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/cashflow_uncharged_enddate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="245dp"
+                android:background="?attr/editTextBackground"
+                android:text=" 2018-09-04"
+                android:textColor="@color/menuTextIconColor"
+                android:textSize="18dp"
+                android:tint="@color/menuTextIconColor" />
+
+            <ImageView
+                android:id="@+id/cashflow_uncharged_button"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="160dp"
+                android:backgroundTint="@color/dialog_bg_color"
+                android:src="@drawable/ic_history_search"
+                android:tint="@color/colorPrimaryDark" />
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/cashflow_uncharged_display"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="37dp"
-            android:elevation="6dp"
-            android:gravity="center"
-            android:text="today's date"
-            android:textSize="30dp" />
-
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/cashflow_uncharged_display"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="41dp"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:text="today's date"
+        android:textSize="30dp" />
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cashflow_uncharged_recyclerview"
