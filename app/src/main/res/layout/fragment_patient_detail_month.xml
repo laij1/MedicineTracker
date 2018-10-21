@@ -62,7 +62,7 @@
         app:elevation="2dp"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_add_cart" />
+        app:srcCompat="@drawable/ic_checkout" />
 
 
 

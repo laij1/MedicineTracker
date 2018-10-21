@@ -30,6 +30,7 @@ import com.clinic.anhe.medicinetracker.networking.VolleyStatus;
 import com.clinic.anhe.medicinetracker.utils.CounterFab;
 import com.clinic.anhe.medicinetracker.utils.GlobalVariable;
 import com.clinic.anhe.medicinetracker.utils.PaymentType;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -240,6 +241,16 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
                 @Override
                 public void onClick(View v) {
                     if(checkoutCounterFab.getCount() ==0) {
+                        final SweetAlertDialog nothingInCart = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE);
+                        nothingInCart.setTitleText("請選擇結帳項目");
+                        nothingInCart.setConfirmText("ok");
+                        nothingInCart.show();
+                        nothingInCart.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                nothingInCart.dismiss();
+                            }
+                        });
 
                     } else {
 //                        String result ="";

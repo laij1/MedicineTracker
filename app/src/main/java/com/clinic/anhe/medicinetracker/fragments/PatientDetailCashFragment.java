@@ -184,6 +184,10 @@ public class PatientDetailCashFragment extends Fragment {
     }
 
     public void refreshRecyclerView(int index) {
+        if(checkoutViewModel.getCashCheckoutLiveData().getValue().contains(recordList.get(index))) {
+            checkoutViewModel.getCashCheckoutLiveData().getValue().remove(recordList.get(index));
+            counterFab.decrease();
+        }
         recordList.remove(index);
         mAdapter.notifyDataSetChanged();
 

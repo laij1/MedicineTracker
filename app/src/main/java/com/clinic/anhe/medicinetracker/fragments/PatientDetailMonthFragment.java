@@ -180,6 +180,10 @@ public class PatientDetailMonthFragment extends Fragment {
     }
 
     public void refreshRecyclerView(int index) {
+        if(checkoutViewModel.getMonthCheckoutLiveData().getValue().contains(recordList.get(index))) {
+            checkoutViewModel.getMonthCheckoutLiveData().getValue().remove(recordList.get(index));
+            counterFab.decrease();
+        }
         recordList.remove(index);
         mAdapter.notifyDataSetChanged();
     }
