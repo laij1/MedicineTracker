@@ -64,9 +64,10 @@ public class PatientListRecyclerViewAdapter extends RecyclerView.Adapter<Patient
     }
 
     public void filterList(List<PatientsCardViewModel> filterPatientList) {
-        patientList = filterPatientList;
-        notifyDataSetChanged();
-
+        if(filterPatientList.size() > 0) {
+            patientList = filterPatientList;
+            notifyDataSetChanged();
+        }
     }
 
     public class PatientsListViewHolder extends RecyclerView.ViewHolder {
