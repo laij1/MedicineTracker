@@ -63,6 +63,12 @@ public class PatientListRecyclerViewAdapter extends RecyclerView.Adapter<Patient
         return position;
     }
 
+    public void filterList(List<PatientsCardViewModel> filterPatientList) {
+        patientList = filterPatientList;
+        notifyDataSetChanged();
+
+    }
+
     public class PatientsListViewHolder extends RecyclerView.ViewHolder {
         public TextView patientName;
         public TextView patientId;

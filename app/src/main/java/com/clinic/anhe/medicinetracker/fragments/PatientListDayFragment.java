@@ -8,10 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -43,6 +47,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
 
     //patients cardview
     private List<PatientsCardViewModel> patientList;
+    private EditText patientSearch;
     private RecyclerView mRecyclerView;
     private PatientListRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -54,6 +59,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
     private GlobalVariable globalVariable;
     private String ip;
     private String port;
+    private View view;
 
     public static PatientListDayFragment newInstance(Shift shift, DayType dayType) {
         PatientListDayFragment fragment = new PatientListDayFragment();
@@ -74,7 +80,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view  = inflater.inflate(R.layout.fragment_patient_list_day, container, false);
+        view  = inflater.inflate(R.layout.fragment_patient_list_day, container, false);
         mAddPatient = view.findViewById(R.id.add_patient_fab);
         mContext = getContext();
 
@@ -94,6 +100,8 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
 
 
         patientList = new ArrayList<>();
+        patientSearch = view.findViewById(R.id.patient_list_day_searchtext);
+
         preparePatientData();
         mRecyclerView = view.findViewById(R.id.patient_list_day_recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -113,11 +121,45 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
             }
         });
 
+        patientSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d("afterTextChange", s.toString());
+                filter(s.toString());
+            }
+        });
+
         setRetainInstance(true);
         return view;
 
     }
 
+    private void filter(String filterString) {
+        List<PatientsCardViewModel> filterPatientList = new ArrayList<>();
+        for(PatientsCardViewModel p : patientList) {
+            if(p.getPatientName().contains(filterString)) {
+                filterPatientList.add(p);
+            }
+        }
+
+        mAdapter.filterList(filterPatientList);
+
+//        View keyboardView = getView().findFocus();
+//        if (keyboardView != null) {
+//            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//        }
+    }
     public void refreshrecyclerView() {
         preparePatientData();
         mAdapter.notifyDataSetChanged();
