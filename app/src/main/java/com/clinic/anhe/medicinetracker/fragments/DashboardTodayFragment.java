@@ -107,6 +107,7 @@ public class DashboardTodayFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        setHasOptionsMenu(true);
         return view;
     }
 

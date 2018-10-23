@@ -50,6 +50,12 @@ public class CashflowFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // What i have added is this
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override

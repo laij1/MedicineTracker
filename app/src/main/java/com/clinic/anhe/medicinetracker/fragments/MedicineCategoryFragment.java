@@ -64,6 +64,13 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
         return fragment;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // What i have added is this
+        setHasOptionsMenu(true);
+    }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

@@ -90,8 +90,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
 
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
-
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu); // removed to not double the menu items
         MenuItem item = menu.findItem(R.id.action_search);
         sv = new SearchView(((MainActivity) getActivity()).getSupportActionBar().getThemedContext());
@@ -136,6 +135,7 @@ public class PatientListDayFragment extends Fragment implements ArgumentVariable
         if(!query.equals("")) {
             filter(query.toString());
             sv.setQuery("", false);
+            sv.clearFocus();
         }
 
         return false;
