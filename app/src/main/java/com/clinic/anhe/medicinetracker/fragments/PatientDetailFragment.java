@@ -57,7 +57,6 @@ public class PatientDetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME, selectedPatientName);
         outState.putString(ArgumentVariables.ARG_SELECTED_PATIENT_ID, selectedPatientIC);
-        //TODO: here could be null, but why?
         outState.putInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID, selectedPatientPID);
     }
 
