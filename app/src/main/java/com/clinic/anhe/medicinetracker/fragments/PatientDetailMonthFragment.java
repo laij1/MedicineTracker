@@ -53,6 +53,8 @@ public class PatientDetailMonthFragment extends Fragment {
     private Integer selectedPatientPID;
     private TextView mPatientName;
     private TextView mPatientIC;
+    private TextView mCheckoutTotal;
+    private int checkoutTotal;
     String url = "";
     private CounterFab counterFab;
     private CheckoutViewModel checkoutViewModel;
@@ -69,12 +71,14 @@ public class PatientDetailMonthFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME, selectedPatientName);
         outState.putString(ArgumentVariables.ARG_SELECTED_PATIENT_ID, selectedPatientIC);
         outState.putInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID, selectedPatientPID);
+       // outState.putInt(ArgumentVariables.ARG_MONTH_CHECKOUT_TOTAL, checkoutTotal);
     }
 
     @Nullable
@@ -85,6 +89,7 @@ public class PatientDetailMonthFragment extends Fragment {
             selectedPatientName = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME);
             selectedPatientIC = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
             selectedPatientPID = savedInstanceState.getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
+//            checkoutTotal = savedInstanceState.getInt(ArgumentVariables.ARG_MONTH_CHECKOUT_TOTAL);
         }
         if(selectedPatientName == null) {
             selectedPatientName = getArguments().getString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME);
@@ -108,6 +113,13 @@ public class PatientDetailMonthFragment extends Fragment {
         mPatientIC.setText(selectedPatientIC);
 
         counterFab = view.findViewById(R.id.patient_detail_month_fab);
+        mCheckoutTotal = view.findViewById(R.id.patient_detail_month_checkout);
+        checkoutTotal = 0;
+        for(MedicineRecordCardViewModel m : checkoutViewModel.getMonthCheckoutLiveData().getValue()){
+            checkoutTotal += m.getSubtotal();
+        }
+        mCheckoutTotal.setText(String.valueOf(checkoutTotal));
+
         mRecyclerView = view.findViewById(R.id.patient_detail_month_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -195,5 +207,10 @@ public class PatientDetailMonthFragment extends Fragment {
         checkoutViewModel.getMonthCheckoutLiveData().getValue().removeAll(checkoutViewModel.getMonthCheckoutLiveData().getValue());
         counterFab.setCount(0);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void setCheckoutTotal(int subtotal) {
+        checkoutTotal = subtotal;
+        mCheckoutTotal.setText(String.valueOf(subtotal));
     }
 }

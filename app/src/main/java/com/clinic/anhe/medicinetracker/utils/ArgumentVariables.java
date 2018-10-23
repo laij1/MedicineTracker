@@ -23,6 +23,8 @@ public interface ArgumentVariables {
     public static final String ARG_DIFFERENCEBUTTON = "difference button";
     public static final String ARG_ACTUAL_CASH ="actual cash";
     public static final String ARG_CASHFLOW_MONTH_TOTAL="cashflow month total";
+    public static final String ARG_CASH_CHECKOUT_TOTAL= "cash checkout total";
+    public static final String ARG_MONTH_CHECKOUT_TOTAL="month checkout total";
 
 
     //for pager to recognize what kind of fragment to new

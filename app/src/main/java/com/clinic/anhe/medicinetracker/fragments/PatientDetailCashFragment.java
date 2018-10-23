@@ -1,5 +1,6 @@
 package com.clinic.anhe.medicinetracker.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -53,6 +54,8 @@ public class PatientDetailCashFragment extends Fragment {
     private Integer selectedPatientPID;
     private TextView mPatientName;
     private TextView mPatientIC;
+    private TextView mCheckoutTotal;
+    private int checkoutTotal = 0;
     String url = "";
     private CounterFab counterFab;
     private CheckoutViewModel checkoutViewModel;
@@ -68,12 +71,14 @@ public class PatientDetailCashFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME, selectedPatientName);
         outState.putString(ArgumentVariables.ARG_SELECTED_PATIENT_ID, selectedPatientIC);
         outState.putInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID, selectedPatientPID);
+        //outState.putInt(ArgumentVariables.ARG_CASH_CHECKOUT_TOTAL, checkoutTotal);
     }
 
 
@@ -86,6 +91,7 @@ public class PatientDetailCashFragment extends Fragment {
             selectedPatientName = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME);
             selectedPatientIC = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
             selectedPatientPID = savedInstanceState.getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
+           // checkoutTotal = savedInstanceState.getInt(ArgumentVariables.ARG_CASH_CHECKOUT_TOTAL);
         }
         if(selectedPatientName == null) {
             selectedPatientName = getArguments().getString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME);
@@ -109,12 +115,17 @@ public class PatientDetailCashFragment extends Fragment {
 
         //checkout counterfab
         counterFab = view.findViewById(R.id.patient_detail_cash_fab);
+        mCheckoutTotal = view.findViewById(R.id.patient_detail_cash_checkout);
+        checkoutTotal = 0;
+        for(MedicineRecordCardViewModel m : checkoutViewModel.getCashCheckoutLiveData().getValue()) {
+            checkoutTotal += m.getSubtotal();
+        }
+        mCheckoutTotal.setText(String.valueOf(checkoutTotal));
 
         mRecyclerView = view.findViewById(R.id.patient_detail_cash_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new PatientDetailCashRecyclerViewAdapter(recordList, mContext, this, counterFab, checkoutViewModel);
-
 
         //TODO: needs to get pid from parent fragment
         url = "http://" + ip + ":" + port + "/anho/record/pid/unpaid?pid="+ selectedPatientPID;
@@ -127,6 +138,7 @@ public class PatientDetailCashFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
         return view;
     }
 
@@ -200,6 +212,11 @@ public class PatientDetailCashFragment extends Fragment {
         checkoutViewModel.getCashCheckoutLiveData().getValue().removeAll(checkoutViewModel.getCashCheckoutLiveData().getValue());
         counterFab.setCount(0);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void setCheckoutTotal(int subtotal) {
+        checkoutTotal = subtotal;
+        mCheckoutTotal.setText(String.valueOf(subtotal));
     }
 
 }

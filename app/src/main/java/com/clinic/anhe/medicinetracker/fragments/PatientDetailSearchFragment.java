@@ -81,6 +81,7 @@ public class PatientDetailSearchFragment extends Fragment{
         return fragment;
     }
 
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);

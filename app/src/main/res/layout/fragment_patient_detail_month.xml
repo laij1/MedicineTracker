@@ -14,14 +14,45 @@
         android:id="@+id/patient_detail_month_upperview"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="169dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/dialog_round">
+
+            <ImageView
+                android:id="@+id/patient_detail_month_checkout_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/patient_detail_month_checkout"
+                android:paddingEnd="10dp"
+                android:src="@drawable/ic_checkout"
+                android:tint="@color/menuTextIconColor" />
+
+            <TextView
+                android:id="@+id/patient_detail_month_checkout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="35dp"
+                android:text="00000"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/menuTextIconColor"
+                android:textSize="20dp" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/patient_detail_month_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="27dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
             android:elevation="6dp"
             android:gravity="center"
             android:text="patient name"
@@ -29,10 +60,10 @@
 
         <TextView
             android:id="@+id/patient_detail_month_ic"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/patient_detail_month_name"
+            android:layout_centerHorizontal="true"
             android:elevation="6dp"
             android:gravity="center"
             android:text="patient id"

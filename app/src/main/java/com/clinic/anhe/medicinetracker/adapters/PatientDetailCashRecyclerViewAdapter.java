@@ -58,6 +58,7 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
     private MedicineRecordCardViewModel deletedMedicineRecord;
     private CounterFab checkoutCounterFab;
     private CheckoutViewModel checkoutViewModel;
+    private int checkouTotal = 0;
 
 
 
@@ -208,6 +209,11 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
                             itemButton.setImageResource(R.drawable.ic_check);
 //                            current.setChecked(true);
                         }
+                        checkouTotal = 0;
+                        for (MedicineRecordCardViewModel m : checkoutViewModel.getCashCheckoutLiveData().getValue()) {
+                            checkouTotal += m.getSubtotal();
+                        }
+                        ((PatientDetailCashFragment) mFragement).setCheckoutTotal(checkouTotal);
                     } else if (mFragement instanceof  PatientDetailMonthFragment) {
                         if(checkoutViewModel.getMonthCheckoutLiveData().getValue().contains(current)) {
                             checkoutViewModel.getMonthCheckoutLiveData().getValue().remove(current);
@@ -221,6 +227,11 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
 //                            current.setChecked(true);
 //                            Log.d("setting current to true", "Chloe " + current.isChecked() );
                         }
+                        checkouTotal = 0;
+                        for (MedicineRecordCardViewModel m : checkoutViewModel.getMonthCheckoutLiveData().getValue()) {
+                            checkouTotal += m.getSubtotal();
+                        }
+                        ((PatientDetailMonthFragment) mFragement).setCheckoutTotal(checkouTotal);
                     }
                     //TODO: needs to create a dialog to select charge person
 //                    String url = "http://192.168.0.4:8080/anho/record/update?rid=" + current.getRid() + "&chargeBy=1";
