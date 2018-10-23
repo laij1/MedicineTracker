@@ -117,11 +117,18 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
         holder.itemName.setText(current.getMedicineName());
         holder.itemPayment.setText(current.getPayment().equalsIgnoreCase("CASH") ? "現" : "月");
 
-        if(checkoutViewModel.getCashCheckoutLiveData().getValue().contains(current)) {
-            holder.itemButton.setImageResource(R.drawable.ic_check);
-        } else {
-            holder.itemButton.setImageResource(R.drawable.ic_add);
-
+        if(mFragement instanceof PatientDetailCashFragment) {
+            if(checkoutViewModel.getCashCheckoutLiveData().getValue().contains(current)) {
+                holder.itemButton.setImageResource(R.drawable.ic_check);
+            } else {
+                holder.itemButton.setImageResource(R.drawable.ic_add);
+            }
+        } else if (mFragement instanceof PatientDetailMonthFragment) {
+            if(checkoutViewModel.getMonthCheckoutLiveData().getValue().contains(current)) {
+                holder.itemButton.setImageResource(R.drawable.ic_check);
+            } else {
+                holder.itemButton.setImageResource(R.drawable.ic_add);
+            }
         }
 
     }
@@ -194,22 +201,25 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
                             checkoutViewModel.getCashCheckoutLiveData().getValue().remove(current);
                             checkoutCounterFab.decrease();
                             itemButton.setImageResource(R.drawable.ic_add);
+//                            current.setChecked(false);
                         } else {
                             checkoutViewModel.getCashCheckoutLiveData().getValue().add(current);
                             checkoutCounterFab.increase();
                             itemButton.setImageResource(R.drawable.ic_check);
-
+//                            current.setChecked(true);
                         }
                     } else if (mFragement instanceof  PatientDetailMonthFragment) {
                         if(checkoutViewModel.getMonthCheckoutLiveData().getValue().contains(current)) {
                             checkoutViewModel.getMonthCheckoutLiveData().getValue().remove(current);
                             checkoutCounterFab.decrease();
                             itemButton.setImageResource(R.drawable.ic_add);
+//                            current.setChecked(false);
                         } else {
                             checkoutViewModel.getMonthCheckoutLiveData().getValue().add(current);
                             checkoutCounterFab.increase();
                             itemButton.setImageResource(R.drawable.ic_check);
-
+//                            current.setChecked(true);
+//                            Log.d("setting current to true", "Chloe " + current.isChecked() );
                         }
                     }
                     //TODO: needs to create a dialog to select charge person
