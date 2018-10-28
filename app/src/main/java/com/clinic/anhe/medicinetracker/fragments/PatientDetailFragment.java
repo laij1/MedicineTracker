@@ -116,6 +116,7 @@ public class PatientDetailFragment extends Fragment {
         if(savedInstanceState == null) {
             mBottomNavigationView.getMenu().performIdentifierAction(R.id.patient_detail_cash, 0);
         }
+        setRetainInstance(true);
         return view;
     }
 }

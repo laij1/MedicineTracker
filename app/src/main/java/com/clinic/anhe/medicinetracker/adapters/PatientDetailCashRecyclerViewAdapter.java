@@ -134,6 +134,8 @@ public class PatientDetailCashRecyclerViewAdapter extends RecyclerView.Adapter<P
             }
         }
 
+
+
     }
 
 

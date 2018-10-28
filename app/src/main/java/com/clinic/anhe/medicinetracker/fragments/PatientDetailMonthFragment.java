@@ -141,9 +141,25 @@ public class PatientDetailMonthFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        setRetainInstance(true);
         return view;
 
 
+    }
+
+    @Override
+    public void onResume() {
+        Log.d("onResume", checkoutViewModel.getMonthCheckoutLiveData().getValue().size() + "is the size if current month");
+        super.onResume();
+        setCounterFabCount();
+    }
+
+    public void setCounterFabCount() {
+        Log.d("setcounterfab", "");
+        if(counterFab != null) {
+            counterFab.setCount(checkoutViewModel.getMonthCheckoutLiveData().getValue().size());
+        }
     }
 
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {
@@ -209,7 +225,9 @@ public class PatientDetailMonthFragment extends Fragment {
 
     public void refreshRecyclerView(int index) {
         if(checkoutViewModel.getMonthCheckoutLiveData().getValue().contains(recordList.get(index))) {
+            checkoutTotal -= recordList.get(index).getSubtotal().intValue();
             checkoutViewModel.getMonthCheckoutLiveData().getValue().remove(recordList.get(index));
+            mCheckoutTotal.setText(String.valueOf(checkoutTotal));
             counterFab.decrease();
         }
         recordList.remove(index);

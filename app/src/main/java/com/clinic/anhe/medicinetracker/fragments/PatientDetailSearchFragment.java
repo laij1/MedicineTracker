@@ -192,6 +192,7 @@ public class PatientDetailSearchFragment extends Fragment{
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        setRetainInstance(true);
         return view;
     }
 

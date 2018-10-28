@@ -64,6 +64,7 @@ public class PatientDetailCashFragment extends Fragment {
     private CounterFab counterFab;
     private CheckoutViewModel checkoutViewModel;
 
+
     public static PatientDetailCashFragment newInstance(String selectedPatientName, String selectedPatientIC, Integer PID){
         PatientDetailCashFragment fragment  = new PatientDetailCashFragment();
         Bundle args = new Bundle();
@@ -96,6 +97,7 @@ public class PatientDetailCashFragment extends Fragment {
             selectedPatientIC = savedInstanceState.getString(ArgumentVariables.ARG_SELECTED_PATIENT_ID);
             selectedPatientPID = savedInstanceState.getInt(ArgumentVariables.ARG_SELECTED_PATIENT_PID);
            // checkoutTotal = savedInstanceState.getInt(ArgumentVariables.ARG_CASH_CHECKOUT_TOTAL);
+//            counterFab.setCount(checkoutViewModel.getCashCheckoutLiveData().getValue().size());
         }
         if(selectedPatientName == null) {
             selectedPatientName = getArguments().getString(ArgumentVariables.ARG_SELECTED_PATIENT_NAME);
@@ -119,6 +121,7 @@ public class PatientDetailCashFragment extends Fragment {
 
         //checkout counterfab
         counterFab = view.findViewById(R.id.patient_detail_cash_fab);
+
         mCheckoutTotal = view.findViewById(R.id.patient_detail_cash_checkout);
         checkoutTotal = 0;
         for(MedicineRecordCardViewModel m : checkoutViewModel.getCashCheckoutLiveData().getValue()) {
@@ -143,11 +146,27 @@ public class PatientDetailCashFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        setRetainInstance(true);
         return view;
     }
 
     public TextView getPatientNameTextView(){
         return mPatientName;
+    }
+
+    @Override
+    public void onResume() {
+//        Log.d("onResume", checkoutViewModel.getCashCheckoutLiveData().getValue().size() + "is the size if current cash");
+
+        super.onResume();
+        setCounterFabCount();
+    }
+
+    public void setCounterFabCount() {
+//        Log.d("setcounterfab", "");
+        if(counterFab != null) {
+            counterFab.setCount(checkoutViewModel.getCashCheckoutLiveData().getValue().size());
+        }
     }
 
     private void parseRecordListData(String url, final VolleyCallBack volleyCallBack) {
@@ -213,8 +232,10 @@ public class PatientDetailCashFragment extends Fragment {
 
     public void refreshRecyclerView(int index) {
         if(checkoutViewModel.getCashCheckoutLiveData().getValue().contains(recordList.get(index))) {
+            checkoutTotal -= recordList.get(index).getSubtotal().intValue();
             checkoutViewModel.getCashCheckoutLiveData().getValue().remove(recordList.get(index));
             counterFab.decrease();
+            mCheckoutTotal.setText(String.valueOf(checkoutTotal));
         }
         recordList.remove(index);
         mAdapter.notifyDataSetChanged();
