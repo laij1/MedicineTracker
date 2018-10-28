@@ -7,11 +7,11 @@
         android:icon="@drawable/ic_search"
         android:title="紀錄查詢"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/medicine_detail_inventory"
-        android:enabled="true"
-        android:icon="@drawable/ic_warning"
-        android:title="進貨紀錄"
-        app:showAsAction="ifRoom" />
+    <!--<item-->
+        <!--android:id="@+id/medicine_detail_inventory"-->
+        <!--android:enabled="true"-->
+        <!--android:icon="@drawable/ic_warning"-->
+        <!--android:title="進貨紀錄"-->
+        <!--app:showAsAction="ifRoom" />-->
 
 </menu>

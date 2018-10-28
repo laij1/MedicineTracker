@@ -48,7 +48,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="26dp"
             android:layout_marginStart="37dp"
-            android:text="目前庫存:"
+            android:text="本月使用數量:"
             android:textSize="20dp" />
 
         <TextView
@@ -63,16 +63,16 @@
             android:textStyle="bold" />
 
 
-        <Button
-            android:id="@+id/medicine_simple_add_inventory"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/medicine_simple_stocktitle"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="217dp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:text="進貨"
-            android:textColor="@color/dialog_bg_color" />
+        <!--<Button-->
+            <!--android:id="@+id/medicine_simple_add_inventory"-->
+            <!--android:layout_width="70dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBaseline="@+id/medicine_simple_stocktitle"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_marginStart="217dp"-->
+            <!--android:backgroundTint="@color/colorPrimaryDark"-->
+            <!--android:text="進貨"-->
+            <!--android:textColor="@color/dialog_bg_color" />-->
 
 
     </RelativeLayout>

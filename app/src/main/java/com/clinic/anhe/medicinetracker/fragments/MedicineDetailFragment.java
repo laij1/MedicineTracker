@@ -77,11 +77,11 @@ public class MedicineDetailFragment extends Fragment {
                                    .commit();
                         break;
 
-                    case R.id.medicine_detail_inventory:
-                        MedicineDetailInventoryFragment medicineDetailInventoryFragment = MedicineDetailInventoryFragment.newInstance(medicineName);
-                        transaction.replace(R.id.medicine_detail_fragment_container, medicineDetailInventoryFragment)
-                                   .commit();
-                        break;
+//                    case R.id.medicine_detail_inventory:
+//                        MedicineDetailInventoryFragment medicineDetailInventoryFragment = MedicineDetailInventoryFragment.newInstance(medicineName);
+//                        transaction.replace(R.id.medicine_detail_fragment_container, medicineDetailInventoryFragment)
+//                                   .commit();
+//                        break;
                 }
                 return false;
             }

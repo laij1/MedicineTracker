@@ -12,9 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.clinic.anhe.medicinetracker.R;
+import com.clinic.anhe.medicinetracker.ViewModel.MedicineManageViewModel;
 import com.clinic.anhe.medicinetracker.fragments.AddInventoryDialogFragment;
 import com.clinic.anhe.medicinetracker.fragments.MedicineDetailFragment;
+import com.clinic.anhe.medicinetracker.fragments.MedicineSimpleFragment;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
+import com.clinic.anhe.medicinetracker.model.MedicineRecordCardViewModel;
 import com.clinic.anhe.medicinetracker.utils.ArgumentVariables;
 import com.clinic.anhe.medicinetracker.utils.MedicineType;
 
@@ -52,15 +55,31 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
     @Override
     public void onBindViewHolder(@NonNull MedicineSimpleViewHolder holder, int position) {
         holder.name.setText(medicineList.get(position).getMedicinName());
-        int stockNum = medicineList.get(position).getMedicineStock();
-        if (stockNum < 0) {
-            holder.stock.setTextColor(mContext.getResources().getColor(R.color.shortOfStock));
-        } else {
-            holder.stock.setTextColor(mContext.getResources().getColor(R.color.menuTextIconColor));
+
+        int monthlyused = 0;
+        MedicineManageViewModel viewModel = ((MedicineSimpleFragment)mFragment).getMedicineManageViewModel();
+        for(MedicineRecordCardViewModel r :viewModel.getMedicineListLiveData().getValue()){
+            if(r.getMid().equals(medicineList.get(position).getMedicineId())){
+                monthlyused ++;
+            }
         }
-        holder.stock.setText(stockNum + "");
+        holder.stock.setText(monthlyused + "");
+//        int stockNum = medicineList.get(position).getMedicineStock();
+//        if (stockNum < 0) {
+//            holder.stock.setTextColor(mContext.getResources().getColor(R.color.shortOfStock));
+//        } else {
+//            holder.stock.setTextColor(mContext.getResources().getColor(R.color.menuTextIconColor));
+//        }
+//        holder.stock.setText(stockNum + "");
 
     }
+
+//    private void calcuteMonthlyUse(){
+//        MedicineManageViewModel viewModel = ((MedicineSimpleFragment)mFragment).getMedicineManageViewModel();
+//        for(MedicineRecordCardViewModel r :viewModel.getMedicineListLiveData().getValue()){
+//
+//        }
+//    }
 
     @Override
     public int getItemViewType(int position) {
@@ -75,26 +94,26 @@ public class MedicineSimpleRecyclerViewAdapter extends RecyclerView.Adapter<Medi
     public class MedicineSimpleViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
-        private Button addStock;
+//        private Button addStock;
         private TextView stock;
 
         public MedicineSimpleViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.medicine_simple_name);
-            addStock = itemView.findViewById(R.id.medicine_simple_add_inventory);
+//            addStock = itemView.findViewById(R.id.medicine_simple_add_inventory);
             stock = itemView.findViewById(R.id.medicine_simple_stock);
 
-            addStock.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MedicineCardViewModel current = medicineList.get(getAdapterPosition());
-                    //TODO: sending medicine.mid and medicine.name to addinventoryDialog
-                    AddInventoryDialogFragment addInventoryDialogFragment =
-                            AddInventoryDialogFragment.newInstance(current.getMedicinName(), current.getMedicineId(), current.getMedicineStock(), mFragment);
-                    addInventoryDialogFragment.show(mFragment.getFragmentManager(), "addStock");
-                    notifyDataSetChanged();
-                }
-            });
+//            addStock.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    MedicineCardViewModel current = medicineList.get(getAdapterPosition());
+//                    //TODO: sending medicine.mid and medicine.name to addinventoryDialog
+//                    AddInventoryDialogFragment addInventoryDialogFragment =
+//                            AddInventoryDialogFragment.newInstance(current.getMedicinName(), current.getMedicineId(), current.getMedicineStock(), mFragment);
+//                    addInventoryDialogFragment.show(mFragment.getFragmentManager(), "addStock");
+//                    notifyDataSetChanged();
+//                }
+//            });
 
 
 
