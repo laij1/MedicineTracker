@@ -4,8 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -14,7 +16,9 @@ import com.clinic.anhe.medicinetracker.model.EmployeeCardViewModel;
 import com.clinic.anhe.medicinetracker.model.MedicineCardViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.clinic.anhe.medicinetracker.R;
 import com.clinic.anhe.medicinetracker.model.PatientsCardViewModel;
@@ -140,7 +144,21 @@ public class CartViewModel extends ViewModel {
                             public void onErrorResponse(VolleyError error) {
                                // Log.d("VOLLEY", error.toString());
                             }
-                        } );
+                        } ){
+                    /**
+                     * Passing some request headers
+                     */
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        String credentials = "admin1:secret1";
+                        String auth = "Basic "
+                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Authorization", auth);
+                        return headers;
+                    }
+                };
 
         VolleyController.getInstance().addToRequestQueue(jsonArrayRequest);
         dialysisLiveData.setValue(this.dialysisList);

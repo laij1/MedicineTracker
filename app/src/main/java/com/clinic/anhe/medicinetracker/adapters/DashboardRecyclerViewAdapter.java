@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Bundle;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -44,11 +46,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<DashboardRecyclerViewAdapter.EmployeeViewHolder>{
 
@@ -326,7 +330,21 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                               //  Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
-                        } );
+                        } ){
+                    /**
+                     * Passing some request headers
+                     */
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        String credentials = "admin1:secret1";
+                        String auth = "Basic "
+                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Authorization", auth);
+                        return headers;
+                    }
+                };
 
         volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
 
@@ -380,7 +398,21 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                             //    Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
-                        } );
+                        } ){
+                    /**
+                     * Passing some request headers
+                     */
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        String credentials = "admin1:secret1";
+                        String auth = "Basic "
+                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Authorization", auth);
+                        return headers;
+                    }
+                };
 
         volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
 
@@ -453,7 +485,22 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                               //  Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
-                        } );
+                        } )
+                {/**
+                 * Passing some request headers
+                 */
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "admin1:secret1";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }
+
+                };
 
         volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
 

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android .support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddInventoryDialogFragment extends DialogFragment {
 
@@ -188,7 +191,19 @@ public class AddInventoryDialogFragment extends DialogFragment {
                     return null;
                 }
             }
-
+            /**
+             * Passing some request headers
+             */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = "admin1:secret1";
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
         };
 
         volleyController.getInstance().addToRequestQueue(stringRequest);
@@ -216,7 +231,19 @@ public class AddInventoryDialogFragment extends DialogFragment {
                                 Toast.makeText(mContext, "進貨更新失敗", Toast.LENGTH_SHORT).show();
 //                                volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
-                        } );
+                        } ){/**
+                 * Passing some request headers
+                 */
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "admin1:secret1";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }};
 
         volleyController.getInstance(mContext).addToRequestQueue(stringRequest);
     }

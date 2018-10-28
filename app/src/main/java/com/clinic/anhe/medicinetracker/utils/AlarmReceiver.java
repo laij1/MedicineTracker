@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,9 +25,11 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private VolleyController volleyController;
@@ -124,7 +128,19 @@ public class AlarmReceiver extends BroadcastReceiver {
                                 Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
-                        } );
+                        } ){/**
+                 * Passing some request headers
+                 */
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "admin1:secret1";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }};
 
         volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
 
@@ -181,7 +197,19 @@ public class AlarmReceiver extends BroadcastReceiver {
                                 Log.d("VOLLEY", error.toString());
                                 volleyCallBack.onResult(VolleyStatus.FAIL);
                             }
-                        } );
+                        } ){/**
+                 * Passing some request headers
+                 */
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "admin1:secret1";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }};
 
         volleyController.getInstance().addToRequestQueue(jsonArrayRequest);
 
