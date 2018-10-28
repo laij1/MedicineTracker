@@ -150,13 +150,13 @@ public class PatientDetailMonthFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.d("onResume", checkoutViewModel.getMonthCheckoutLiveData().getValue().size() + "is the size if current month");
+//        Log.d("onResume", checkoutViewModel.getMonthCheckoutLiveData().getValue().size() + "is the size if current month");
         super.onResume();
         setCounterFabCount();
     }
 
     public void setCounterFabCount() {
-        Log.d("setcounterfab", "");
+//        Log.d("setcounterfab", "");
         if(counterFab != null) {
             counterFab.setCount(checkoutViewModel.getMonthCheckoutLiveData().getValue().size());
         }
