@@ -140,6 +140,14 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
             }
         });
 
+        mItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    mItem.setText("");
+                }
+            }
+        });
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -158,7 +166,8 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                         break;
                     case R.id.add_medicine_record_other:
                         mid = 5;
-                        mItem.setText("必填");
+                        mItem.setText("");
+                        mItem.setHint("必填");
                         break;
                 }
             }

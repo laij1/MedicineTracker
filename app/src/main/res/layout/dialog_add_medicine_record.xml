@@ -135,7 +135,6 @@
         android:layout_below="@+id/add_medicine_record_subtotal_title"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="30dp"
-        android:text="0"
         android:textColor="@color/menuTextIconColor"
         android:textSize="20dp" />
 
