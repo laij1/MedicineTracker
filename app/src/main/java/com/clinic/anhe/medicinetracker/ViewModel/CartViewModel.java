@@ -89,7 +89,7 @@ public class CartViewModel extends ViewModel {
         bandaidList = new ArrayList<>();
 
         cartSelectedPatientLiveData = new MutableLiveData<>();
-        PatientsCardViewModel p = new PatientsCardViewModel(-1, "","","", "");
+        PatientsCardViewModel p = new PatientsCardViewModel(-1, "","","", "",false);
         cartSelectedPatientLiveData.postValue(p);
 
         cartSelectedEid = new MutableLiveData<>();

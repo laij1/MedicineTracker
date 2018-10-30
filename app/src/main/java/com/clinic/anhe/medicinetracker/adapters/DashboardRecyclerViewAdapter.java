@@ -314,7 +314,8 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                                         String shift = object.getString("shift");
                                         String ic = object.getString("ic");
                                         String day = object.getString("day");
-                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        boolean deleted = object.getBoolean("deleted");
+                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day, deleted);
                                         //selectedPatientViewModel.getPatientLiveData().setValue(p);
 
                                     } catch (JSONException e) {

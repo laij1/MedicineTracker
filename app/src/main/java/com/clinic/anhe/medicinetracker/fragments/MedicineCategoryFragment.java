@@ -326,7 +326,8 @@ public class MedicineCategoryFragment extends Fragment implements View.OnKeyList
                                         String shift = object.getString("shift");
                                         String ic = object.getString("ic");
                                         String day = object.getString("day");
-                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        boolean deleted = object.getBoolean("deleted");
+                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day, deleted);
                                         cartViewModel.getCartSelectedPatientLiveData().setValue(p);
                                     } catch (JSONException e) {
                                         e.printStackTrace();

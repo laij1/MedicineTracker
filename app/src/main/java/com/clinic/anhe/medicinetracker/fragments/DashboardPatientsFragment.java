@@ -176,22 +176,23 @@ public class DashboardPatientsFragment extends Fragment implements ArgumentVaria
                                         String shift = object.getString("shift");
                                         String ic = object.getString("ic");
                                         String day = object.getString("day");
-                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        boolean deleted = object.getBoolean("deleted");
+                                        PatientsCardViewModel p = new PatientsCardViewModel(pid, name, ic, shift, day, deleted);
 //                                        Log.d("patient jason object" , name + pid + shift + day + ic);
-                                        if(pid == 2) {
-                                            patientList.add(0,p);
-                                            addToSecond = true;
-                                        } else if(shift.equalsIgnoreCase("早班")) {
-                                            if( addToSecond ) {
-                                                patientList.add(1,p);
+                                        if(!p.getDeleted()) {
+                                            if (pid == 2) {
+                                                patientList.add(0, p);
+                                                addToSecond = true;
+                                            } else if (shift.equalsIgnoreCase("早班")) {
+                                                if (addToSecond) {
+                                                    patientList.add(1, p);
+                                                } else {
+                                                    patientList.add(0, p);
+                                                }
                                             } else {
-                                                patientList.add(0,p);
+                                                patientList.add(p);
                                             }
-                                        } else {
-                                            patientList.add(p);
                                         }
-
-
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

@@ -12,7 +12,7 @@ public class SelectedPatientViewModel extends ViewModel {
     private MutableLiveData<EmployeeCardViewModel> employeeLiveData = new MutableLiveData<>();
 
     public SelectedPatientViewModel(){
-        PatientsCardViewModel p = new PatientsCardViewModel(-1, "","","", "");
+        PatientsCardViewModel p = new PatientsCardViewModel(-1, "","","", "", false);
         EmployeeCardViewModel e = new EmployeeCardViewModel("", -1, "");
 
         patientLiveData.postValue(p);

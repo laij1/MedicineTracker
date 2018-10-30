@@ -252,10 +252,13 @@ public class AddPatientDialogFragment extends DialogFragment {
                                         String shift = object.getString("shift");
                                         String ic = object.getString("ic");
                                         String day = object.getString("day");
+                                        boolean deleted = object.getBoolean("deleted");
 //                                        Log.d("patient jason object" , name + pid + shift + day + ic);
-                                        PatientsCardViewModel patient = new PatientsCardViewModel(pid, name, ic, shift, day);
+                                        PatientsCardViewModel patient = new PatientsCardViewModel(pid, name, ic, shift, day,deleted);
+                                        //here we don't check where the patient is deleted, becoz we want to avoid dup record
+                                        //reverse patient undeleted has to be manual
                                         if(!patientList.contains(patient)) {
-                                            patientList.add(new PatientsCardViewModel(pid, name, ic, shift, day));
+                                            patientList.add(patient);
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.graphics.drawable.GradientDrawable;
@@ -108,13 +110,16 @@ public class DashboardPatientRecyclerViewAdapter extends RecyclerView.Adapter<Da
         public TextView patientName;
         public TextView patientId;
         public RadioButton imageButton;
+        public ImageButton deleteButton;
 
         public PatientsViewHolder(View itemView) {
             super(itemView);
             patientName = itemView.findViewById(R.id.patients_name);
             patientId = itemView.findViewById(R.id.patients_id);
             imageButton = itemView.findViewById(R.id.patients_addbutton);
+            deleteButton = itemView.findViewById(R.id.patients_delete);
             patientId.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
 
 
             imageButton.setOnClickListener(new View.OnClickListener() {

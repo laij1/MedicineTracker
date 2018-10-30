@@ -9,13 +9,15 @@ public class PatientsCardViewModel {
     private String patientShift;
     private DayType patientDay;
     private Integer pid;
+    private Boolean deleted;
 
-    public PatientsCardViewModel(Integer pid, String patientName, String patientIC, String patientShift, String patientDay) {
+    public PatientsCardViewModel(Integer pid, String patientName, String patientIC, String patientShift, String patientDay, Boolean deleted) {
         this.pid = pid;
         this.patientName = patientName;
         this.patientIC = patientIC;
         this.patientShift = patientShift;
         this.patientDay = patientDay.equals("一三五")?DayType.oddDay: DayType.evenDay;
+        this.deleted = deleted;
     }
 
     public Integer getPID(){ return pid; }
@@ -30,7 +32,9 @@ public class PatientsCardViewModel {
 
     public String getPatientShift() { return patientShift; }
 
-    public DayType getPatientDay() {return patientDay; }
+    public DayType getPatientDay() { return patientDay; }
+
+    public boolean getDeleted() { return deleted; }
 
     public void setPatientName(String name) { patientName = name; }
 
@@ -41,6 +45,9 @@ public class PatientsCardViewModel {
     public void setPatientDay(DayType day) { patientDay = day; }
 
     public void setPid(Integer pid){ this.pid = pid; }
+
+    public void setDeleted(Boolean deleted) { this.deleted = deleted; }
+
 
     @Override
     public boolean equals(Object obj) {
