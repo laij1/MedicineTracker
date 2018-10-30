@@ -54,6 +54,7 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
     private EditText mTarget;
     private EditText mItem;
     private EditText mSubtotal;
+    private EditText mQuantity;
     private RecyclerView mSignature;
     private GridLayoutManager mLayoutManager;
     private AddMedicineRecordRecyclerViewAdapter mAdapter;
@@ -104,6 +105,7 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
         mTarget = view.findViewById(R.id.add_medicine_record_target);
         mItem = view.findViewById(R.id.add_medicine_record_item);
         mSubtotal = view.findViewById(R.id.add_medicine_record_subtotal);
+        mQuantity = view.findViewById(R.id.add_medicine_record_quantity);
 
         mConfirmButton = view.findViewById(R.id.add_medicine_record_confirmbutton);
         mCancelButton = view.findViewById(R.id.add_medicine_record_cancelbutton);
@@ -203,7 +205,8 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                          url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                                  + "/anho/record/add?name=" + mItem.getText().toString()
                                  + "&mid=" + mid + "&pid=" + targetPID + "&pname=" + mTarget.getText().toString()
-                                 + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
+                                 + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString()
+                                 + "&quantity=" + mQuantity.getText().toString();
                          addMedicineRecord(url, new VolleyCallBack() {
                              @Override
                              public void onResult(VolleyStatus status) {
@@ -218,7 +221,8 @@ public class AddMedicineRecordDialogFragment extends DialogFragment {
                         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                                 + "/anho/record/add?name=" + mItem.getText().toString()
                                 + "&mid=" + mid + "&pid=3" + "&pname=" + mTarget.getText().toString()
-                                + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
+                                + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString()
+                                + "&quantity=" + mQuantity.getText().toString();
                         addMedicineRecord(url, new VolleyCallBack() {
                             @Override
                             public void onResult(VolleyStatus status) {
