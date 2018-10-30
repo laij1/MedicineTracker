@@ -59,7 +59,7 @@ public class CashflowTodayFragment extends Fragment {
     private String port;
     private String todayDate;
     private List<MedicineRecordCardViewModel> recordList;
-//    private int totalRevenue = 0;
+    private int totalRevenue = 0;
     private LinearLayoutManager mLayoutManager;
     private CashflowTodayRecyclerViewAdapter mAdapter;
     private FloatingActionButton mAddOtherMedicineFAB;
@@ -95,7 +95,7 @@ public class CashflowTodayFragment extends Fragment {
                         + month + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" ;
 
         mDisplay.setText(today);
-//        mRevenue = view.findViewById(R.id.cashflow_today_revenue);
+        mRevenue = view.findViewById(R.id.cashflow_today_revenue);
 
 
         mRecyclerView = view.findViewById(R.id.cashflow_today_recyclerview);
@@ -133,6 +133,7 @@ public class CashflowTodayFragment extends Fragment {
             public void onResult(VolleyStatus status) {
                 //TODO:update livedata
                 cashFlowViewModel.getTodayListLiveData().setValue(recordList);
+                mRevenue.setText(String.valueOf(totalRevenue));
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -174,6 +175,7 @@ public class CashflowTodayFragment extends Fragment {
                                                 ||name.equalsIgnoreCase("補零用金") || name.equalsIgnoreCase("存入銀行")) {
                                             //do nothing
                                         } else {
+                                            totalRevenue += item.getSubtotal();
                                             recordList.add(item);
                                         }
                                     } catch (JSONException e) {
