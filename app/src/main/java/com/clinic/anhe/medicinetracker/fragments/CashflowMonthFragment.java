@@ -56,6 +56,7 @@ public class CashflowMonthFragment extends Fragment {
     private CashflowTodayRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<MedicineRecordCardViewModel> recordList;
+    private List<MedicineRecordCardViewModel> lastmonthRecordList;
     private TextView mSelectEndDate;
     private ImageView mStartSearch;
     private FloatingActionButton mAddFinanceRecordFAB;
@@ -65,6 +66,8 @@ public class CashflowMonthFragment extends Fragment {
     private EditText mActualCash;
     private ImageView mDifferenceButton;
     private boolean differenceButtonEnabled;
+    private int lastmonthTotal = 0;
+    private TextView mLastMonthTotal;
 
     private int allowance = 0;
     private int bank = 0;
@@ -72,6 +75,8 @@ public class CashflowMonthFragment extends Fragment {
     private TextView mBankTotal;
 
     private String firstDay;
+    private String lastmonthFirstDay;
+    private String lastmonthLastDay;
     private TextView mDisplay;
     private Context mContext;
     private CashFlowViewModel cashFlowViewModel;
@@ -92,6 +97,7 @@ public class CashflowMonthFragment extends Fragment {
         outState.putBoolean(ArgumentVariables.ARG_DIFFERENCEBUTTON, differenceButtonEnabled);
         outState.putString(ArgumentVariables.ARG_ACTUAL_CASH, mActualCash.getText().toString());
         outState.putString(ArgumentVariables.ARG_CASHFLOW_MONTH_TOTAL, mTotal.getText().toString());
+        outState.putString(ArgumentVariables.ARG_CASHFLOW_LASTMONTH_TOTAL, mLastMonthTotal.getText().toString() );
     }
 
 
@@ -102,7 +108,22 @@ public class CashflowMonthFragment extends Fragment {
 
         Calendar c = Calendar.getInstance();
         Date date = c.getTime();
-        String defaultDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String defaultDate = simpleDateFormat.format(date);
+
+        //calucate last month total
+        Calendar lastmonth = Calendar.getInstance();
+        lastmonth.add(Calendar.MONTH, -1);
+        lastmonth.set(Calendar.DAY_OF_MONTH, 1);
+        Date lastmonthDate = lastmonth.getTime();
+        lastmonthFirstDay = simpleDateFormat.format(lastmonthDate);
+
+        lastmonth.set(Calendar.DAY_OF_MONTH, lastmonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+        lastmonthDate = lastmonth.getTime();
+        lastmonthLastDay = simpleDateFormat.format(lastmonthDate);
+
+        getLastMonthRecordList();
+
 
         mSelectEndDate = view.findViewById(R.id.cashflow_month_enddate);
         mTotal = view.findViewById(R.id.cashflow_month_total);
@@ -110,6 +131,7 @@ public class CashflowMonthFragment extends Fragment {
         mAllowanceTotal = view.findViewById(R.id.cashflow_month_allowance_total);
         mActualCash = view.findViewById(R.id.cashflow_month_actualcash);
         mAddFinanceRecordFAB = view.findViewById(R.id.add_finance_record_fab);
+        mLastMonthTotal = view.findViewById(R.id.cashflow_month_lastmonth_total);
 
 
         if(savedInstanceState != null) {
@@ -117,6 +139,7 @@ public class CashflowMonthFragment extends Fragment {
             differenceButtonEnabled = savedInstanceState.getBoolean(ArgumentVariables.ARG_DIFFERENCEBUTTON);
             mActualCash.setText(savedInstanceState.getString(ArgumentVariables.ARG_ACTUAL_CASH));
             mTotal.setText(savedInstanceState.getString(ArgumentVariables.ARG_CASHFLOW_MONTH_TOTAL));
+            mLastMonthTotal.setText(savedInstanceState.getString(ArgumentVariables.ARG_CASHFLOW_LASTMONTH_TOTAL));
             recordList = cashFlowViewModel.getMonthListLiveData().getValue();
 
         }
@@ -258,6 +281,25 @@ public class CashflowMonthFragment extends Fragment {
         mDifferenceButton.setColorFilter(getResources().getColor(R.color.colorPrimaryDark));
     }
 
+
+    public void getLastMonthRecordList() {
+        url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
+                + "/anho/record/charged/rangedate?start=" +
+                lastmonthFirstDay + "&end=" + lastmonthLastDay;
+        Log.d("last month", lastmonthFirstDay + lastmonthLastDay);
+        lastmonthRecordList = new ArrayList<>();
+        parseLastMonthRecordListData(url, new VolleyCallBack() {
+            @Override
+            public void onResult(VolleyStatus status) {
+                if(status == VolleyStatus.SUCCESS) {
+                    cashFlowViewModel.getLastMonthListLiveData().setValue(lastmonthRecordList);
+                    calculateLastMonthTotal();
+                }
+            }
+        });
+
+    }
+
     public void getRecordList() {
         url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                 + "/anho/record/charged/rangedate?start=" +
@@ -346,6 +388,74 @@ public class CashflowMonthFragment extends Fragment {
     }
 
 
+    private void parseLastMonthRecordListData(String url, final VolleyCallBack volleyCallBack) {
+        JsonArrayRequest jsonArrayRequest =
+                new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+//                                total = 0;
+                                for(int i = 0; i < response.length(); i++){
+                                    JSONObject object = null;
+                                    try {
+                                        object = response.getJSONObject(i);
+
+                                        String createAt = object.getString("createAt");
+                                        Integer rid = object.getInt("rid");
+                                        Integer pid = object.getInt("pid");
+                                        Integer mid = object.getInt("mid");
+                                        String name = object.getString("medicineName");
+                                        Integer quantity = object.getInt("quantity");
+                                        Integer subtotal = object.getInt("subtotal");
+                                        String createBy = object.getString("createBy");
+                                        String payment = object.getString("payment");
+                                        String chargeAt = object.getString("chargeAt");
+                                        String chargeBy = object.getString("chargeBy");
+                                        String patientName = object.getString("patientName");
+                                        MedicineRecordCardViewModel item = new MedicineRecordCardViewModel(rid, createAt, mid, name, quantity,
+                                                subtotal, payment, pid, createBy);
+                                        item.setPatientName(patientName);
+                                        item.setChargeAt(chargeAt);
+                                        item.setChargeBy(chargeBy);
+                                        if(!lastmonthRecordList.contains(item)) {
+                                            lastmonthRecordList.add(item);
+                                        }
+//                                        if(name.equalsIgnoreCase("實際金額")) {
+//                                            //do nothing
+//                                        } else {
+//                                            total += subtotal.intValue();
+//                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    volleyCallBack.onResult(VolleyStatus.SUCCESS);
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("VOLLEY", error.toString());
+                                volleyCallBack.onResult(VolleyStatus.FAIL);
+                            }
+                        } ){/**
+                 * Passing some request headers
+                 */
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "admin1:secret1";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }};
+
+        volleyController.getInstance(mContext).addToRequestQueue(jsonArrayRequest);
+    }
+
     public void calculateTotal () {
 //        Log.d("size of the new record",cashFlowViewModel.getMonthListLiveData().getValue().size()+"");
         total = 0;
@@ -370,6 +480,21 @@ public class CashflowMonthFragment extends Fragment {
         mAllowanceTotal.setText(String.valueOf(allowance));
     }
 
+
+    public void calculateLastMonthTotal () {
+//        Log.d("size of the new record",cashFlowViewModel.getMonthListLiveData().getValue().size()+"");
+        lastmonthTotal = 0;
+        for(MedicineRecordCardViewModel r : cashFlowViewModel.getLastMonthListLiveData().getValue()) {
+            if(r.getMedicineName().equalsIgnoreCase("實際金額")) {
+                //do nothing
+            } else {
+                Log.d("the subtotal is",r.getSubtotal() + "" + r.getMedicineName());
+                lastmonthTotal += r.getSubtotal().intValue();
+                Log.d("the total is",lastmonthTotal + "");
+            }
+        }
+        mLastMonthTotal.setText(String.valueOf(lastmonthTotal));
+    }
 
     private void generateActualCash(String url, final VolleyCallBack volleyCallBack) {
         JsonArrayRequest jsonArrayRequest =

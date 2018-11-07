@@ -145,12 +145,16 @@ public class AddFinanceRecordDialogFragment  extends DialogFragment {
                         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                                 + "/anho/record/add?name=" + itemName
                                 + "&mid=1" + "&pid=1" + "&pname=帳本"
-                                + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
+                                + "&create_by=" + create_by
+                                + "&subtotal=" + mSubtotal.getText().toString()
+                                + "&quantity=1";
                     } else if (itemName.equalsIgnoreCase("存入銀行")) {
                         url =  "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
                                 + "/anho/record/add?name=" + itemName
                                 + "&mid=4" + "&pid=1" + "&pname=帳本"
-                                + "&create_by=" + create_by + "&subtotal=" + mSubtotal.getText().toString();
+                                + "&create_by=" + create_by
+                                + "&subtotal=" + mSubtotal.getText().toString()
+                                + "&quantity=1";
                     }
 
                     addMedicineRecord(url, new VolleyCallBack() {
