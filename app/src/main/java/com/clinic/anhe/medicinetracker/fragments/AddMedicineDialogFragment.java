@@ -127,7 +127,7 @@ public class AddMedicineDialogFragment extends DialogFragment {
                                 Toast.makeText(mContext, "藥物加入成功", Toast.LENGTH_LONG).show();
                                 parentList.add(new MedicineCardViewModel(mid,
                                         mName.getText().toString(), mPrice.getText().toString(), mDose.getText().toString(),
-                                        Integer.valueOf(mStock.getText().toString()), medicineType.toString()));
+                                        Integer.valueOf(mStock.getText().toString()), medicineType.toString(), false));
                                 parentFragment.refreshRecyclerView();
                                     dismiss();
                             }

@@ -17,16 +17,25 @@ public class MedicineCardViewModel {
     private int quantity = 0;
     private float sliderPosition = 0f;
     private int subtotal = 0;
+    private boolean deleted;
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public MedicineCardViewModel(
-            Integer medicineId, String medicineName, String medicinePrice, String medicineDose, Integer medicineStock, String medicineCategory) {
+            Integer medicineId, String medicineName, String medicinePrice, String medicineDose, Integer medicineStock, String medicineCategory, boolean deleted) {
         this.medicineId = medicineId;
         this.medicineName = medicineName;
         this.medicinePrice = medicinePrice;
         this.medicineDose = medicineDose;
         this.medicineStock = medicineStock;
         this.medicineCategory = medicineCategory;
+        this.deleted = deleted;
     }
 
     @Override

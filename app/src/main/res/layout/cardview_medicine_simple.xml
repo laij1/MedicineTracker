@@ -25,6 +25,13 @@
         <!--android:padding="2dp"-->
         <!--android:tint="@android:color/white" />-->
         <!--android:background="@drawable/addbutton_round"-->
+        <ImageButton
+            android:id="@+id/medicine_simple_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_delete"
+            android:backgroundTint="@color/menuTextIconColor"
+            />
 
 
         <TextView

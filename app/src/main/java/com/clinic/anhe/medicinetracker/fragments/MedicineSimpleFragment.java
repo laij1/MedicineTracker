@@ -205,9 +205,10 @@ public class MedicineSimpleFragment extends Fragment implements View.OnKeyListen
                                         Integer price = object.getInt("price");
                                         String dose = object.getString("dose");
                                         Integer stock = object.getInt("stock");
+                                        Boolean deleted = object.getBoolean("deleted");
                                        // Log.d("jason object" , name + id +price +dose + stock);
-
-                                        medicineList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
+                                        if(deleted) continue;
+                                        medicineList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category, deleted));
 //
                                     } catch (JSONException e) {
                                         e.printStackTrace();

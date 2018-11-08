@@ -112,19 +112,23 @@ public class CartViewModel extends ViewModel {
                                         Integer price = object.getInt("price");
                                         String dose = object.getString("dose");
                                         Integer stock = object.getInt("stock");
+                                        Boolean deleted = object.getBoolean("deleted");
                                         //Log.d("jason object" , name + id +price +dose + stock);
+                                        if(deleted) {
+                                            continue;
+                                        }
                                         switch (category) {
                                             case "dialysis":
-                                                dialysisList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
+                                                dialysisList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category,deleted));
                                                 break;
                                             case "edible":
-                                                edibleList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
+                                                edibleList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category, deleted));
                                                 break;
                                             case "needle":
-                                                needleList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
+                                                needleList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category, deleted));
                                                 break;
                                             case "bandaid":
-                                                bandaidList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category));
+                                                bandaidList.add(new MedicineCardViewModel(id, name, Integer.toString(price), dose, stock, category, deleted));
                                                 break;
                                         }
                                     } catch (JSONException e) {
