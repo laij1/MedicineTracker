@@ -24,6 +24,7 @@ public interface ArgumentVariables {
     public static final String ARG_ACTUAL_CASH ="actual cash";
     public static final String ARG_CASHFLOW_MONTH_TOTAL="cashflow month total";
     public static final String ARG_CASHFLOW_LASTMONTH_TOTAL="cashflow last month total";
+    public static final String ARG_CASHFLOW_SEARCH_REVENUE= "cashflow search revenu";
     public static final String ARG_CASH_CHECKOUT_TOTAL= "cash checkout total";
     public static final String ARG_MONTH_CHECKOUT_TOTAL="month checkout total";
 

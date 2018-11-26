@@ -60,6 +60,8 @@ public class CashflowSearchFragment extends Fragment {
     private TextView mSelectStartDate;
     private TextView mSelectEndDate;
     private ImageView mStartSearch;
+    private TextView mRevenue;
+    private int revenue = 0;
     String url = "";
     private CashFlowViewModel cashFlowViewModel;
 
@@ -73,6 +75,7 @@ public class CashflowSearchFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_STARTDATE, mSelectStartDate.getText().toString());
         outState.putString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_ENDDATE, mSelectEndDate.getText().toString());
+        outState.putString(ArgumentVariables.ARG_CASHFLOW_SEARCH_REVENUE, mRevenue.getText().toString());
     }
 
     @Nullable
@@ -89,6 +92,8 @@ public class CashflowSearchFragment extends Fragment {
         port = globalVariable.getPort();
 
         recordList = new ArrayList<>();
+
+        mRevenue = view.findViewById(R.id.cashflow_search_revenue);
 
         mDisplay = view.findViewById(R.id.cashflow_search_display);
         //TODO: get current day and display
@@ -110,6 +115,7 @@ public class CashflowSearchFragment extends Fragment {
 
             mSelectStartDate.setText(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_STARTDATE));
             mSelectEndDate.setText(savedInstanceState.getString(ArgumentVariables.ARG_PATIENT_DETAIL_SEARCH_ENDDATE));
+            mRevenue.setText(savedInstanceState.getString(ArgumentVariables.ARG_CASHFLOW_SEARCH_REVENUE));
         }
         else {
             mSelectStartDate.setText(defaultDate);
@@ -157,6 +163,7 @@ public class CashflowSearchFragment extends Fragment {
                     public void onResult(VolleyStatus status) {
                         cashFlowViewModel.getSearchListLiveData().setValue(recordList);
                         mAdapter.notifyDataSetChanged();
+                        mRevenue.setText(revenue + "");
                     }
                 });
             }
@@ -168,6 +175,7 @@ public class CashflowSearchFragment extends Fragment {
 
     public void refreshRecyclerView() {
         recordList.removeAll(recordList);
+        revenue = 0;
         cashFlowViewModel.getSearchListLiveData().setValue(recordList);
         mAdapter.notifyDataSetChanged();
 
@@ -201,6 +209,9 @@ public class CashflowSearchFragment extends Fragment {
                                         item.setChargeAt(chargeAt);
                                         item.setChargeBy(chargeBy);
                                         item.setPatientName(pName);
+                                        if(mid >= 5 ) {
+                                            revenue += subtotal.intValue();
+                                        }
                                         recordList.add(item);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
