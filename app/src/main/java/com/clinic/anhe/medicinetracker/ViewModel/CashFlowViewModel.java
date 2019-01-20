@@ -39,8 +39,8 @@ public class CashFlowViewModel extends ViewModel {
 
     private MutableLiveData<List<MedicineRecordCardViewModel>> lastmonthListLiveData;
     private List<MedicineRecordCardViewModel> lastmonthList;
-//    private MutableLiveData<Map<Integer, String>> patientMapLiveData;
-//    private Map<Integer,String> patientMap;
+    private MutableLiveData<Map<String, Integer>> employeeMapLiveData;
+    private Map<String ,Integer> employeeMap;
 
 //    private GlobalVariable globalVariable;
 //    private VolleyController volleyController;
@@ -68,9 +68,9 @@ public class CashFlowViewModel extends ViewModel {
         lastmonthList = new ArrayList<>();
         lastmonthListLiveData.setValue(lastmonthList);
 
-//        patientMapLiveData = new MutableLiveData<>();
-//        patientMap = new HashMap<>();
-//        patientMapLiveData.postValue(patientMap);
+        employeeMapLiveData = new MutableLiveData<>();
+        employeeMap = new HashMap<>();
+        employeeMapLiveData.setValue(employeeMap);
 
 //        url = "http://" + globalVariable.getInstance().getIpaddress() +
 //                ":" + globalVariable.getInstance().getPort() + "/anhe/patient/all";
@@ -104,9 +104,10 @@ public class CashFlowViewModel extends ViewModel {
     public MutableLiveData<List<MedicineRecordCardViewModel>> getLastMonthListLiveData() {
         return lastmonthListLiveData;
     }
-//    public MutableLiveData<Map<Integer, String>> getPatientMapLiveData() {
-//        return patientMapLiveData;
-//    }
+
+    public MutableLiveData<Map<String, Integer>> getEmployeeMapLiveData() {
+        return employeeMapLiveData;
+    }
 
 //    public void populatePatientMap(String url, final VolleyCallBack volleyCallBack) {
 //        JsonArrayRequest jsonArrayRequest =

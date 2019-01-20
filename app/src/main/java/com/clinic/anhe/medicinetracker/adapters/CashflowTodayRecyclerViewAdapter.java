@@ -56,20 +56,14 @@ public class CashflowTodayRecyclerViewAdapter extends RecyclerView.Adapter<Cashf
 
         mContext = view.getContext();
 
-        employee = new HashMap<>();
+        employee = cashFlowViewModel.getEmployeeMapLiveData().getValue();
 
         globalVariable = GlobalVariable.getInstance();
         ip = globalVariable.getIpaddress();
         port = globalVariable.getPort();
 
 
-        String url = "http://" + ip + ":" + port + "/anho/employee/all";
-        parseEmployeeData(url, new VolleyCallBack() {
-            @Override
-            public void onResult(VolleyStatus status) {
-                notifyDataSetChanged();
-            }
-        });
+//
         CashflowTodayViewHolder cashflowTodayViewHolder = new CashflowTodayViewHolder(view);
         return cashflowTodayViewHolder;
     }
