@@ -2,6 +2,7 @@ package com.clinic.anhe.medicinetracker.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -122,8 +123,9 @@ public class CashflowMonthFragment extends Fragment {
         lastmonthDate = lastmonth.getTime();
         lastmonthLastDay = simpleDateFormat.format(lastmonthDate);
 
-        getLastMonthRecordList();
-
+        //getLastMonthRecordList();
+        lastmonthRecordList = new ArrayList<>();
+        new MyTask().execute("");
 
         mSelectEndDate = view.findViewById(R.id.cashflow_month_enddate);
         mTotal = view.findViewById(R.id.cashflow_month_total);
@@ -279,6 +281,66 @@ public class CashflowMonthFragment extends Fragment {
         differenceButtonEnabled = true;
         mDifferenceButton.setEnabled(true);
         mDifferenceButton.setColorFilter(getResources().getColor(R.color.colorPrimaryDark));
+    }
+
+    private class MyTask extends AsyncTask<String, Integer, String> {
+        boolean result = false;
+        // Runs in UI before background thread is called
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            result = false;
+
+            // Do something like display a progress bar
+        }
+
+        // This is run in a background thread
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d("we are in another thread", "weee");
+            url = "http://" + globalVariable.getInstance().getIpaddress() + ":" + globalVariable.getInstance().getPort()
+                    + "/anho/record/charged/rangedate?start=" +
+                    lastmonthFirstDay + "&end=" + lastmonthLastDay;
+            Log.d("last month", lastmonthFirstDay + lastmonthLastDay);
+
+            parseLastMonthRecordListData(url, new VolleyCallBack() {
+                @Override
+                public void onResult(VolleyStatus status) {
+                    if(status == VolleyStatus.SUCCESS) {
+                        cashFlowViewModel.getLastMonthListLiveData().setValue(lastmonthRecordList);
+                        //calculateLastMonthTotal();
+                        result = true;
+                    }
+                }
+            });
+
+            while(!result) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    return "interrupted";
+                }
+            }
+            return "success";
+        }
+
+        // This is called from background thread but runs in UI
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+
+            // Do things like update the progress bar
+        }
+
+        // This runs in UI when background thread finishes
+        @Override
+        protected void onPostExecute(String result) {
+            //super.onPostExecute(result);
+            int total = calculateLastMonthTotal();
+            mLastMonthTotal.setText(String.valueOf(total));
+            Log.d("updating last month total",  total + "weee");
+            // Do things like hide the progress bar or change a TextView
+        }
     }
 
 
@@ -481,19 +543,20 @@ public class CashflowMonthFragment extends Fragment {
     }
 
 
-    public void calculateLastMonthTotal () {
+    public int calculateLastMonthTotal () {
 //        Log.d("size of the new record",cashFlowViewModel.getMonthListLiveData().getValue().size()+"");
         lastmonthTotal = 0;
         for(MedicineRecordCardViewModel r : cashFlowViewModel.getLastMonthListLiveData().getValue()) {
             if(r.getMedicineName().equalsIgnoreCase("實際金額")) {
                 //do nothing
             } else {
-                Log.d("the subtotal is",r.getSubtotal() + "" + r.getMedicineName());
+                //Log.d("the subtotal is",r.getSubtotal() + "" + r.getMedicineName());
                 lastmonthTotal += r.getSubtotal().intValue();
-                Log.d("the total is",lastmonthTotal + "");
             }
         }
-        mLastMonthTotal.setText(String.valueOf(lastmonthTotal));
+        Log.d("the total from last month  is",lastmonthTotal + "");
+        return lastmonthTotal;
+       // mLastMonthTotal.setText(String.valueOf(lastmonthTotal));
     }
 
     private void generateActualCash(String url, final VolleyCallBack volleyCallBack) {
